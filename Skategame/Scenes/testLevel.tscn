@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://duaw5sk1sesed"]
+
+[ext_resource type="PackedScene" uid="uid://jy8gjnk4rgdg" path="res://Scenes/character.tscn" id="1_gtjdf"]
+[ext_resource type="Script" path="res://Scripts/characterController.gd" id="2_u2c2c"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wnnvr"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_xq38b"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_om0tb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_80ltq"]
+size = Vector3(5.33063, 1, 9.37305)
+
+[node name="Level" type="Node3D"]
+
+[node name="Floor" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0, 0, 0)
+mesh = SubResource("PlaneMesh_wnnvr")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+transform = Transform3D(1, 0.000785398, 0, -0.000785398, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0, 0, 0)
+shape = SubResource("WorldBoundaryShape3D_xq38b")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.697628, 0.71646, 0, -0.71646, 0.697628, 0, 13.3726, 15.077)
+projection = 1
+size = 28.612
+near = 0.009
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.847207, 0, -0.998464, -0.0554033, 2.28935, 2.07624, -1.13568)
+shadow_enabled = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(0.863827, -0.503789, 0, 0.503789, 0.863827, 0, 0, 0, 1, 4.48158, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(5.22173, 0, 0, 0, 1, 0, 0, 0, 9.32944, 0, 0, 0)
+mesh = SubResource("BoxMesh_om0tb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184021, 0, 0.0527344)
+shape = SubResource("BoxShape3D_80ltq")
+
+[node name="Character" parent="." instance=ExtResource("1_gtjdf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63227, 0)
+script = ExtResource("2_u2c2c")
