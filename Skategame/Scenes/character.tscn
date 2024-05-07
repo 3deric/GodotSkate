@@ -1,27 +1,37 @@
 [gd_scene load_steps=4 format=3 uid="uid://jy8gjnk4rgdg"]
 
+[ext_resource type="PackedScene" uid="uid://h7ks2r24cnfi" path="res://Meshes/skateboard.glb" id="1_oqi3x"]
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cl402"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gsf53"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_51mof"]
 
 [node name="Character" type="RigidBody3D"]
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
+gravity_scale = 2.0
+continuous_cd = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_cl402")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.816679, 0)
 mesh = SubResource("CapsuleMesh_gsf53")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.174965, 0, 0, 0, 2.27117, 0, 0.0833485, 0)
-mesh = SubResource("BoxMesh_51mof")
+[node name="wheelRL" type="RayCast3D" parent="."]
+transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0.15, 0.1227, -0.421)
 
-[node name="CharacterFloorRaycast" type="RayCast3D" parent="."]
-transform = Transform3D(0.999885, -0.0151314, 0, 0.0151314, 0.999885, 0, 0, 0, 1, 0, 0.1, 0)
+[node name="wheelRR" type="RayCast3D" parent="."]
+transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, -0.15, 0.1227, -0.421)
+
+[node name="skateboard" parent="." instance=ExtResource("1_oqi3x")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="wheelFL" type="RayCast3D" parent="."]
+transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0.15, 0.1227, 0.431)
+
+[node name="wheelFR" type="RayCast3D" parent="."]
+transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, -0.15, 0.1227, 0.431)

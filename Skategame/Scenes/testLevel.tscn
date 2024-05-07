@@ -9,8 +9,8 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_om0tb"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_80ltq"]
-size = Vector3(5.33063, 1, 9.37305)
+[sub_resource type="BoxShape3D" id="BoxShape3D_s8mhk"]
+size = Vector3(3.06403, 0.77356, 6.41919)
 
 [node name="Level" type="Node3D"]
 
@@ -28,27 +28,36 @@ transform = Transform3D(1, 0.000785398, 0, -0.000785398, 1, 0, 0, 0, 1, 0, 0, 0)
 transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0, 0, 0)
 shape = SubResource("WorldBoundaryShape3D_xq38b")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.697628, 0.71646, 0, -0.71646, 0.697628, 0, 13.3726, 15.077)
-projection = 1
-size = 28.612
-near = 0.009
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.847207, 0, -0.998464, -0.0554033, 2.28935, 2.07624, -1.13568)
 shadow_enabled = true
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(0.863827, -0.503789, 0, 0.503789, 0.863827, 0, 0, 0, 1, 4.48158, 0, 0)
+transform = Transform3D(0.981497, -0.191477, 0, 0.191477, 0.981497, 0, 0, 0, 1, 4.06317, -4.76837e-07, -0.0745459)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-transform = Transform3D(5.22173, 0, 0, 0, 1, 0, 0, 0, 9.32944, 0, 0, 0)
+transform = Transform3D(3.36288, 1.49012e-08, 0, -1.19209e-07, 0.539034, 0, 0, 0, 6.57925, 0, 0, 0)
 mesh = SubResource("BoxMesh_om0tb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184021, 0, 0.0527344)
-shape = SubResource("BoxShape3D_80ltq")
+transform = Transform3D(1, 7.45058e-08, 0, -7.45058e-08, 1, 0, 0, 0, 1, 0.148772, -0.11322, 0.136597)
+shape = SubResource("BoxShape3D_s8mhk")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(0.91141, -0.411498, 0, 0.411498, 0.91141, 0, 0, 0, 1, 7.11352, 0.949073, -0.0566011)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+transform = Transform3D(3.36288, 1.49012e-08, 0, -1.19209e-07, 0.539034, 0, 0, 0, 6.57925, 0, 0, 0)
+mesh = SubResource("BoxMesh_om0tb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+transform = Transform3D(1, 7.45058e-08, 0, -7.45058e-08, 1, 0, 0, 0, 1, 0.148772, -0.11322, 0.136597)
+shape = SubResource("BoxShape3D_s8mhk")
 
 [node name="Character" parent="." instance=ExtResource("1_gtjdf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63227, 0)
 script = ExtResource("2_u2c2c")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.708155, 0.706057, 0, -0.706057, 0.708155, -1.34136, 6.97159, 7.704)
+fov = 85.2
