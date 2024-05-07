@@ -41,7 +41,8 @@ func _physics_process(delta):
 	floorDist = _floorDist()
 	
 	if (_isGrounded()):	
-		up = lerp(up,_getUpVector(), delta * 10.0)
+		#up = lerp(up,_getUpVector(), delta * 10.0)
+		up = _getUpVector()
 		global_transform.basis = _groundAlign(get_global_transform().basis, up)
 		linear_velocity = _killOrthogonalVelocity(linear_velocity)
 		apply_central_force(dir * acc * input.y)
