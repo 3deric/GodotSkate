@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://cusyb3btl3nqe"]
+
+[ext_resource type="Script" path="res://Scripts/characterBody3D.gd" id="1_5mxk1"]
+[ext_resource type="PackedScene" uid="uid://h7ks2r24cnfi" path="res://Meshes/skateboard.glb" id="1_qu824"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cl402"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_gsf53"]
+
+[node name="Character" type="CharacterBody3D"]
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+script = ExtResource("1_5mxk1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_cl402")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.816679, 0)
+mesh = SubResource("CapsuleMesh_gsf53")
+
+[node name="floor_raycast" type="RayCast3D" parent="."]
+transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 0.363441, 0)
+hit_back_faces = false
+debug_shape_custom_color = Color(0.631373, 0.239216, 0.521569, 1)
+debug_shape_thickness = 1
+
+[node name="skateboard" parent="." instance=ExtResource("1_qu824")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)

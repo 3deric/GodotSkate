@@ -20,6 +20,8 @@ var wheelRR = null
 
 var cameraArm = null
 
+@export var debugView: Control
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	wheelFR = get_node("wheelFR") 
@@ -52,6 +54,8 @@ func _physics_process(delta):
 		rotationOffset = 0.1
 	
 	rotate_y(input.x * rot  * rotationOffset)
+	
+	debugView._debugDraw(Vector3.ZERO, Vector3.UP, Color.GREEN)
 
 func _floorDist():
 	var distFR = wheelFR.global_transform.origin.distance_to(wheelFR.get_collision_point())

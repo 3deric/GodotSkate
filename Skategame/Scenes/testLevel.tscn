@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=3 uid="uid://duaw5sk1sesed"]
 
 [ext_resource type="ArrayMesh" uid="uid://busboldc1hut4" path="res://Meshes/pipe_straight_base_col.obj" id="1_8s6si"]
-[ext_resource type="PackedScene" uid="uid://jy8gjnk4rgdg" path="res://Scenes/character.tscn" id="1_gtjdf"]
 [ext_resource type="ArrayMesh" uid="uid://bvonfakadtqro" path="res://Meshes/pipe_curve_base_col.obj" id="2_0h3ri"]
-[ext_resource type="Script" path="res://Scripts/characterController.gd" id="2_u2c2c"]
+[ext_resource type="PackedScene" uid="uid://cusyb3btl3nqe" path="res://Scenes/characterBody3D.tscn" id="4_d8v8c"]
+[ext_resource type="PackedScene" uid="uid://cctt1un35hyco" path="res://Scenes/debugView.tscn" id="5_cf44f"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wnnvr"]
 
@@ -42,7 +42,6 @@ transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.
 shadow_enabled = true
 
 [node name="PipeStraight" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="MeshVis" type="MeshInstance3D" parent="PipeStraight"]
 mesh = ExtResource("1_8s6si")
@@ -65,10 +64,11 @@ shape = SubResource("ConcavePolygonShape3D_ghhbi")
 [node name="ColBase" type="CollisionShape3D" parent="PipeCurve"]
 shape = SubResource("ConcavePolygonShape3D_etc7n")
 
-[node name="Character" parent="." instance=ExtResource("1_gtjdf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63227, 0)
-script = ExtResource("2_u2c2c")
-
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.708155, 0.706057, 0, -0.706057, 0.708155, -1.34136, 6.97159, 7.704)
 fov = 85.2
+
+[node name="DebugView" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("5_cf44f")]
+camera = NodePath("../Camera3D")
+
+[node name="Character" parent="." instance=ExtResource("4_d8v8c")]
