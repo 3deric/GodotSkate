@@ -20,6 +20,7 @@ shape = SubResource("CapsuleShape3D_cl402")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.816679, 0)
+layers = 2
 mesh = SubResource("CapsuleMesh_gsf53")
 
 [node name="floor_raycast" type="RayCast3D" parent="."]

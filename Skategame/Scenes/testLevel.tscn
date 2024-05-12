@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://busboldc1hut4" path="res://Meshes/pipe_straight_base_col.obj" id="1_8s6si"]
 [ext_resource type="ArrayMesh" uid="uid://bvonfakadtqro" path="res://Meshes/pipe_curve_base_col.obj" id="2_0h3ri"]
-[ext_resource type="PackedScene" uid="uid://cusyb3btl3nqe" path="res://Scenes/characterBody3D.tscn" id="4_d8v8c"]
+[ext_resource type="PackedScene" uid="uid://bea47kckpvvbw" path="res://Scenes/character.tscn" id="4_7b4x3"]
 [ext_resource type="PackedScene" uid="uid://cctt1un35hyco" path="res://Scenes/debugView.tscn" id="5_cf44f"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wnnvr"]
@@ -72,6 +72,5 @@ fov = 85.2
 camera = NodePath("../Camera3D")
 player = NodePath("../Character")
 
-[node name="Character" parent="." instance=ExtResource("4_d8v8c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.531666, 3.57653, -0.540884)
-wall_min_slide_angle = 0.436332
+[node name="Character" parent="." instance=ExtResource("4_7b4x3")]
+transform = Transform3D(0.232275, 0.281324, 0.931077, -0.217301, 0.948072, -0.232249, -0.948066, -0.148378, 0.281346, 0, 3.76068, 0)
