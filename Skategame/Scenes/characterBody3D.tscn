@@ -11,6 +11,7 @@
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
+wall_min_slide_angle = 1.34216
 script = ExtResource("1_5mxk1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

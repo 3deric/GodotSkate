@@ -68,7 +68,10 @@ shape = SubResource("ConcavePolygonShape3D_etc7n")
 transform = Transform3D(1, 0, 0, 0, 0.708155, 0.706057, 0, -0.706057, 0.708155, -1.34136, 6.97159, 7.704)
 fov = 85.2
 
-[node name="DebugView" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("5_cf44f")]
+[node name="DebugView" parent="." node_paths=PackedStringArray("camera", "player") instance=ExtResource("5_cf44f")]
 camera = NodePath("../Camera3D")
+player = NodePath("../Character")
 
 [node name="Character" parent="." instance=ExtResource("4_d8v8c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.531666, 3.57653, -0.540884)
+wall_min_slide_angle = 0.436332
