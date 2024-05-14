@@ -1,23 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://bea47kckpvvbw"]
+[gd_scene load_steps=5 format=3 uid="uid://jy8gjnk4rgdg"]
 
-[ext_resource type="Script" path="res://Scripts/characterController.gd" id="1_rxnhj"]
-[ext_resource type="PackedScene" uid="uid://h7ks2r24cnfi" path="res://Meshes/skateboard.glb" id="2_gtr4q"]
+[ext_resource type="Script" path="res://Scripts/characterController.gd" id="1_oo6wq"]
+[ext_resource type="PackedScene" uid="uid://h7ks2r24cnfi" path="res://Meshes/skateboard.glb" id="1_oqi3x"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_gsf53"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_k3l0c"]
 
-[node name="Character" type="Node3D" node_paths=PackedStringArray("floorC")]
-script = ExtResource("1_rxnhj")
-floorC = NodePath("floor_raycast")
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7kwgq"]
+
+[node name="Character" type="Node3D"]
+script = ExtResource("1_oo6wq")
+
+[node name="skateboard" parent="." instance=ExtResource("1_oqi3x")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -0.503978, 0)
+visible = false
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00397825, 0)
+shape = SubResource("SphereShape3D_k3l0c")
+target_position = Vector3(0, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25517, 0)
-mesh = SubResource("CapsuleMesh_gsf53")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("CapsuleMesh_7kwgq")
 
-[node name="floor_raycast" type="RayCast3D" parent="."]
-transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 0.595501, 0)
-hit_back_faces = false
-debug_shape_custom_color = Color(0.631373, 0.239216, 0.521569, 1)
-debug_shape_thickness = 1
-
-[node name="skateboard" parent="." instance=ExtResource("2_gtr4q")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+[node name="RayCast3DFwd" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.00397825, 0)
+target_position = Vector3(0, -1.515, 0)
