@@ -11,7 +11,7 @@ func _draw():
 	_debugDraw(player.global_position, player.global_position + Vector3.UP, Color.RED)
 	_debugDraw(player.global_position, player.global_position + player.transform.basis.z, Color.GREEN)
 	_debugDraw(player.global_position, player.global_position + player.transform.basis.y, Color.RED)
-	#_debugDraw(player.global_position, player.global_position - player.transform.basis.y, Color.ORANGE)
+	_debugDraw(player.global_position, player.global_position + player.up_direction, Color.ORANGE)
 	#_debugDraw(player.global_position, player.global_position + player.transform.basis.x, Color.BLUE)
 	pass
 	
