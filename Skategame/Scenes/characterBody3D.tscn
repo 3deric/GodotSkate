@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/characterBody3D.gd" id="1_5mxk1"]
 [ext_resource type="PackedScene" uid="uid://h7ks2r24cnfi" path="res://Meshes/skateboard.glb" id="1_qu824"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cl402"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_igf5e"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gsf53"]
 
@@ -12,13 +12,17 @@ axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
 wall_min_slide_angle = 1.34216
+floor_stop_on_slope = false
+floor_block_on_wall = false
+floor_snap_length = 0.5
 script = ExtResource("1_5mxk1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_cl402")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_igf5e")
 
 [node name="Visuals" type="Node3D" parent="."]
+top_level = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Visuals"]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.816679, 0)

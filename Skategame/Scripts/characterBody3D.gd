@@ -1,81 +1,78 @@
 extends CharacterBody3D
 
-
-const acc = 10.0
-const jumpVel = 7.0
-const rot = 5.0
+const acc = 0.2
+const jumpVel = 5.0
+const rot = 1.0
 const maxVel = 20.0
+const gravity = 10.0
 
-var input = Vector3.ZERO
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-
-var vel = Vector3.ZERO
+var input = Vector3.ZERO #input values
+var dir = Vector3.ZERO #current direction
+var xForm = null
 
 var grounded = false
-
-
 var visuals = null
 
 func _ready():
 	visuals = get_node("Visuals")
 
-
 func _physics_process(delta):
+	xForm = global_transform
+	dir = xForm.basis.x.cross(up_direction)
 	#get inputs
 	_inputHandler()	
+	
+	#print(get_last_slide_collision())
 	grounded = is_on_floor()
-	#gravity
-	if grounded:
-		up_direction = get_floor_normal()	
+	if is_on_floor():
+		#print(get_floor_normal())
+		var raycast = _raycast(global_position, global_position - up_direction)
+		if raycast:
+			up_direction = raycast.normal
+		if input.x:
+			#rotation input
+			#velocity = velocity.rotated(up_direction, input.x * rot)
+			rotate_y(input.x * rot * delta)	
+		if input.y:
+			velocity += dir * input.y * acc
+		else:
+			velocity *= 0.99
+		if input.z:
+			velocity.y += jumpVel
 	else:
-		velocity.y -= gravity * delta
+		#if input.x:
+		#	dir = dir.rotated(up_direction, input.x * delta * rot * 5)
 		up_direction = Vector3.UP
-	# jump input
-	if input.z and is_on_floor():
-		velocity.y = jumpVel
-	#accelerate with forward input
-	if input.y != 0 and is_on_floor() and velocity.length() < maxVel:
-		velocity += global_transform.basis.z * input.y * acc * delta	
-	#decelerate when no forward input
-	if input.y == 0 and is_on_floor():
-		velocity *= 0.95
-	velocity.y -= gravity * delta
-	if input .x != 0:
-		rotate_y(input.x * rot * delta)
-	
-	if grounded:
-		velocity = _killOrthogonalVelocity(velocity)
-	#print(get_slide_collision(0))
-	move_and_slide()
-	
-	var collision = get_slide_collision(0)
-	if collision != null:
-		var collider = collision.get_collider().get_collision_layer()
-		print(collider)
-		#if is_instance_valid(collider):
-   	 	#	if collider.get_collision_layer_bit(3):
-		#		print("layer")
-	
-func _process(delta):
-	var xForm = visuals.global_transform.basis
-	visuals.global_transform.basis = _align(xForm, up_direction, transform.basis.z)
 
+	#apply gravity
+	velocity.y -= gravity * delta
+	
+	velocity = _killOrthogonalVelocity(xForm, velocity)
+	#apply movement
+	move_and_slide()
+
+func _process(delta):
+	#to do
+	#interpolate rotation to get smoother motion on slopes
+	var basis = Basis(dir.cross(up_direction), up_direction, dir)
+	var transform = Transform3D(basis, global_position)
+	visuals.global_transform = transform
 
 func _inputHandler():
 	input.x = int(Input.is_action_pressed("Left")) - int(Input.is_action_pressed("Right"))
 	input.y = int(Input.is_action_pressed("Forward")) - int(Input.is_action_pressed("Backward"))
 	input.z = int(Input.is_action_pressed("Jump"))
-	
-func _killOrthogonalVelocity(velocity):
-	var fwdVel = get_global_transform().basis.z * velocity.dot(get_global_transform().basis.z)
-	var ortVel = get_global_transform().basis.x * velocity.dot(get_global_transform().basis.x)
+
+func _killOrthogonalVelocity(xForm, velocity):
+	var fwdVel = xForm.basis.z * velocity.dot(xForm.basis.z)
+	var ortVel = xForm.basis.x * velocity.dot(xForm.basis.x)
 	var upVel = Vector3.UP  * velocity.dot(Vector3.UP)
 	velocity = fwdVel + ortVel * 0.25 + upVel
 	return velocity
-	
-func _align(xform, normal, fwd):
-	xform.y = normal
-	xform.z = fwd
-	xform.x = -xform.z.cross(normal)
-	xform = xform.orthonormalized()
-	return xform
+
+func _raycast(from, to):
+	var space_state = get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(from, to)
+	query.collide_with_areas = true
+	var result = space_state.intersect_ray(query)
+	return result
