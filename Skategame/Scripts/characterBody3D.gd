@@ -7,24 +7,35 @@ const maxVel = 20.0
 const gravity = 10.0
 
 var input = Vector3.ZERO #input values
-var dir = Vector3.ZERO #current direction
+var dir = Vector3.ZERO #current direction of motion
+var lastDir = Vector3.ZERO #direction of last frame for falling check
 var xForm = null
-
 var grounded = false
-var visuals = null
+var visuals: Node3D = null
+var fallen = false
 
 func _ready():
 	visuals = get_node("Visuals")
+	_resetPlayer(Vector3.UP * 5.0)
 
 func _physics_process(delta):
 	xForm = global_transform
 	dir = xForm.basis.x.cross(up_direction)
+	grounded = is_on_floor()
 	#get inputs
 	_inputHandler()	
 	
 	#print(get_last_slide_collision())
-	grounded = is_on_floor()
-	if is_on_floor():
+
+	if grounded:	
+		#print(abs(lastDir.dot(dir)))
+		if (abs(lastDir.dot(dir)) < 0.5 and abs(lastDir.dot(Vector3.UP)) < 0.95 and !fallen):
+			fallen = true
+		else:
+			fallen = false
+				
+		if fallen:
+			print(fallen)
 		#print(get_floor_normal())
 		var raycast = _raycast(global_position, global_position - up_direction)
 		if raycast:
@@ -35,19 +46,24 @@ func _physics_process(delta):
 			rotate_y(input.x * rot * delta)	
 		if input.y:
 			velocity += dir * input.y * acc
+			
 		else:
 			velocity *= 0.99
 		if input.z:
-			velocity.y += jumpVel
+			velocity += up_direction * jumpVel
+			lastDir = velocity.normalized()
+		else:
+			lastDir = dir
+		velocity = _killOrthogonalVelocity(xForm, velocity)
+		
 	else:
-		#if input.x:
-		#	dir = dir.rotated(up_direction, input.x * delta * rot * 5)
+		if input.x:
+			rotate_y(input.x * rot * delta * 10)
 		up_direction = Vector3.UP
 
 	#apply gravity
 	velocity.y -= gravity * delta
 	
-	velocity = _killOrthogonalVelocity(xForm, velocity)
 	#apply movement
 	move_and_slide()
 
@@ -57,6 +73,12 @@ func _process(delta):
 	var basis = Basis(dir.cross(up_direction), up_direction, dir)
 	var transform = Transform3D(basis, global_position)
 	visuals.global_transform = transform
+	
+func _resetPlayer(position):
+	up_direction = Vector3.UP
+	lastDir = global_transform.basis.x.cross(up_direction)
+	global_position = position
+	print("resetting")
 
 func _inputHandler():
 	input.x = int(Input.is_action_pressed("Left")) - int(Input.is_action_pressed("Right"))

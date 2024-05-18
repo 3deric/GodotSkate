@@ -11,11 +11,10 @@ func _draw():
 	_debugDraw(player.global_position, player.global_position + Vector3.UP, Color.RED)
 	if player.grounded:
 		_debugDraw(player.global_position, player.global_position - player.up_direction * 2, Color.PINK)
-	#_debugDraw(player.global_position, player.global_position + player.transform.basis.z, Color.GREEN)
 	_debugDraw(player.global_position, player.global_position + player.dir, Color.GREEN)
+	_debugDraw(player.global_position, player.global_position + player.lastDir * 1.5, Color.LIGHT_GREEN)
 	_debugDraw(player.global_position, player.global_position + player.transform.basis.y, Color.RED)
 	_debugDraw(player.global_position, player.global_position + player.up_direction, Color.ORANGE)
-	#_debugDraw(player.global_position, player.global_position + player.transform.basis.x, Color.BLUE)
 	pass
 	
 func _debugDraw(from, to, col):

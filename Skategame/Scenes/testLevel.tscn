@@ -83,4 +83,4 @@ camera = NodePath("../Camera3D")
 player = NodePath("../Character")
 
 [node name="Character" parent="." instance=ExtResource("4_d8v8c")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.531666, 3.57653, -0.540884)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.13058, 2.22471, -0.540884)
