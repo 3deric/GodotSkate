@@ -1,9 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://d2nejhxrsjjgk"]
+[gd_scene load_steps=7 format=3 uid="uid://d2nejhxrsjjgk"]
 
 [ext_resource type="Script" path="res://Scripts/characterBody3D.gd" id="1_5mxk1"]
 [ext_resource type="PackedScene" uid="uid://h7ks2r24cnfi" path="res://Meshes/skateboard.glb" id="1_qu824"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_igf5e"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xhtrt"]
+size = Vector3(0.394165, 0.215149, 1.53833)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_k6oyy"]
+radius = 0.277953
+height = 1.23404
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gsf53"]
 
@@ -21,13 +28,30 @@ script = ExtResource("1_5mxk1")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("SphereShape3D_igf5e")
 
-[node name="Visuals" type="Node3D" parent="."]
+[node name="RBDBoard" type="RigidBody3D" parent="."]
 top_level = true
+collision_layer = 2
+collision_mask = 2
+freeze = true
 
-[node name="skateboard" parent="Visuals" instance=ExtResource("1_qu824")]
+[node name="skateboard" parent="RBDBoard" instance=ExtResource("1_qu824")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Visuals"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RBDBoard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00701904, 0.120331, -0.0184326)
+shape = SubResource("BoxShape3D_xhtrt")
+
+[node name="RBDCharacter" type="RigidBody3D" parent="."]
+top_level = true
+collision_layer = 2
+collision_mask = 2
+freeze = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RBDCharacter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.824662, 0)
+shape = SubResource("CapsuleShape3D_k6oyy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RBDCharacter"]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.816679, 0)
 mesh = SubResource("CapsuleMesh_gsf53")
 skeleton = NodePath("../..")

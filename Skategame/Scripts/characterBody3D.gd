@@ -11,11 +11,11 @@ var dir = Vector3.ZERO #current direction of motion
 var lastDir = Vector3.ZERO #direction of last frame for falling check
 var xForm = null
 var grounded = false
-var visuals: Node3D = null
+@onready var rbdBoard: RigidBody3D = get_node("RBDBoard")
+@onready var rbdChar: RigidBody3D = get_node("RBDCharacter")
 var fallen = false
 
 func _ready():
-	visuals = get_node("Visuals")
 	_resetPlayer(Vector3.UP * 5.0)
 
 func _physics_process(delta):
@@ -26,16 +26,17 @@ func _physics_process(delta):
 	_inputHandler()	
 	
 	#print(get_last_slide_collision())
+	
+	if fallen:
+		if input.y:
+			_resetPlayer(Vector3.UP * 5.0)
+		return
+	
 
 	if grounded:	
 		#print(abs(lastDir.dot(dir)))
 		if (abs(lastDir.dot(dir)) < 0.5 and abs(lastDir.dot(Vector3.UP)) < 0.95 and !fallen):
-			fallen = true
-		else:
-			fallen = false
-				
-		if fallen:
-			print(fallen)
+			_fall()
 		#print(get_floor_normal())
 		var raycast = _raycast(global_position, global_position - up_direction)
 		if raycast:
@@ -72,12 +73,28 @@ func _process(delta):
 	#interpolate rotation to get smoother motion on slopes
 	var basis = Basis(dir.cross(up_direction), up_direction, dir)
 	var transform = Transform3D(basis, global_position)
-	visuals.global_transform = transform
+	if(!fallen):
+		rbdChar.global_transform = transform
+		rbdBoard.global_transform = transform
+		
+func _fall():
+	fallen = true
+	print("FALL!")
+	rbdChar.freeze = false
+	rbdChar.apply_impulse(velocity)
+	rbdBoard.freeze = false
+	rbdBoard.apply_impulse(velocity)
+	
 	
 func _resetPlayer(position):
 	up_direction = Vector3.UP
+	velocity = Vector3.ZERO
 	lastDir = global_transform.basis.x.cross(up_direction)
 	global_position = position
+	rbdChar.freeze = true
+	rbdBoard.freeze = true
+	fallen = false
+	grounded = false
 	print("resetting")
 
 func _inputHandler():
