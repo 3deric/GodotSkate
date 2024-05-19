@@ -32,7 +32,6 @@ skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
 transform = Transform3D(1, 0.000785398, 0, -0.000785398, 1, 0, 0, 0, 1, 0, 0, 0)
-collision_layer = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
 transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0, 0, 0)
@@ -43,6 +42,7 @@ transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.
 shadow_enabled = true
 
 [node name="PipeStraight" type="StaticBody3D" parent="."]
+collision_layer = 2
 collision_mask = 2
 
 [node name="MeshVis" type="MeshInstance3D" parent="PipeStraight"]
@@ -53,6 +53,7 @@ shape = SubResource("ConcavePolygonShape3D_ox4yu")
 
 [node name="PipeStraight2" type="StaticBody3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+collision_layer = 2
 collision_mask = 2
 
 [node name="MeshVis" type="MeshInstance3D" parent="PipeStraight2"]
@@ -62,9 +63,11 @@ mesh = ExtResource("1_8s6si")
 shape = SubResource("ConcavePolygonShape3D_ox4yu")
 
 [node name="PipeStraightTop" type="StaticBody3D" parent="."]
+visible = false
 
 [node name="ColTop" type="CollisionShape3D" parent="PipeStraightTop"]
 shape = SubResource("ConcavePolygonShape3D_nqx32")
+disabled = true
 
 [node name="PipeStraightTop2" type="StaticBody3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
@@ -74,6 +77,7 @@ shape = SubResource("ConcavePolygonShape3D_nqx32")
 
 [node name="PipeCurve" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
+collision_layer = 3
 
 [node name="MeshVis" type="MeshInstance3D" parent="PipeCurve"]
 mesh = ExtResource("2_0h3ri")
@@ -83,6 +87,7 @@ shape = SubResource("ConcavePolygonShape3D_etc7n")
 
 [node name="PipeCurve2" type="StaticBody3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4, 0, -4)
+collision_layer = 3
 
 [node name="MeshVis" type="MeshInstance3D" parent="PipeCurve2"]
 mesh = ExtResource("2_0h3ri")
@@ -109,4 +114,4 @@ camera = NodePath("../Camera3D")
 player = NodePath("../Character")
 
 [node name="Character" parent="." instance=ExtResource("4_d8v8c")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.13058, 2.22471, -0.540884)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.13058, 2.22471, -0.540884)
