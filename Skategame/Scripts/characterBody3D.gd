@@ -7,7 +7,7 @@ const rotJump = 5.0
 const maxVel = 20.0
 const gravity = 10.0
 
-enum PlayerState {RESET, GROUND, AIR, FALL}
+enum PlayerState {RESET, GROUND, PIPE, AIR, FALL}
 
 var input = Vector3.ZERO #input values
 var dir = Vector3.ZERO #current direction of motion
@@ -17,12 +17,15 @@ var grounded = false
 var right = Vector3.ZERO
 
 var playerState = PlayerState.RESET
+var lastPlayerState = PlayerState.RESET
 
 var rampPos = Vector3.ZERO
-var rampDir = Vector3.ZERO
+var rampDir = Vector3.RIGHT
+
 @onready var rbdBoard: RigidBody3D = get_node("RBDBoard")
 @onready var rbdChar: RigidBody3D = get_node("RBDCharacter")
-var fallen = false
+
+
 
 func _ready():
 	_resetPlayer(Vector3.UP * 5.0)
@@ -35,6 +38,11 @@ func _physics_process(delta):
 	#check if player is falling	
 	_inputHandler()	
 	_playerState()
+
+	#debug logic to print the player state only on change
+	if(playerState != lastPlayerState):
+		print(PlayerState.find_key(playerState))
+	lastPlayerState = playerState
 	
 	if (playerState == PlayerState.FALL):
 		velocity = Vector3.ZERO
@@ -59,23 +67,41 @@ func _physics_process(delta):
 		_killOrthogonalVelocity(xForm, velocity)
 	
 	#movement while not grounded
-	else:
+	if (playerState == PlayerState.AIR):
 		rotate_object_local(Vector3.UP, input.x * rotJump * delta)
 		velocity.y -= gravity * delta
 		up_direction = Vector3.UP
+	
+	#movement while snapped to pipe	
+	if (playerState == PlayerState.PIPE):
+		rotate_object_local(Vector3.UP, input.x * rotJump * delta)
+		
+		rampPos.x = global_position.x
+		rampPos.z = global_position.z
+		up_direction = rampDir
+		
+		velocity.y -= gravity * delta
 		
 	#align upvector with ground while grounded
 	global_transform = _align(global_transform, up_direction)
 	
 	
 	#apply movement
-
+	#
+	if(playerState != lastPlayerState):
+		print(PlayerState.find_key(playerState))
+	lastPlayerState = playerState
 	move_and_slide()
 
 
 func _playerState():
 	if (playerState == PlayerState.FALL):
 		return
+		
+	#rampcheck
+	var collisionInfo = get_last_slide_collision()
+	if collisionInfo:
+		rampDir = (collisionInfo.get_normal() * Vector3(1,0,1)).normalized()
 	
 	if is_on_floor():
 		var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
@@ -84,8 +110,14 @@ func _playerState():
 			_fall()
 		else:
 			playerState = PlayerState.GROUND
-	else:
-		playerState = PlayerState.AIR
+			return
+	if !is_on_floor():
+		if (velocity.normalized().dot(Vector3.UP) > 0.8 and playerState != PlayerState.PIPE):
+			playerState = PlayerState.PIPE
+			rampPos = global_position - get_last_motion()
+		if (playerState != PlayerState.PIPE):
+			playerState = PlayerState.AIR
+		return
 		
 func _setUpDirection():
 	#raycast to define new up direction based on the ground
@@ -101,26 +133,7 @@ func _process(delta):
 	if(playerState != PlayerState.FALL):
 		rbdChar.global_transform = global_transform
 		rbdBoard.global_transform = global_transform
-		
-func _rampSnap():
-	#to do
-	#check if player is going vertial
-	#set new state to ramp
-	#store last grounded position to cast a ray that snaps to the ramp
-	#move the ray on the height of the ramp to slide the player along the ramp
-	var collisionInfo = get_last_slide_collision()
-	if collisionInfo:
-		var collider = collisionInfo.get_collider()
-		if(collider.collision_layer == 2):
-			#collisionInfo.
-			rampPos = collisionInfo.get_position()
-			rampDir = up_direction
-			
-			pass
-		#if (!get_slide_collision(0) and collider.collision_layer == 2):
-		#	print("from ramp!")
-	pass
-		
+				
 func _fall():
 	rbdChar.freeze = false
 	rbdChar.apply_impulse(velocity)
