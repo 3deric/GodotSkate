@@ -74,15 +74,7 @@ mesh = ExtResource("2_0h3ri")
 [node name="ColBase" type="CollisionShape3D" parent="PipeCurve2"]
 shape = SubResource("ConcavePolygonShape3D_etc7n")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.708155, 0.706057, 0, -0.706057, 0.708155, 0.65, 14.062, 9.81218)
-projection = 1
-fov = 85.2
-size = 12.12
-far = 302.85
-
-[node name="DebugView" parent="." node_paths=PackedStringArray("camera", "player") instance=ExtResource("5_cf44f")]
-camera = NodePath("../Camera3D")
+[node name="DebugView" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_cf44f")]
 player = NodePath("../Character")
 
 [node name="Character" parent="." instance=ExtResource("4_d8v8c")]

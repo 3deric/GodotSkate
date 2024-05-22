@@ -26,7 +26,7 @@ var rampDir = Vector3.RIGHT
 @onready var rbdBoard: RigidBody3D = get_node("RBDBoard")
 @onready var rbdChar: RigidBody3D = get_node("RBDCharacter")
 
-
+@onready var camera: Camera3D = get_node("Camera3D")
 
 func _ready():
 	_resetPlayer(Vector3.UP * 5.0)
@@ -78,7 +78,6 @@ func _physics_process(delta):
 		rotate_object_local(Vector3.UP, input.x * rotJump * delta)
 		rampPos.x = global_position.x
 		rampPos.z = global_position.z 
-		#up_direction = rampDir
 		
 		var velHor = velocity * Vector3(1,0,1)
 		var velUp = velocity * Vector3.UP
@@ -86,9 +85,11 @@ func _physics_process(delta):
 		var raycast = _raycast(rampPos, rampPos + velHor)
 		if raycast:
 			rampDir = (raycast.normal * Vector3(1,0,1)).normalized()
-			
+				
 		up_direction = rampDir
-		
+			
+		#else:
+		#	playerState = PlayerState.AIR
 		
 		velHor = _collideAndSlide(velHor, rampPos, 0, velHor)
 		
@@ -138,7 +139,7 @@ func _setUpDirection():
 	var raycast = _raycast(global_position, global_position - up_direction)
 	if raycast:
 		up_direction = raycast.normal
-	else:
+	if (playerState == PlayerState.AIR):
 		up_direction = Vector3.UP
 
 func _process(delta):
@@ -187,6 +188,7 @@ func _raycast(from, to):
 
 func _align(xform, newUp):
 	xform.basis.y = newUp
+	print(newUp)
 	xform.basis.x = -xform.basis.z.cross(newUp)
 	xform.basis = xform.basis.orthonormalized()
 	return xform

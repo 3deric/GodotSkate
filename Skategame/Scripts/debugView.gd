@@ -1,6 +1,6 @@
 extends Control
 
-@export var camera: Camera3D
+#@export var camera: Camera3D
 @export var player: Node3D
 
 func _process(delta):
@@ -25,7 +25,7 @@ func _draw():
 	pass
 	
 func _debugDraw(from, to, col):
-	draw_line(camera.unproject_position(from), camera.unproject_position(to), col, 2.0)
+	draw_line(player.camera.unproject_position(from), player.camera.unproject_position(to), col, 2.0)
 
 
 

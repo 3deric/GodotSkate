@@ -64,3 +64,7 @@ shape = SubResource("CapsuleShape3D_k6oyy")
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.816679, 0)
 mesh = SubResource("CapsuleMesh_gsf53")
 skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-1, -1.77636e-15, -8.74228e-08, -2.31406e-08, 0.964331, 0.264698, 8.43045e-08, 0.264698, -0.964331, 0, 1.80857, -2.081)
+fov = 90.0
