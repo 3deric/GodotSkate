@@ -6,6 +6,7 @@ const rot = 2.0
 const rotJump = 5.0
 const maxVel = 20.0
 const gravity = 10.0
+const maxBounces = 5
 
 enum PlayerState {RESET, GROUND, PIPE, AIR, FALL}
 
@@ -75,10 +76,23 @@ func _physics_process(delta):
 	#movement while snapped to pipe	
 	if (playerState == PlayerState.PIPE):
 		rotate_object_local(Vector3.UP, input.x * rotJump * delta)
-		
 		rampPos.x = global_position.x
-		rampPos.z = global_position.z
+		rampPos.z = global_position.z 
+		#up_direction = rampDir
+		
+		var velHor = velocity * Vector3(1,0,1)
+		var velUp = velocity * Vector3.UP
+		
+		var raycast = _raycast(rampPos, rampPos + velHor)
+		if raycast:
+			rampDir = (raycast.normal * Vector3(1,0,1)).normalized()
+			
 		up_direction = rampDir
+		
+		
+		velHor = _collideAndSlide(velHor, rampPos, 0, velHor)
+		
+		velocity = velHor + velUp
 		
 		velocity.y -= gravity * delta
 		
@@ -100,7 +114,7 @@ func _playerState():
 		
 	#rampcheck
 	var collisionInfo = get_last_slide_collision()
-	if collisionInfo:
+	if (collisionInfo and playerState != PlayerState.PIPE):
 		rampDir = (collisionInfo.get_normal() * Vector3(1,0,1)).normalized()
 	
 	if is_on_floor():
@@ -114,7 +128,7 @@ func _playerState():
 	if !is_on_floor():
 		if (velocity.normalized().dot(Vector3.UP) > 0.8 and playerState != PlayerState.PIPE):
 			playerState = PlayerState.PIPE
-			rampPos = global_position - get_last_motion()
+			rampPos = global_position - get_last_motion() - Vector3.UP * 0.2
 		if (playerState != PlayerState.PIPE):
 			playerState = PlayerState.AIR
 		return
@@ -176,3 +190,30 @@ func _align(xform, newUp):
 	xform.basis.x = -xform.basis.z.cross(newUp)
 	xform.basis = xform.basis.orthonormalized()
 	return xform
+	
+func _collideAndSlide(vel, pos, depth, velInit):
+	if(depth >= maxBounces):
+		return Vector3.ZERO	
+
+	var origin = pos
+	var end = (vel.normalized() * (vel.length())) + pos
+	var result = _raycast(origin, end)
+	#if ray hit anything calculating new position
+	if(result):	
+		var snapToSurface = vel.normalized() * (pos.distance_to(result.position) - 0.1)
+		var leftover = vel - snapToSurface
+	
+		if (snapToSurface.length() <= 0.1):
+			snapToSurface = Vector3.ZERO
+			
+		var scale = 1 - Vector3(result.normal.x, 0, result.normal.z).normalized().dot(-Vector3(velInit.x, 0, velInit.z).normalized())
+		leftover = _projectAndScale(leftover, result.normal) * scale
+		return 	 snapToSurface + _collideAndSlide(leftover,pos + snapToSurface , depth + 1, velInit)
+	return vel
+	
+
+func _projectAndScale(leftover, normal):
+	var mag = leftover.length()
+	leftover = Plane(normal, Vector3.UP).project(leftover).normalized()
+	leftover *= mag	
+	return leftover	
