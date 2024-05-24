@@ -77,5 +77,16 @@ shape = SubResource("ConcavePolygonShape3D_etc7n")
 [node name="DebugView" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_cf44f")]
 player = NodePath("../Character")
 
-[node name="Character" parent="." instance=ExtResource("4_d8v8c")]
+[node name="Character" parent="." node_paths=PackedStringArray("camera", "cameraPos") instance=ExtResource("4_d8v8c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.13058, 2.22471, -0.540884)
+camera = NodePath("../Node3D/Camera3D")
+cameraPos = NodePath("../Node3D")
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="Node3D"]
+transform = Transform3D(0.851626, 0.483314, -0.202829, 0, 0.386968, 0.922093, 0.524149, -0.785279, 0.329553, -1.887, 8.084, 3.146)
+projection = 1
+current = true
+size = 7.591
+far = 100.0

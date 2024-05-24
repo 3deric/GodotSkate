@@ -26,7 +26,9 @@ var rampDir = Vector3.RIGHT
 @onready var rbdBoard: RigidBody3D = get_node("RBDBoard")
 @onready var rbdChar: RigidBody3D = get_node("RBDCharacter")
 
-@onready var camera: Camera3D = get_node("Camera3D")
+#@onready var camera: Camera3D = get_node("Camera3D")
+@export var camera: Camera3D = null
+@export var cameraPos: Node3D = null
 
 func _ready():
 	_resetPlayer(Vector3.UP * 5.0)
@@ -54,8 +56,12 @@ func _physics_process(delta):
 		
 		_setUpDirection()
 		
-		#acceleration
-		velocity += xForm.basis.z * input.y * acc
+		if((input.y > 0 and velocity.length() <= maxVel) or (input.y < 0 and velocity.length() >= -maxVel)):
+			velocity += xForm.basis.z * input.y * acc
+		#dedeleration
+		else:
+			velocity *= 0.98
+		
 		
 		#jump acceleration
 		velocity += xForm.basis.y * input.z * jumpVel
@@ -78,7 +84,7 @@ func _physics_process(delta):
 		rotate_object_local(Vector3.UP, input.x * rotJump * delta)
 		rampPos.x = global_position.x
 		rampPos.z = global_position.z 
-		
+		input.z
 		var velHor = velocity * Vector3(1,0,1)
 		var velUp = velocity * Vector3.UP
 		
@@ -109,7 +115,7 @@ func _physics_process(delta):
 	move_and_slide()
 
 
-func _playerState():
+func _playerState():	
 	if (playerState == PlayerState.FALL):
 		return
 		
@@ -117,6 +123,11 @@ func _playerState():
 	var collisionInfo = get_last_slide_collision()
 	if (collisionInfo and playerState != PlayerState.PIPE):
 		rampDir = (collisionInfo.get_normal() * Vector3(1,0,1)).normalized()
+	
+	if(is_on_wall() and  playerState == PlayerState.PIPE):
+		playerState = PlayerState.FALL
+		_fall()
+		return
 	
 	if is_on_floor():
 		var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
@@ -126,8 +137,10 @@ func _playerState():
 		else:
 			playerState = PlayerState.GROUND
 			return
+			
 	if !is_on_floor():
-		if (velocity.normalized().dot(Vector3.UP) > 0.8 and playerState != PlayerState.PIPE):
+		#if (velocity.normalized().dot(Vector3.UP) > 0.8 and playerState != PlayerState.PIPE):
+		if (abs(xForm.basis.z.dot(Vector3.UP)) > 0.8 and playerState != PlayerState.PIPE):
 			playerState = PlayerState.PIPE
 			rampPos = global_position - get_last_motion() - Vector3.UP * 0.2
 		if (playerState != PlayerState.PIPE):
@@ -148,6 +161,8 @@ func _process(delta):
 	if(playerState != PlayerState.FALL):
 		rbdChar.global_transform = global_transform
 		rbdBoard.global_transform = global_transform
+	
+	cameraPos.position = cameraPos.position.lerp(global_position, delta * 10)
 				
 func _fall():
 	rbdChar.freeze = false
@@ -159,7 +174,7 @@ func _resetPlayer(pos):
 	up_direction = Vector3.UP
 	velocity = Vector3.ZERO
 	lastDir = global_transform.basis.x.cross(up_direction)
-	global_position = pos
+	global_position = pos + Vector3.UP
 	rbdChar.freeze = true
 	rbdBoard.freeze = true
 	playerState = PlayerState.RESET
@@ -188,7 +203,7 @@ func _raycast(from, to):
 
 func _align(xform, newUp):
 	xform.basis.y = newUp
-	print(newUp)
+	#print(newUp)
 	xform.basis.x = -xform.basis.z.cross(newUp)
 	xform.basis = xform.basis.orthonormalized()
 	return xform
