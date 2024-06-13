@@ -27,7 +27,7 @@ axis_lock_angular_y = true
 axis_lock_angular_z = true
 wall_min_slide_angle = 2.26893
 floor_stop_on_slope = false
-floor_block_on_wall = false
+floor_max_angle = 1.49051
 floor_snap_length = 0.5
 script = ExtResource("1_5mxk1")
 

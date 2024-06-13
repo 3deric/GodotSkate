@@ -148,16 +148,15 @@ func _playerState():
 		return
 		
 	if(is_on_wall()):
-		#playerState = PlayerState.FALL
-		print(is_on_wall())
-		#_fall()
+		playerState = PlayerState.FALL
+		_fall()
 		return
 	
 	if is_on_floor():
 		var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
 		if(fallCheck < 0.75 and fallCheck != 0 and velocity.length() > 1.0):
-			#playerState = PlayerState.FALL
-			#_fall()
+			playerState = PlayerState.FALL
+			_fall()
 			pass
 		else:
 			if(collLayer == 1):
