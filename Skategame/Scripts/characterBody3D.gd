@@ -17,6 +17,8 @@ var xForm = null
 var grounded = false
 var right = Vector3.ZERO
 
+var fallTimer = 0.0
+
 var lastPhysicsPosition = Vector3.ZERO
 
 var curveSnap = Vector3.ZERO
@@ -229,15 +231,20 @@ func _process(delta):
 	if(playerState != PlayerState.FALL):
 		rbdChar.global_transform = global_transform
 		rbdBoard.global_transform = global_transform
+	else:
+		fallTimer -= delta
 	cameraPos.position = cameraPos.position.lerp(global_position, delta * 10)
 				
 func _fall():
+	fallTimer = 2.0
 	rbdChar.freeze = false
 	rbdChar.apply_impulse(velocity)
 	rbdBoard.freeze = false
 	rbdBoard.apply_impulse(velocity)
 	
 func _resetPlayer(pos):
+	if fallTimer > 0:
+		return
 	up_direction = Vector3.UP
 	velocity = Vector3.ZERO
 	#lastDir = global_transform.basis.x.cross(up_direction)
