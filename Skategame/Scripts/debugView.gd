@@ -13,17 +13,7 @@ func _draw():
 	_debugDraw(player.global_position, player.global_position + player.velocity * 0.25, Color.PURPLE)
 	_debugDraw(player.global_position, player.global_position + player.up_direction * 2, Color.PINK)
 	_debugDraw(player.curveSnap, player.curveSnap + Vector3.UP * 2, Color.PINK)
-	
-	#_debugDraw(player.global_position, player.global_position + Vector3.UP, Color.RED)
-	#if player.grounded:
-	#	_debugDraw(player.global_position, player.global_position - player.up_direction * 2, Color.PINK)
-	#_debugDraw(player.global_position, player.global_position + player.dir, Color.GREEN)
-	#_debugDraw(player.global_position, player.global_position + player.lastDir * 1.5, Color.LIGHT_GREEN)
-	#_debugDraw(player.global_position, player.global_position + player.transform.basis.y, Color.RED)
-	#_debugDraw(player.global_position, player.global_position + player.right, Color.BLUE)
-	#_debugDraw(player.global_position, player.global_position + player.up_direction, Color.ORANGE)
-	_debugDraw(player.rampPos , player.rampPos + player.groundNormal, Color.ORANGE)
-	pass
+	_debugDraw(player.global_position, player.global_position + player.curveTangent * 2, Color.BLUE)
 	
 func _debugDraw(from, to, col):
 	draw_line(player.camera.unproject_position(from), player.camera.unproject_position(to), col, 2.0)

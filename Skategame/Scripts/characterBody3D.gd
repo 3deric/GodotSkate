@@ -17,10 +17,14 @@ var xForm = null
 var grounded = false
 var right = Vector3.ZERO
 
+var lastPhysicsPosition = Vector3.ZERO
+
 var curveSnap = Vector3.ZERO
+var curveTangent = Vector3.ZERO
 
 var playerState = PlayerState.RESET
 var lastPlayerState = PlayerState.RESET
+var lastGroundPos = Vector3.ZERO
 
 var rampPos = Vector3.ZERO
 var groundNormal = Vector3.RIGHT
@@ -39,7 +43,6 @@ func _ready():
 
 func _physics_process(delta):
 	xForm = global_transform
-	curveSnap = _getClosestCurvePoint(path, global_position)
 	_inputHandler()	
 	_playerState()
 
@@ -52,6 +55,9 @@ func _physics_process(delta):
 		velocity *= 0.95
 		move_and_slide()
 		return
+		
+	if (playerState == PlayerState.GROUND):
+		lastGroundPos = global_position
 	
 	#behaviour while grounded
 	if (playerState == PlayerState.GROUND or playerState == PlayerState.PIPE):
@@ -82,36 +88,52 @@ func _physics_process(delta):
 		up_direction = Vector3.UP
 	
 	#movement while snapped to pipe	
+	#
 	if (playerState == PlayerState.PIPESNAP):
 		rotate_object_local(Vector3.UP, input.x * rotJump * delta)
-		rampPos.x = global_position.x
-		rampPos.z = global_position.z 
-		input.z
-		var velHor = velocity * Vector3(1,0,1)
-		var velUp = velocity * Vector3.UP	
-		var raycast = _raycast(rampPos, rampPos + velHor)
-		if raycast:
-			groundNormal = (raycast.normal * Vector3(1,0,1)).normalized()			
-		up_direction = groundNormal			
-		velHor = _collideAndSlide(velHor, rampPos, 0, velHor)
-		velocity = velHor + velUp	
+		curveSnap = _getClosestCurvePoint(path, global_position)
+		curveTangent = _alignToCurve(path, global_position)
+		up_direction = Vector3.UP.cross(curveTangent)
+		position = Vector3(curveSnap.x, position.y, curveSnap.z)  + up_direction * 0.25
 		velocity.y -= gravity * delta
+		
+	#old ramp snapping with collide and slide	
+	#if (playerState == PlayerState.PIPESNAP):
+		#rotate_object_local(Vector3.UP, input.x * rotJump * delta)
+		#rampPos.x = global_position.x
+		#rampPos.z = global_position.z 
+		#input.z
+		#var velHor = velocity * Vector3(1,0,1)
+		#var velUp = velocity * Vector3.UP	
+		#var raycast = _raycast(rampPos, rampPos + velHor)
+		#if raycast:
+			#groundNormal = (raycast.normal * Vector3(1,0,1)).normalized()			
+		#up_direction = groundNormal			
+		#velHor = _collideAndSlide(velHor, rampPos, 0, velHor)
+		#velocity = velHor + velUp	
+		#velocity.y -= gravity * delta
 		
 	#align upvector with ground while grounded
 	global_transform = _align(global_transform, up_direction)
 	
 	
-	#apply movement
+	#set player parameters for next physics iteration
 	lastPlayerState = playerState
+	lastPhysicsPosition = global_position
+	
+	
+	#apply movement
 	move_and_slide()
+	
 
 
 func _playerState():	
-	
-	
 	#if(area.get_overlapping_bodies().count(0) > 0):
-	print(area.get_overlapping_bodies())
-	
+	for body in area.get_overlapping_bodies():
+		if(body.is_in_group("rampRail")):
+			path = body.get_child(0)
+			#print(body.get_path_node())
+		
 	var collInfo = null
 	if get_slide_collision_count() != 0:
 		collInfo = get_slide_collision(0)
@@ -126,15 +148,17 @@ func _playerState():
 		return
 		
 	if(is_on_wall()):
-		playerState = PlayerState.FALL
-		_fall()
+		#playerState = PlayerState.FALL
+		print(is_on_wall())
+		#_fall()
 		return
 	
 	if is_on_floor():
 		var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
-		if(fallCheck < 0.5 and fallCheck != 0 and velocity.length() > 1.0):
-			playerState = PlayerState.FALL
-			_fall()
+		if(fallCheck < 0.75 and fallCheck != 0 and velocity.length() > 1.0):
+			#playerState = PlayerState.FALL
+			#_fall()
+			pass
 		else:
 			if(collLayer == 1):
 				playerState = PlayerState.GROUND
@@ -153,19 +177,45 @@ func _playerState():
 			
 	#set current collision layer als last collision layer for next physics cycle	
 	lastCollLayer = collLayer
+func _alignToCurve(path: Path3D, pos: Vector3):
+	var curve: Curve3D = path.curve
+	
+	#sample curve for last physics iteration
+	var pathTransform: Transform3D = path.global_transform
+	var lastLocalPos: Vector3 = lastPhysicsPosition * pathTransform
+  # get the nearest offset on the curve
+	var lastOffset: float = curve.get_closest_offset(lastLocalPos)
+  # get the local position at this offset
+	var lastCurvePos: Vector3 = curve.sample_baked(lastOffset, true)
+  # transform it back to world space
+	lastCurvePos = pathTransform * lastCurvePos
+	
+	#sample curve for current physics iteraiton
+	var localPos: Vector3 = pos * pathTransform
+  # get the nearest offset on the curve
+	var offset: float = curve.get_closest_offset(localPos)
+  # get the local position at this offset
+	var curvePos: Vector3 = curve.sample_baked(offset, true)
+  # transform it back to world space
+	curvePos = pathTransform * curvePos
 
-func _getClosestCurvePoint(path: Path3D,global_pos: Vector3):
+	var tangent = (curvePos - lastCurvePos).normalized()
+	if(offset - lastOffset < 0):
+		tangent *= Vector3(-1,-1,-1)
+	return tangent
+
+func _getClosestCurvePoint(path: Path3D,pos: Vector3):
 	var curve: Curve3D = path.curve
  	# transform the target position to local space
-	var path_transform: Transform3D = path.global_transform
-	var local_pos: Vector3 = global_pos * path_transform
+	var pathTransform: Transform3D = path.global_transform
+	var localPos: Vector3 = pos * pathTransform
   # get the nearest offset on the curve
-	var offset: float = curve.get_closest_offset(local_pos)
+	var offset: float = curve.get_closest_offset(localPos)
   # get the local position at this offset
-	var curve_pos: Vector3 = curve.sample_baked(offset, true)
+	var curvePos: Vector3 = curve.sample_baked(offset, true)
   # transform it back to world space
-	curve_pos = path_transform * curve_pos
-	return curve_pos
+	curvePos = pathTransform * curvePos
+	return curvePos
 		
 func _setUpDirection():
 	#raycast to define new up direction based on the ground
@@ -203,7 +253,7 @@ func _inputHandler():
 	input.z = int(Input.is_action_pressed("Jump"))
 	
 	if(input.y and playerState == PlayerState.FALL):
-		_resetPlayer(global_position)
+		_resetPlayer(lastGroundPos)
 
 func _killOrthogonalVelocity(xForm, vel):
 	var fwdVel = xForm.basis.z * vel.dot(xForm.basis.z)
@@ -246,7 +296,6 @@ func _collideAndSlide(vel, pos, depth, velInit):
 		return 	 snapToSurface + _collideAndSlide(leftover,pos + snapToSurface , depth + 1, velInit)
 	return vel
 	
-
 func _projectAndScale(leftover, normal):
 	var mag = leftover.length()
 	leftover = Plane(normal, Vector3.UP).project(leftover).normalized()
