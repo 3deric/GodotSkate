@@ -11,6 +11,7 @@ const maxBounces = 5
 enum PlayerState {RESET, GROUND, PIPE, PIPESNAP, AIR, FALL}
 
 var input = Vector3.ZERO #input values
+var inputTricks = Vector3.ZERO #input values for tricks
 var dir = Vector3.ZERO #current direction of motion
 var lastDir = Vector3.ZERO #direction of last frame for falling check
 var xForm = null
@@ -99,30 +100,12 @@ func _physics_process(delta):
 		position = Vector3(curveSnap.x, position.y, curveSnap.z)  + up_direction * 0.25
 		velocity.y -= gravity * delta
 		
-	#old ramp snapping with collide and slide	
-	#if (playerState == PlayerState.PIPESNAP):
-		#rotate_object_local(Vector3.UP, input.x * rotJump * delta)
-		#rampPos.x = global_position.x
-		#rampPos.z = global_position.z 
-		#input.z
-		#var velHor = velocity * Vector3(1,0,1)
-		#var velUp = velocity * Vector3.UP	
-		#var raycast = _raycast(rampPos, rampPos + velHor)
-		#if raycast:
-			#groundNormal = (raycast.normal * Vector3(1,0,1)).normalized()			
-		#up_direction = groundNormal			
-		#velHor = _collideAndSlide(velHor, rampPos, 0, velHor)
-		#velocity = velHor + velUp	
-		#velocity.y -= gravity * delta
-		
 	#align upvector with ground while grounded
 	global_transform = _align(global_transform, up_direction)
-	
-	
+
 	#set player parameters for next physics iteration
 	lastPlayerState = playerState
 	lastPhysicsPosition = global_position
-	
 	
 	#apply movement
 	move_and_slide()
@@ -258,6 +241,8 @@ func _inputHandler():
 	input.y = int(Input.is_action_pressed("Forward")) - int(Input.is_action_pressed("Backward"))
 	input.z = int(Input.is_action_pressed("Jump"))
 	
+	inputTricks.x = int(Input.is_action_pressed("Grind"))
+	
 	if(input.y and playerState == PlayerState.FALL):
 		_resetPlayer(lastGroundPos)
 
@@ -282,28 +267,3 @@ func _align(xform, newUp):
 	xform.basis = xform.basis.orthonormalized()
 	return xform
 	
-func _collideAndSlide(vel, pos, depth, velInit):
-	if(depth >= maxBounces):
-		return Vector3.ZERO	
-
-	var origin = pos
-	var end = (vel.normalized() * (vel.length())) + pos
-	var result = _raycast(origin, end)
-	#if ray hit anything calculating new position
-	if(result):	
-		var snapToSurface = vel.normalized() * (pos.distance_to(result.position) - 0.1)
-		var leftover = vel - snapToSurface
-	
-		if (snapToSurface.length() <= 0.1):
-			snapToSurface = Vector3.ZERO
-			
-		var scale = 1 - Vector3(result.normal.x, 0, result.normal.z).normalized().dot(-Vector3(velInit.x, 0, velInit.z).normalized())
-		leftover = _projectAndScale(leftover, result.normal) * scale
-		return 	 snapToSurface + _collideAndSlide(leftover,pos + snapToSurface , depth + 1, velInit)
-	return vel
-	
-func _projectAndScale(leftover, normal):
-	var mag = leftover.length()
-	leftover = Plane(normal, Vector3.UP).project(leftover).normalized()
-	leftover *= mag	
-	return leftover	
