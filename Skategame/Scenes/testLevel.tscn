@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://duaw5sk1sesed"]
+[gd_scene load_steps=10 format=3 uid="uid://duaw5sk1sesed"]
 
 [ext_resource type="ArrayMesh" uid="uid://bfccv2ffb53gi" path="res://Meshes/pipe_combined.obj" id="3_wclpi"]
 [ext_resource type="PackedScene" uid="uid://d2nejhxrsjjgk" path="res://Scenes/characterBody3D.tscn" id="4_d8v8c"]
+[ext_resource type="PackedScene" uid="uid://f8h2uynd2b7n" path="res://Scenes/ingameOverlay.tscn" id="4_hwdxu"]
 [ext_resource type="PackedScene" uid="uid://cctt1un35hyco" path="res://Scenes/debugView.tscn" id="5_cf44f"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wnnvr"]
@@ -46,10 +47,11 @@ shadow_enabled = true
 [node name="DebugView" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_cf44f")]
 player = NodePath("../Character")
 
-[node name="Character" parent="." node_paths=PackedStringArray("camera", "cameraPos") instance=ExtResource("4_d8v8c")]
+[node name="Character" parent="." node_paths=PackedStringArray("camera", "cameraPos", "ingameUI") instance=ExtResource("4_d8v8c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.13058, 2.22471, -0.540884)
 camera = NodePath("../Node3D/Camera3D")
 cameraPos = NodePath("../Node3D")
+ingameUI = NodePath("../IngameOverlay")
 
 [node name="Node3D" type="Node3D" parent="."]
 
@@ -92,3 +94,6 @@ collision_layer = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PipeCombined/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_rhf6l")
+
+[node name="IngameOverlay" parent="." instance=ExtResource("4_hwdxu")]
+visible = false

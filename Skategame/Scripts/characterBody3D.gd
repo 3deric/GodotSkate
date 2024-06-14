@@ -8,7 +8,7 @@ const maxVel = 25.0
 const gravity = 20.0
 const maxBounces = 5
 
-enum PlayerState {RESET, GROUND, PIPE, PIPESNAP, AIR, FALL}
+enum PlayerState {RESET, GROUND, PIPE, PIPESNAP, AIR, FALL, GRIND}
 
 var input = Vector3.ZERO #input values
 var inputTricks = Vector3.ZERO #input values for tricks
@@ -40,6 +40,7 @@ var lastCollLayer = 0
 @onready var area: Area3D = get_node("Area3D")
 @export var camera: Camera3D = null
 @export var cameraPos: Node3D = null
+@export var ingameUI: Control = null
 
 func _ready():
 	_resetPlayer(Vector3.UP * 5.0)
@@ -112,12 +113,15 @@ func _physics_process(delta):
 	
 
 
-func _playerState():	
-	#if(area.get_overlapping_bodies().count(0) > 0):
+func _playerState():
+	
 	for body in area.get_overlapping_bodies():
 		if(body.is_in_group("rampRail")):
 			path = body.get_child(0)
+			if inputTricks.x == 1:
+				playerState = PlayerState.GRIND
 			#print(body.get_path_node())
+			#todo, get the path by the node and not by the child
 		
 	var collInfo = null
 	if get_slide_collision_count() != 0:
@@ -135,6 +139,9 @@ func _playerState():
 	if(is_on_wall()):
 		playerState = PlayerState.FALL
 		_fall()
+		return
+		
+	if(playerState == PlayerState.GRIND):
 		return
 	
 	if is_on_floor():
@@ -219,6 +226,7 @@ func _process(delta):
 	cameraPos.position = cameraPos.position.lerp(global_position, delta * 10)
 				
 func _fall():
+	ingameUI.visible = true
 	fallTimer = 2.0
 	rbdChar.freeze = false
 	rbdChar.apply_impulse(velocity)
@@ -228,6 +236,7 @@ func _fall():
 func _resetPlayer(pos):
 	if fallTimer > 0:
 		return
+	ingameUI.visible = false
 	up_direction = Vector3.UP
 	velocity = Vector3.ZERO
 	#lastDir = global_transform.basis.x.cross(up_direction)
