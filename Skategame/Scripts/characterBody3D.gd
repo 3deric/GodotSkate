@@ -166,8 +166,9 @@ func _playerState():
 			groundNormal = (collInfo.get_normal() * Vector3(1,0,1)).normalized()
 	
 	if is_on_wall():
-		playerState = PlayerState.FALL
-		_fall()
+		#playerState = PlayerState.FALL
+		#_fall()
+		pass
 	
 	if !is_on_floor():
 		#behavior while in air, or sticked to a pipe

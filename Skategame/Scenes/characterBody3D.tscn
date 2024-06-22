@@ -25,7 +25,10 @@ collision_mask = 7
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
+wall_min_slide_angle = 0.785398
 floor_stop_on_slope = false
+floor_max_angle = 0.610865
+floor_snap_length = 0.05
 script = ExtResource("1_5mxk1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
