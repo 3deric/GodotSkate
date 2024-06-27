@@ -119,6 +119,8 @@ func _physics_process(delta):
 	#set player parameters for next physics iteration
 	lastPlayerState = playerState
 	lastPhysicsPosition = global_position
+	if velocity.length() > maxVel:
+		velocity = velocity.normalized() * maxVel * 0.99
 	#apply movement
 	move_and_slide()
 

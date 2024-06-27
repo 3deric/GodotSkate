@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://duaw5sk1sesed"]
+[gd_scene load_steps=20 format=3 uid="uid://duaw5sk1sesed"]
 
 [ext_resource type="Material" uid="uid://dshu268utf6sb" path="res://Materials/M_default_grey.tres" id="1_8lo03"]
 [ext_resource type="ArrayMesh" uid="uid://dn2pofrv450ea" path="res://Meshes/pipe.obj" id="3_wclpi"]
@@ -38,6 +38,15 @@ data = PackedVector3Array(-1, 0.5, 1, -1, 0, 1, -1, 0.5, -1, -1, 0.5, -1, -1, 0,
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_2f6bh"]
 data = PackedVector3Array(-2, 1, 1.9999, -2, 0, 1.9999, -2, 1, -2, -2, 1, -2, -2, 0, 1.9999, -2, 0, -2, -2, 1, -2, -2, 0, -2, 2, 1, -2, 2, 1, -2, -2, 0, -2, 2, 0, -2, 2, 1, -2, 2, 0, -2, 2, 1, 1.9999, 2, 1, 1.9999, 2, 0, -2, 2, 0, 1.9999, 2, 1, 1.9999, 2, 0, 1.9999, -2, 1, 1.9999, -2, 1, 1.9999, 2, 0, 1.9999, -2, 0, 1.9999, -2, 1, -2, 2, 1, -2, -2, 1, 1.9999, -2, 1, 1.9999, 2, 1, -2, 2, 1, 1.9999)
 
+[sub_resource type="Environment" id="Environment_jc8xf"]
+background_mode = 1
+background_color = Color(0.273873, 0.273873, 0.273873, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.270821, 0.350402, 0.391988, 1)
+reflected_light_source = 2
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_tlley"]
+
 [node name="Level" type="Node3D"]
 
 [node name="Floor" type="Node3D" parent="."]
@@ -56,7 +65,9 @@ transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0, 0, 0)
 shape = SubResource("WorldBoundaryShape3D_xq38b")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.847207, 0, -0.998464, -0.0554033, 2.28935, 2.07624, -1.13568)
+transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.847207, 0, -0.998464, -0.0554032, 2.28935, 2.07624, -1.13568)
+light_color = Color(0.87, 0.71543, 0.6438, 1)
+light_energy = 1.762
 shadow_enabled = true
 shadow_opacity = 0.59
 shadow_blur = 6.306
@@ -141,3 +152,7 @@ mesh = ExtResource("6_e40s7")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Box/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_2f6bh")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jc8xf")
+camera_attributes = SubResource("CameraAttributesPhysical_tlley")
