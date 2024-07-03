@@ -49,6 +49,11 @@ reflected_light_source = 2
 
 [node name="Level" type="Node3D"]
 
+[node name="IngameOverlay" parent="." instance=ExtResource("4_hwdxu")]
+
+[node name="DebugView" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_cf44f")]
+player = NodePath("../Character")
+
 [node name="Floor" type="Node3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
@@ -72,9 +77,6 @@ shadow_enabled = true
 shadow_opacity = 0.59
 shadow_blur = 6.306
 
-[node name="DebugView" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_cf44f")]
-player = NodePath("../Character")
-
 [node name="Character" parent="." node_paths=PackedStringArray("camera", "cameraPos", "ingameUI") instance=ExtResource("4_d8v8c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.13058, 2.22471, -0.540884)
 safe_margin = 0.01
@@ -85,7 +87,7 @@ ingameUI = NodePath("../IngameOverlay")
 [node name="Node3D" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="Node3D"]
-transform = Transform3D(0.851626, 0.483314, -0.202829, 0, 0.386968, 0.922093, 0.524149, -0.785279, 0.329552, -1.87385, 8.07397, 3.16338)
+transform = Transform3D(0.851626, 0.483314, -0.202829, 0, 0.386968, 0.922093, 0.524149, -0.785279, 0.329552, -2.53933, 11.0993, 4.24463)
 current = true
 fov = 38.0
 size = 8.0
@@ -128,9 +130,6 @@ collision_layer = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PipeCombined/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_rhf6l")
-
-[node name="IngameOverlay" parent="." instance=ExtResource("4_hwdxu")]
-visible = false
 
 [node name="Kicker" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.79697, -0.00954637, 7.82803)

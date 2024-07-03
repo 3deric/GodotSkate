@@ -13,13 +13,13 @@ radius = 0.149071
 size = Vector3(0.394165, 0.267609, 1.53833)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_k6oyy"]
-radius = 0.277953
-height = 1.23404
+radius = 0.527288
+height = 1.17579
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gsf53"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_7wc51"]
-radius = 0.653773
+radius = 0.835306
 
 [node name="Character" type="CharacterBody3D"]
 collision_mask = 7
@@ -64,7 +64,7 @@ freeze = true
 transform = Transform3D(-0.135664, 0, 0.990755, 0, 1, 0, -0.990755, 0, -0.135664, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RBDCharacter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.824662, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.893927, 0)
 shape = SubResource("CapsuleShape3D_k6oyy")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RBDCharacter"]
