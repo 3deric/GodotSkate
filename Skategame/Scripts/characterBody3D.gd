@@ -7,7 +7,7 @@ const rotJump = 7.0
 const maxVel = 25.0
 const gravity = 25.0
 const maxBounces = 5
-const balanceMulti= 3.0
+const balanceMulti= 2.0
 
 enum PlayerState {RESET, GROUND, PIPE, PIPESNAP, AIR, FALL, GRIND, LIP, MANUAL}
 
@@ -18,19 +18,14 @@ var lastDir = Vector3.ZERO #direction of last frame for falling check
 var xForm = null
 var balanceAngle = 0.0 #value between - pi and pi to balance the player on grinds, lips and manuals
 var balanceDir = 0 #defines balance direction based on last input
-
-var lipVelocity = Vector3.ZERO #stores velocity before lip trick
-
 var fallTimer = 0.0
-
 var lastPhysicsPosition = Vector3.ZERO
-
 var curveSnap = Vector3.ZERO
 var curveTangent = Vector3.ZERO
-
 var playerState = PlayerState.RESET
 var lastPlayerState = PlayerState.RESET
 var lastGroundPos = Vector3.ZERO
+var lipUpDir = Vector3.ZERO
 
 var rampPos = Vector3.ZERO
 var groundNormal = Vector3.RIGHT
@@ -129,21 +124,33 @@ func _physics_process(delta):
 			return
 		
 	if (playerState == PlayerState.LIP):
-		if(input.z):
-			playerState = PlayerState.AIR
 		position = _getPositionOnCurve(path, pathPosition)
+		if(input.z):
+			velocity*=-1
+			playerState = PlayerState.AIR
+			return
+		#balance logic
+		balanceAngle += balanceMulti * delta * balanceDir
+		if(input.y != 0):
+			balanceDir = -input.y
+		ingameUI._setBalanceValue(-balanceAngle)
+		if (balanceAngle > PI /2 or balanceAngle < -PI /2):
+			velocity = Vector3.DOWN
+			_fall()
+			return
 	
-	#align upvector with ground while grounded
+	#align upvector with up_direction
 	global_transform = _align(global_transform, up_direction)
 	#set player parameters for next physics iteration
 	lastPlayerState = playerState
 	lastPhysicsPosition = global_position
+	#slow down the player if its too fast
 	if velocity.length() > maxVel:
-		velocity = velocity.normalized() * maxVel * 0.99
-	#apply movement
-	#only while not grinding or in lip mode
-	#would result in jitter otherwise
-	if(playerState != PlayerState.GRIND or playerState != PlayerState.LIP):
+		velocity = velocity.normalized() * maxVel
+	if(playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
+		#apply movement
+		#only while not grinding or in lip mode
+		#would result in jitter otherwise
 		move_and_slide()
 
 func _playerState():
@@ -166,21 +173,19 @@ func _playerState():
 			if inputTricks.x == 1 and playerState != PlayerState.GRIND:
 				pathPosition = _getClosestCurveOffset(path, position)
 				pathDir = _getPathDir(path, position)
-				print(pathDir)
-				if(pathDir != 0):
-					playerState = PlayerState.GRIND
-					#reset balance angle once grind starts
-					#randomize the balance direction
-					var rand = randf()
-					if (rand >= 0.5):
-						balanceDir = 1
-					else:
-						balanceDir = -1
-					balanceAngle = 0
-					
+				#randomize the balance direction
+				var rand = randf()
+				if (rand >= 0.5):
+					balanceDir = 1
 				else:
-					pass
-					#playerState = PlayerState.LIP
+					balanceDir = -1
+				#reset balance angle once grind or lip starts
+				balanceAngle = 0
+				if(pathDir != 0):
+					playerState = PlayerState.GRIND		
+				if(pathDir == 0 and playerState != PlayerState.PIPESNAP):
+					lipUpDir = up_direction
+					playerState = PlayerState.LIP
 		
 	var collInfo = null
 	if get_slide_collision_count() != 0:
@@ -195,7 +200,7 @@ func _playerState():
 		#dont change the state if player is fallen
 		return
 		
-	if(playerState == PlayerState.GRIND):
+	if(playerState == PlayerState.GRIND or playerState == PlayerState.LIP):
 		#dont change state while grinding
 		ingameUI._setBalanceView(true)
 		collision.disabled = true
@@ -272,11 +277,11 @@ func _getPathDir(path: Path3D, pos: Vector3):
 	#1 and -1 for grinding, 0 for lip tricks
 	var curve: Curve3D = path.curve	
 	var currentPoint =  _getClosestCurvePoint(path, pos)
-	var nextPoint = _getClosestCurvePoint(path, pos + velocity)
+	var nextPoint = _getClosestCurvePoint(path, pos + velocity.normalized())
 	var dir = curve.get_closest_offset(currentPoint)- curve.get_closest_offset(nextPoint)
-	if(dir > 0.75):
+	if(dir > 0.3):
 		return  1
-	if(dir < -0.75):
+	if(dir < -0.3):
 		return -1
 	else:
 		return 0
