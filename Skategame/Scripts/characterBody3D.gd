@@ -25,13 +25,10 @@ var curveTangent = Vector3.ZERO
 var playerState = PlayerState.RESET
 var lastPlayerState = PlayerState.RESET
 var lastGroundPos = Vector3.ZERO
-var lipUpDir = Vector3.ZERO
-
+var lastUpDir = Vector3.ZERO
 var rampPos = Vector3.ZERO
 var groundNormal = Vector3.RIGHT
-
 var lastCollLayer = 0
-
 var path: Path3D = null
 var pathPosition: float = -1
 var pathLength: float = -1
@@ -87,7 +84,11 @@ func _physics_process(delta):
 		rotate_object_local(Vector3.UP, input.x * rotJump * delta)
 		curveSnap = _getClosestCurvePoint(path, global_position)
 		curveTangent = _getPathTangent(path, global_position)
-		up_direction = Vector3.UP.cross(curveTangent)
+		var newUpDir = Vector3.UP.cross(curveTangent)
+		if(newUpDir != Vector3.ZERO):
+			up_direction = newUpDir
+		else:
+			up_direction = lastUpDir
 		position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * 0.15
 		velocity.y -= gravity * delta
 		if (!_getStickCurve(path, global_position)):
@@ -125,25 +126,27 @@ func _physics_process(delta):
 		
 	if (playerState == PlayerState.LIP):
 		position = _getPositionOnCurve(path, pathPosition)
+		up_direction =Vector3.UP
 		if(input.z):
-			velocity*=-1
-			playerState = PlayerState.AIR
-			return
+			velocity = velocity.normalized() * -1
+			playerState = PlayerState.AIR	
 		#balance logic
 		balanceAngle += balanceMulti * delta * balanceDir
 		if(input.y != 0):
 			balanceDir = -input.y
+			#to do fix updirection and alignment after lip trick is done
 		ingameUI._setBalanceValue(-balanceAngle)
 		if (balanceAngle > PI /2 or balanceAngle < -PI /2):
 			velocity = Vector3.DOWN
 			_fall()
-			return
+		#return
 	
 	#align upvector with up_direction
 	global_transform = _align(global_transform, up_direction)
 	#set player parameters for next physics iteration
 	lastPlayerState = playerState
 	lastPhysicsPosition = global_position
+	lastUpDir = up_direction
 	#slow down the player if its too fast
 	if velocity.length() > maxVel:
 		velocity = velocity.normalized() * maxVel
@@ -184,7 +187,6 @@ func _playerState():
 				if(pathDir != 0):
 					playerState = PlayerState.GRIND		
 				if(pathDir == 0 and playerState != PlayerState.PIPESNAP):
-					lipUpDir = up_direction
 					playerState = PlayerState.LIP
 		
 	var collInfo = null
@@ -368,7 +370,7 @@ func _inputHandler():
 	input.x = int(Input.is_action_pressed("Left")) - int(Input.is_action_pressed("Right"))
 	input.y = int(Input.is_action_pressed("Forward")) - int(Input.is_action_pressed("Backward"))
 	input.z = int(Input.is_action_just_pressed("Jump"))
-	inputTricks.x = int(Input.is_action_just_pressed("Grind"))
+	inputTricks.x = int(Input.is_action_pressed("Grind"))
 	if(input.y and playerState == PlayerState.FALL):
 		_resetPlayer(lastGroundPos)
 
