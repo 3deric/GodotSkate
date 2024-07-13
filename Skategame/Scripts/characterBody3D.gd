@@ -37,6 +37,7 @@ var pathVelocity: Vector3 = Vector3.ZERO
 var lipStartUp: Vector3 = Vector3.ZERO
 var lipStartPos: Vector3 = Vector3.ZERO
 var lipStartVel: Vector3 = Vector3.ZERO
+var lipStartDir: Vector3 = Vector3.ZERO
 
 @onready var rbdBoard: RigidBody3D = get_node("RBDBoard")
 @onready var rbdChar: RigidBody3D = get_node("RBDCharacter")
@@ -130,9 +131,15 @@ func _physics_process(delta):
 	if (playerState == PlayerState.LIP):
 		position = _getPositionOnCurve(path, pathPosition)
 		up_direction =Vector3.UP
+		curveTangent = _getPathTangent(path, global_position) * -pathDir
+		rotation.y = atan2(lipStartDir.x,lipStartDir.z)
 		if(input.z):
 			velocity = velocity.normalized() * -1
 			playerState = PlayerState.AIR	
+			position += lipStartUp * 0.5
+			velocity = lipStartVel.normalized() * Vector3(-1,-1,-1)		
+			up_direction = Vector3.UP
+			rotation.y = atan2(-lipStartDir.x,-lipStartDir.z)
 		#balance logic
 		balanceAngle += balanceMulti * delta * balanceDir
 		if(input.y != 0):
@@ -195,6 +202,10 @@ func _playerState():
 					playerState = PlayerState.GRIND		
 				if(pathDir == 0 and playerState != PlayerState.PIPESNAP):
 					playerState = PlayerState.LIP
+					lipStartPos = position
+					lipStartUp = up_direction
+					lipStartVel = velocity
+					lipStartDir = (_getClosestCurvePoint(path, position) - position ).normalized()
 		
 	var collInfo = null
 	if get_slide_collision_count() != 0:
