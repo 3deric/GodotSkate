@@ -7,7 +7,7 @@ const rotJump = 7.0
 const maxVel = 25.0
 const gravity = 25.0
 const maxBounces = 5
-const balanceMulti= 2.0
+const balanceMulti= 1.0
 
 enum PlayerState {RESET, GROUND, PIPE, PIPESNAP, AIR, FALL, GRIND, LIP, MANUAL}
 
@@ -34,6 +34,9 @@ var pathPosition: float = -1
 var pathLength: float = -1
 var pathDir: int = 0
 var pathVelocity: Vector3 = Vector3.ZERO
+var lipStartUp: Vector3 = Vector3.ZERO
+var lipStartPos: Vector3 = Vector3.ZERO
+var lipStartVel: Vector3 = Vector3.ZERO
 
 @onready var rbdBoard: RigidBody3D = get_node("RBDBoard")
 @onready var rbdChar: RigidBody3D = get_node("RBDCharacter")
@@ -89,7 +92,7 @@ func _physics_process(delta):
 			up_direction = newUpDir
 		else:
 			up_direction = lastUpDir
-		position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * 0.15
+		position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * 0.25
 		velocity.y -= gravity * delta
 		if (!_getStickCurve(path, global_position)):
 			playerState = PlayerState.AIR		
@@ -100,7 +103,7 @@ func _physics_process(delta):
 		var grindVel = velocity.length() * 0.99
 		up_direction = Vector3.UP
 		pathPosition -= grindVel * pathDir * delta
-		position = _getPositionOnCurve(path, pathPosition) + up_direction * 0.5
+		position = _getPositionOnCurve(path, pathPosition) + up_direction * 0.1
 		curveTangent = _getPathTangent(path, global_position) * -pathDir
 		pathVelocity = curveTangent  * grindVel
 		rotation.y = atan2(curveTangent.x,curveTangent.z)
@@ -175,7 +178,11 @@ func _playerState():
 			pathLength = path.curve.get_baked_length()
 			if inputTricks.x == 1 and playerState != PlayerState.GRIND:
 				pathPosition = _getClosestCurveOffset(path, position)
-				pathDir = _getPathDir(path, position)
+				curveTangent = _getPathTangent(path, position)
+				if(curveTangent == Vector3.ZERO):
+					print("nope")
+					return
+				pathDir = _getPathDir(curveTangent)
 				#randomize the balance direction
 				var rand = randf()
 				if (rand >= 0.5):
@@ -216,6 +223,7 @@ func _playerState():
 		return
 	
 	if is_on_floor():
+		path = null
 		var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
 		if(fallCheck < 0.75 and fallCheck != 0 and velocity.length() > 1.0):
 			_fall()
@@ -232,13 +240,12 @@ func _playerState():
 		#not used at the moment
 		#might be usefull to detect if a player rides against walls to fast
 		#make it fall in this case
-		#playerState = PlayerState.FALL
-		#_fall()
-		pass
+		if(velocity.length() > 5):
+			_fall()
 	
 	if !is_on_floor():
 		#behavior while in air, or sticked to a pipe
-		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.25 and playerState == PlayerState.PIPE and input.z == 0):
+		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.75 and playerState == PlayerState.PIPE and input.z == 0):
 			playerState = PlayerState.PIPESNAP
 			rampPos = global_position - get_last_motion() - Vector3.UP * 0.2
 		if(playerState != PlayerState.PIPESNAP):
@@ -248,7 +255,7 @@ func _playerState():
 	
 func _getPathTangent(path: Path3D, pos: Vector3):
 	#returns the curve tangent
-	#interpolates between two close points on the curve to generate tangnet direction
+	#interpolates between two close points on the curve to generate tangent direction
 	var curve: Curve3D = path.curve	
 	#sample curve for last physics iteration
 	var pathTransform: Transform3D = path.global_transform
@@ -272,19 +279,13 @@ func _getPathTangent(path: Path3D, pos: Vector3):
 		tangent *= Vector3(-1,-1,-1)
 	return tangent
 	
-func _getPathDir(path: Path3D, pos: Vector3):
+func _getPathDir(tangent: Vector3):
 	#function to get direction along the curve, based on the starting direction
-	#extrapolates current position based on velocity
-	#used to detect grinding direction and lip trick mode
-	#1 and -1 for grinding, 0 for lip tricks
-	var curve: Curve3D = path.curve	
-	var currentPoint =  _getClosestCurvePoint(path, pos)
-	var nextPoint = _getClosestCurvePoint(path, pos + velocity.normalized())
-	var dir = curve.get_closest_offset(currentPoint)- curve.get_closest_offset(nextPoint)
+	var dir = tangent.dot(velocity.normalized())
 	if(dir > 0.3):
-		return  1
+		return  -1
 	if(dir < -0.3):
-		return -1
+		return 1
 	else:
 		return 0
 
@@ -318,19 +319,17 @@ func _getStickCurve(path: Path3D,pos: Vector3):
 	var pathTransform: Transform3D = path.global_transform
 	var localPos: Vector3 = pos * pathTransform
 	var offset: float = curve.get_closest_offset(localPos)
-	#print(offset)
 	if(offset <= 0.1 or offset >= curve.get_baked_length() -.1):
 		return false
 	else:
 		return true
 		
 func _setUpDirection():
-	#raycast to define new up direction based on the ground
-	#maybe exchange this with default move and slide behavior functions if possible
-	var raycast = _raycast(global_position, global_position - up_direction)
-	if raycast:
-		up_direction = raycast.normal
-	if (playerState == PlayerState.AIR):
+	if is_on_floor():
+		up_direction = get_floor_normal()
+	else:
+		up_direction = lastUpDir		
+	if playerState == PlayerState.AIR:
 		up_direction = Vector3.UP
 
 func _process(delta):
@@ -345,7 +344,6 @@ func _process(delta):
 func _fall():
 	playerState = PlayerState.FALL
 	ingameUI._setFailView(true)
-	#ingameUI.visible = true
 	fallTimer = 2.0
 	rbdChar.freeze = false
 	rbdChar.apply_impulse(velocity)
