@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://f8h2uynd2b7n"]
+[gd_scene load_steps=4 format=3 uid="uid://f8h2uynd2b7n"]
 
 [ext_resource type="Script" path="res://Scripts/ingameOverlay.gd" id="1_sjbhh"]
+[ext_resource type="Texture2D" uid="uid://cmsr6ypv1frsi" path="res://Textures/UI/balanceBackground.png" id="2_jsnj5"]
+[ext_resource type="Texture2D" uid="uid://y5g3w80lojem" path="res://Textures/UI/balanceIndicator.png" id="3_vfp08"]
 
 [node name="IngameOverlay" type="Control"]
 layout_mode = 3
@@ -12,6 +14,7 @@ grow_vertical = 2
 script = ExtResource("1_sjbhh")
 
 [node name="FailView" type="Label" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -31,7 +34,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BalanceView" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -43,9 +45,35 @@ offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="ColorRect" type="ColorRect" parent="BalanceView"]
-layout_mode = 0
-offset_left = -3.0
-offset_top = -76.0
-offset_right = 4.0
-offset_bottom = 4.0
+[node name="TextureRect" type="TextureRect" parent="BalanceView"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -20.0
+offset_right = 100.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_jsnj5")
+expand_mode = 1
+
+[node name="BalanceIndicator" type="TextureRect" parent="BalanceView"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -20.0
+offset_right = 2.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(2, 20)
+texture = ExtResource("3_vfp08")
+expand_mode = 1

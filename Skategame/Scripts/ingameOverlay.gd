@@ -2,6 +2,7 @@ extends Control
 
 @onready var failView: Label = get_node("FailView")
 @onready var balanceView: Control = get_node("BalanceView")
+@onready var balanceIndicator: Control = get_node("BalanceView/BalanceIndicator")
 
 func _ready():
 	_setFailView(false)
@@ -17,4 +18,5 @@ func _setBalanceView(val):
 	
 func _setBalanceValue(val):
 	#change angle of balance view
-	balanceView.rotation = val
+	val = float(val) / PI *400
+	balanceIndicator.position= Vector2(val -2,-20)

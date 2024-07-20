@@ -9,6 +9,8 @@ const gravity = 25.0
 const maxBounces = 5
 const balanceMulti= 1.0
 
+var balanceTime = 1.0
+
 enum PlayerState {RESET, GROUND, PIPE, PIPESNAP, AIR, FALL, GRIND, LIP, MANUAL}
 
 var input = Vector3.ZERO #input values
@@ -59,8 +61,6 @@ func _physics_process(delta):
 		print(PlayerState.find_key(playerState))
 	lastPlayerState = playerState	
 	if (playerState == PlayerState.FALL):
-		velocity *= 0.95
-		move_and_slide()
 		return		
 	if (playerState == PlayerState.GROUND):
 		lastGroundPos = global_position	
@@ -117,16 +117,19 @@ func _physics_process(delta):
 			velocity = curveTangent  * grindVel
 			playerState = PlayerState.AIR
 			#collision.disabled = false
-		
+	
 		#balance logic
-		balanceAngle += balanceMulti * delta * balanceDir
+		balanceTime += 0.1
+		balanceAngle += balanceMulti * delta * balanceDir * balanceTime
 		if(input.x != 0):
 			balanceDir = input.x
 		ingameUI._setBalanceValue(-balanceAngle)
-		if (balanceAngle > PI /2 or balanceAngle < -PI /2):
+		if (balanceAngle > PI /4 or balanceAngle < -PI /4):
 			velocity = curveTangent * grindVel
 			_fall()
 			return
+	else:
+		balanceTime = 1.0
 		
 	if (playerState == PlayerState.LIP):
 		position = _getPositionOnCurve(path, pathPosition)
@@ -136,20 +139,24 @@ func _physics_process(delta):
 		if(input.z):
 			velocity = velocity.normalized() * -1
 			playerState = PlayerState.AIR	
-			position += lipStartUp * 0.5
-			velocity = lipStartVel.normalized() * Vector3(-1,-1,-1)		
+			position += lipStartUp * 0.75 + Vector3.UP
+			velocity = lipStartVel.normalized() * -1	
 			up_direction = Vector3.UP
 			rotation.y = atan2(-lipStartDir.x,-lipStartDir.z)
 		#balance logic
-		balanceAngle += balanceMulti * delta * balanceDir
+		balanceTime += 0.1
+		balanceAngle += balanceMulti * delta * balanceDir * balanceTime
 		if(input.y != 0):
 			balanceDir = -input.y
 			#to do fix updirection and alignment after lip trick is done
 		ingameUI._setBalanceValue(-balanceAngle)
-		if (balanceAngle > PI /2 or balanceAngle < -PI /2):
+		if (balanceAngle > PI /4 or balanceAngle < -PI /4):
+			#velocity = Vector3.DOWN
 			velocity = Vector3.DOWN
 			_fall()
-		#return
+			return
+	else:
+		balanceTime = 1.0
 	
 	#align upvector with up_direction
 	global_transform = _align(global_transform, up_direction)
@@ -238,7 +245,7 @@ func _playerState():
 		var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
 		if(fallCheck < 0.75 and fallCheck != 0 and velocity.length() > 1.0):
 			_fall()
-			pass
+			return
 		else:
 			if(collLayer == 1):
 				playerState = PlayerState.GROUND
@@ -253,12 +260,14 @@ func _playerState():
 		#make it fall in this case
 		if(velocity.length() > 5):
 			_fall()
+			return
 	
 	if !is_on_floor():
 		#behavior while in air, or sticked to a pipe
 		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.75 and playerState == PlayerState.PIPE and input.z == 0):
-			playerState = PlayerState.PIPESNAP
-			rampPos = global_position - get_last_motion() - Vector3.UP * 0.2
+			if path != null:
+				playerState = PlayerState.PIPESNAP
+				rampPos = global_position - get_last_motion() - Vector3.UP * 0.2
 		if(playerState != PlayerState.PIPESNAP):
 			playerState = PlayerState.AIR			
 	#set current collision layer als last collision layer for next physics cycle	
@@ -348,8 +357,18 @@ func _process(delta):
 	if(playerState != PlayerState.FALL):
 		rbdChar.global_transform = global_transform
 		rbdBoard.global_transform = global_transform
+		#rbdChar.rotation.x = lerpf(rbdChar.rotation.x, rotation.x, delta)
+		#rbdBoard.rotation.x = lerpf(rbdBoard.rotation.x, rotation.x, delta)
 	else:
 		fallTimer -= delta
+	if(playerState == PlayerState.GRIND):
+		rbdChar.rotation.z = -balanceAngle
+		rbdBoard.rotation.z = -balanceAngle
+		
+	if(playerState == PlayerState.LIP):
+		rbdChar.rotation.x = -balanceAngle
+		rbdBoard.rotation.x = -balanceAngle
+		
 	cameraPos.position = cameraPos.position.lerp(global_position, delta * 10)
 				
 func _fall():
