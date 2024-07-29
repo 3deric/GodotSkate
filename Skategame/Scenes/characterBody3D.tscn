@@ -29,7 +29,6 @@ axis_lock_angular_z = true
 slide_on_ceiling = false
 wall_min_slide_angle = 0.785398
 floor_stop_on_slope = false
-floor_snap_length = 0.05
 script = ExtResource("1_5mxk1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

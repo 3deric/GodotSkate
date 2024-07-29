@@ -28,6 +28,7 @@ var playerState = PlayerState.RESET
 var lastPlayerState = PlayerState.RESET
 var lastGroundPos = Vector3.ZERO
 var lastUpDir = Vector3.ZERO
+var lastVel = Vector3.ZERO
 var rampPos = Vector3.ZERO
 var groundNormal = Vector3.RIGHT
 var lastCollLayer = 0
@@ -139,7 +140,7 @@ func _physics_process(delta):
 		if(input.z):
 			velocity = velocity.normalized() * -1
 			playerState = PlayerState.AIR	
-			position += lipStartUp * 0.75 + Vector3.UP
+			position += lipStartUp + Vector3.UP
 			velocity = lipStartVel.normalized() * -1	
 			up_direction = Vector3.UP
 			rotation.y = atan2(-lipStartDir.x,-lipStartDir.z)
@@ -164,6 +165,7 @@ func _physics_process(delta):
 	lastPlayerState = playerState
 	lastPhysicsPosition = global_position
 	lastUpDir = up_direction
+	lastVel = velocity
 	#slow down the player if its too fast
 	if velocity.length() > maxVel:
 		velocity = velocity.normalized() * maxVel
@@ -258,7 +260,7 @@ func _playerState():
 		#not used at the moment
 		#might be usefull to detect if a player rides against walls to fast
 		#make it fall in this case
-		if(velocity.length() > 5):
+		if(lastVel.length() > 3):
 			_fall()
 			return
 	
@@ -373,6 +375,7 @@ func _process(delta):
 				
 func _fall():
 	playerState = PlayerState.FALL
+	lastVel = Vector3.ZERO
 	ingameUI._setFailView(true)
 	fallTimer = 2.0
 	rbdChar.freeze = false
@@ -413,12 +416,14 @@ func _raycast(from, to):
 	var space_state = get_world_3d().direct_space_state
 	var query = PhysicsRayQueryParameters3D.create(from, to)
 	query.collide_with_areas = true
-	var result = space_state.intersect_ray(query)
-	return result   
+	return space_state.intersect_ray(query)
 
 func _align(xform, newUp):
 	xform.basis.y = newUp
 	xform.basis.x = -xform.basis.z.cross(newUp)
 	xform.basis = xform.basis.orthonormalized()
 	return xform
+	
+func _revertMotion():
+	pass
 	
