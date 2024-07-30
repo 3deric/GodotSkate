@@ -19,17 +19,16 @@ height = 1.17579
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gsf53"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_7wc51"]
-radius = 0.835306
+radius = 1.49354
 
 [node name="Character" type="CharacterBody3D"]
 collision_mask = 7
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
+slide_on_ceiling = false
 wall_min_slide_angle = 0.785398
 floor_stop_on_slope = false
-floor_max_angle = 1.39626
-floor_snap_length = 0.05
 script = ExtResource("1_5mxk1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -83,4 +82,5 @@ collision_layer = 8
 collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0418166, 0)
 shape = SubResource("SphereShape3D_7wc51")
