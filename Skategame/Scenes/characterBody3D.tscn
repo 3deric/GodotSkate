@@ -19,7 +19,7 @@ height = 1.17579
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gsf53"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_7wc51"]
-radius = 1.10969
+radius = 1.49354
 
 [node name="Character" type="CharacterBody3D"]
 collision_mask = 7
