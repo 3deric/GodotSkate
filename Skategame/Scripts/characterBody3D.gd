@@ -182,9 +182,22 @@ func _physics_process(delta):
 
 func _playerState():
 	if(playerState == PlayerState.GRIND):
+		ingameUI._setBalanceView(true)
+		collision.disabled = true
 		if !_getStickCurve(path,  global_position):
 			playerState = PlayerState.AIR
 			return
+		return
+	else:
+		ingameUI._setBalanceView(false)
+		collision.disabled = false
+	
+	if(playerState == PlayerState.LIP):
+		ingameUI._setBalanceView(true)
+		collision.disabled = true
+	else:
+		ingameUI._setBalanceView(false)
+		collision.disabled = false
 	if(playerState == PlayerState.PIPESNAP):
 		if !_getStickCurve(path,  global_position):
 			playerState = PlayerState.PIPESNAPAIR
