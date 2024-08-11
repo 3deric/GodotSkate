@@ -53,7 +53,7 @@ point_count = 2
 
 [sub_resource type="Curve3D" id="Curve3D_wteos"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 3.5, 1, 11.3, 0, 0, 0, 0, 0, 0, 7.5, 1, 11.3),
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 7.5, 1, 11.3, 0, 0, 0, 0, 0, 0, 3.5, 1, 11.3),
 "tilts": PackedFloat32Array(0, 0)
 }
 point_count = 2

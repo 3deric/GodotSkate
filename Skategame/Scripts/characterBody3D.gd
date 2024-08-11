@@ -38,7 +38,6 @@ var pathLength: float = -1
 var pathDir: int = 0
 var pathVelocity: Vector3 = Vector3.ZERO
 var lipStartUp: Vector3 = Vector3.ZERO
-var lipStartPos: Vector3 = Vector3.ZERO
 var lipStartVel: Vector3 = Vector3.ZERO
 var lipStartDir: Vector3 = Vector3.ZERO
 
@@ -139,7 +138,7 @@ func _physics_process(delta):
 	if (playerState == PlayerState.LIP):
 		position = _getPositionOnCurve(path, pathPosition)
 		up_direction =Vector3.UP
-		curveTangent = _getPathTangent(path, global_position) * -pathDir
+		curveTangent = _getPathTangent(path, global_position)
 		rotation.y = atan2(lipStartDir.x,lipStartDir.z)
 		if(input.z):
 			velocity = velocity.normalized() * -1
@@ -181,6 +180,10 @@ func _physics_process(delta):
 		move_and_slide()
 
 func _playerState():
+	if (playerState == PlayerState.FALL):
+		#dont change the state if player is fallen
+		return
+		
 	if(playerState == PlayerState.GRIND):
 		ingameUI._setBalanceView(true)
 		collision.disabled = true
@@ -216,38 +219,53 @@ func _playerState():
 	#ramp and rail curves get assigned to a variable
 	#curve direction is assigned to a variable
 	#needs optimization to reduce the number of if statements
+	var closestPath = null
+	var pathDist = 1000
 	for body in area.get_overlapping_bodies():
 		if (playerState == PlayerState.GRIND or playerState == PlayerState.LIP):
 			return
+		#get closest ramp or rail
+		#loop through all ramps / rails
+		#check which distance is the lowest
+		#use the ramp / rail with the lowest distance
+		#usally there should not be more then 2 ramps / rails in close proximity
 		if(body.is_in_group("rampRail")):
-			#todo, get rail with tangent closest to the player velocity direction
-			#pick this rail and continue, in case multiple rails are in close range	
-			#usally the maximum rails close to the player should be 2 or 3
-			path = body.get_node(body.get_path_node())
-			pathLength = path.curve.get_baked_length()
-			if inputTricks.x == 1 and playerState != PlayerState.GRIND:
-				pathPosition = _getClosestCurveOffset(path, position)
-				curveTangent = _getPathTangent(path, position)
-				if(curveTangent == Vector3.ZERO):
-					print("nope")
-					return
-				pathDir = _getPathDir(curveTangent)
-				#randomize the balance direction
-				var rand = randf()
-				if (rand >= 0.5):
-					balanceDir = 1
-				else:
-					balanceDir = -1
-				#reset balance angle once grind or lip starts
-				balanceAngle = 0
-				if(pathDir != 0):
-					playerState = PlayerState.GRIND		
-				if(pathDir == 0 and playerState != PlayerState.PIPESNAP):
-					playerState = PlayerState.LIP
-					lipStartPos = position
-					lipStartUp = up_direction
-					lipStartVel = velocity
-					lipStartDir = (_getClosestCurvePoint(path, position) - position ).normalized()
+			var currentPath = body.get_node(body.get_path_node())
+			var currentOffset = _getClosestCurveOffset(currentPath, position)
+			var closestPos = _getPositionOnCurve(currentPath, currentOffset)
+			var closestDist = position.distance_to(closestPos)
+			if(closestDist < pathDist):
+				pathDist = closestDist
+				closestPath = currentPath
+		
+	if closestPath != null:
+		path = closestPath
+		pathLength = path.curve.get_baked_length()
+		if inputTricks.x == 1 and playerState != PlayerState.GRIND:
+			pathPosition = _getClosestCurveOffset(path, position)
+			curveTangent = _getPathTangent(path, position)
+			if(curveTangent == Vector3.ZERO):
+				print("nope")
+				return
+			pathDir = _getPathDir(curveTangent)
+			#randomize the balance direction
+			var rand = randf()
+			if (rand >= 0.5):
+				balanceDir = 1
+			else:
+				balanceDir = -1
+			#reset balance angle once grind or lip starts
+			balanceAngle = 0
+			if(pathDir != 0):
+				playerState = PlayerState.GRIND		
+				return
+			if(pathDir == 0 and playerState != PlayerState.PIPESNAP):
+				playerState = PlayerState.LIP
+				lipStartUp = up_direction
+				lipStartVel = velocity
+				lipStartDir = (_getClosestCurvePoint(path, position) - lastGroundPos).normalized()
+				#lipStartDir = (_getClosestCurvePoint(path, position) - position ).normalized()
+				return
 		
 	var collInfo = null
 	if get_slide_collision_count() != 0:
@@ -257,23 +275,6 @@ func _playerState():
 		collLayer = collInfo.get_collider(0).get_collision_layer()
 	else:
 		collLayer = 0
-
-	if (playerState == PlayerState.FALL):
-		#dont change the state if player is fallen
-		return
-		
-	if(playerState == PlayerState.GRIND or playerState == PlayerState.LIP):
-		#dont change state while grinding
-		ingameUI._setBalanceView(true)
-		collision.disabled = true
-		return
-	else:
-		ingameUI._setBalanceView(false)
-		collision.disabled = false
-	
-	if(playerState == PlayerState.LIP):
-		#dont change state while player is doing lip tricks
-		return
 	
 	if is_on_floor():
 		path = null
@@ -339,9 +340,10 @@ func _getPathTangent(path: Path3D, pos: Vector3):
 func _getPathDir(tangent: Vector3):
 	#function to get direction along the curve, based on the starting direction
 	var dir = tangent.dot(velocity.normalized())
-	if(dir > 0.3):
+	var treshold = 0.2
+	if(dir > treshold):
 		return  -1
-	if(dir < -0.3):
+	if(dir < -treshold):
 		return 1
 	else:
 		return 0
@@ -383,7 +385,6 @@ func _getStickCurve(path: Path3D,pos: Vector3):
 		
 func _setUpDirection():
 	if is_on_floor():
-		print(get_floor_normal())
 		up_direction = get_floor_normal()
 	else:
 		up_direction = lastUpDir		
