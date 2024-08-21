@@ -56,112 +56,30 @@ func _physics_process(delta):
 	xForm = global_transform
 	_inputHandler()	
 	_playerState()
-	#debug logic to print the player state only on change
-	if(playerState != lastPlayerState):
-		print(PlayerState.find_key(playerState))
-	lastPlayerState = playerState	
-	#dont execute any movement logic if player has fallen
-	if (playerState == PlayerState.FALL):
-		return		
-	#behaviour while grounded
-	if (playerState == PlayerState.GROUND or playerState == PlayerState.PIPE):	
-		_setUpDirection()		
-		if((input.y > 0 and velocity.length() <= maxVel) or (input.y < 0 and velocity.length() >= -maxVel)):
-			velocity += xForm.basis.z * input.y * acc
-		#deceleration
-		else:
-			velocity *= 0.98	
-		#jump acceleration
-		velocity += xForm.basis.y * input.z * jumpVel
-		rotate_object_local(Vector3.UP, input.x * rot * delta)
-		#apply gravity
-		velocity.y -= gravity * delta	
-		_killOrthogonalVelocity(xForm, velocity)
-	#movement while not grounded
-	if (playerState == PlayerState.AIR):
-		rotate_object_local(Vector3.UP, input.x * rotJump * delta)
-		velocity.y -= gravity * delta
-		up_direction = Vector3.UP	
-	#movement while snapped to pipe	
-	if (playerState == PlayerState.PIPESNAP):
-		rotate_object_local(Vector3.UP, input.x * rotJump * delta)
-		curveSnap = _getClosestCurvePoint(path, global_position)
-		curveTangent = _getPathTangent(path, global_position)
-		var newUpDir = Vector3.UP.cross(curveTangent)
-		if(newUpDir != Vector3.ZERO):
-			up_direction = newUpDir
-		else:
-			up_direction = lastUpDir
-		position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * 0.25
-		velocity.y -= gravity * delta
-		if (!_getStickCurve(path, global_position)):
-			pass
-			#playerState = PlayerState.AIR	
-	#movement when snapped pipe is left in air
-	if (playerState == PlayerState.PIPESNAPAIR):
-		rotate_object_local(Vector3.UP, input.x * rotJump * delta)
-		velocity.y -= gravity * delta
-	#movement logic while grinding a rail
-	if (playerState == PlayerState.GRIND):
-		#disable collision detection while grinding
-		collision.disabled = true
-		var grindVel = velocity.length() * 0.99
-		up_direction = Vector3.UP
-		pathPosition -= grindVel * pathDir * delta
-		position = _getPositionOnCurve(path, pathPosition) + up_direction * 0.0
-		curveTangent = _getPathTangent(path, global_position) * -pathDir
-		pathVelocity = curveTangent  * grindVel
-		rotation.y = atan2(curveTangent.x,curveTangent.z)
-		if(input.z):
-			velocity = curveTangent * grindVel
-			velocity += xForm.basis.y * input.z * jumpVel
-			playerState = PlayerState.AIR
-			balanceTime = 1.0
-			#collision.disabled = false
-		if (!_getStickCurve(path, global_position)):
-			velocity = curveTangent  * grindVel
-			#collision.disabled = false
 	
-		#balance logic
-		balanceTime += 0.2 * delta
-		balanceAngle += balanceMulti * delta * balanceDir * balanceTime
-		if(input.x != 0):
-			balanceDir = input.x
-		ingameUI._setBalanceValue(-balanceAngle)
-		if (balanceAngle > PI /4 or balanceAngle < -PI /4):
-			velocity = curveTangent * grindVel
-			_fall()
+	match playerState:
+		PlayerState.FALL:
+			#behaviour while fallen
+			#dont execute any movement logic if player has fallen
 			return
-	else:
-		pass
+
+		PlayerState.GROUND, PlayerState.PIPE:
+			_groundMovement(delta)	
+	
+		PlayerState.AIR:
+			_airMovement(delta)
+	
+		PlayerState.PIPESNAP:
+			_pipeSnapMovement(delta)
+			
+		PlayerState.PIPESNAPAIR:
+			_pipeSnapAirMovement(delta)
 		
-	if (playerState == PlayerState.LIP):
-		position = _getPositionOnCurve(path, pathPosition)
-		up_direction =Vector3.UP
-		curveTangent = _getPathTangent(path, global_position)
-		rotation.y = atan2(lipStartDir.x,lipStartDir.z)
-		if(input.z):
-			velocity = velocity.normalized() * -1
-			playerState = PlayerState.AIR	
-			position += lipStartUp + Vector3.UP
-			velocity = lipStartVel.normalized() * -1	
-			up_direction = Vector3.UP
-			rotation.y = atan2(-lipStartDir.x,-lipStartDir.z)
-			balanceTime = 1.0
-		#balance logic
-		balanceTime += 0.2 * delta
-		balanceAngle += balanceMulti * delta * balanceDir * balanceTime
-		if(input.y != 0):
-			balanceDir = -input.y
-			#to do fix updirection and alignment after lip trick is done
-		ingameUI._setBalanceValue(-balanceAngle)
-		if (balanceAngle > PI /4 or balanceAngle < -PI /4):
-			#velocity = Vector3.DOWN
-			velocity = Vector3.DOWN
-			_fall()
-			return
-	else:
-		pass
+		PlayerState.GRIND:
+			_grindMovement(delta)
+			
+		PlayerState.LIP:
+			_lipMovement(delta)
 	
 	#align upvector with up_direction
 	global_transform = _align(global_transform, up_direction)
@@ -171,12 +89,9 @@ func _physics_process(delta):
 	lastUpDir = up_direction
 	lastVel = velocity
 	#slow down the player if its too fast
-	if velocity.length() > maxVel:
-		velocity = velocity.normalized() * maxVel
+	_limitVelocity()
 	if(playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
-		#apply movement
-		#only while not grinding or in lip mode
-		#would result in jitter otherwise
+		#move and slide only while not grinding or in lip mode
 		move_and_slide()
 
 func _playerState():
@@ -263,8 +178,12 @@ func _playerState():
 				playerState = PlayerState.LIP
 				lipStartUp = up_direction
 				lipStartVel = velocity
-				lipStartDir = (_getClosestCurvePoint(path, position) - lastGroundPos).normalized()
-				#lipStartDir = (_getClosestCurvePoint(path, position) - position ).normalized()
+				var tangent = _getPathTangent(path, global_position)
+				var dir = tangent.cross(Vector3(0,1,0))
+				var dirCheck = (_getClosestCurvePoint(path, position) - lastGroundPos).normalized()
+				if(dirCheck.dot(dir) < 0):
+					dir*=-1
+				lipStartDir = dir
 				return
 		
 	var collInfo = null
@@ -310,6 +229,11 @@ func _playerState():
 			playerState = PlayerState.AIR			
 	#set current collision layer als last collision layer for next physics cycle	
 	lastCollLayer = collLayer
+
+	#debug logic to print the player state only on change
+	if(playerState != lastPlayerState):
+		print(PlayerState.find_key(playerState))
+	lastPlayerState = playerState	
 	
 func _getPathTangent(path: Path3D, pos: Vector3):
 	#returns the curve tangent
@@ -440,10 +364,12 @@ func _inputHandler():
 	input.y = int(Input.is_action_pressed("Forward")) - int(Input.is_action_pressed("Backward"))
 	input.z = int(Input.is_action_just_pressed("Jump"))
 	inputTricks.x = int(Input.is_action_pressed("Grind"))
+	inputTricks.y = int(Input.is_action_pressed("Revert"))
 	if(input.y and playerState == PlayerState.FALL):
 		_resetPlayer(lastGroundPos)
 
 func _killOrthogonalVelocity(xForm, vel):
+	#remove orthogonal component of velocity
 	var fwdVel = xForm.basis.z * vel.dot(xForm.basis.z)
 	var ortVel = xForm.basis.x * vel.dot(xForm.basis.x)
 	var upVel = xForm.basis.y  * vel.dot(xForm.basis.y)
@@ -457,11 +383,121 @@ func _raycast(from, to):
 	return space_state.intersect_ray(query)
 
 func _align(xform, newUp):
+	#align xform to up vector
 	xform.basis.y = newUp
 	xform.basis.x = -xform.basis.z.cross(newUp)
 	xform.basis = xform.basis.orthonormalized()
 	return xform
+
+func _limitVelocity():
+	if velocity.length() > maxVel:
+		velocity = velocity.normalized() * maxVel
 	
 func _revertMotion():
+	#revert logic
+	rotation.y = atan2(-velocity.normalized().x,-velocity.normalized().z)
 	pass
+
+func _groundMovement(delta):
+	#movement while grounded
+	_setUpDirection()		
+	if((input.y > 0 and velocity.length() <= maxVel) or (input.y < 0 and velocity.length() >= -maxVel)):
+		velocity += xForm.basis.z * input.y * acc
+		#deceleration
+	else:
+		velocity *= 0.98	
+		#jump acceleration
 	
+	if(inputTricks.y >0):
+		_revertMotion()
+	
+	velocity += xForm.basis.y * input.z * jumpVel
+	rotate_object_local(Vector3.UP, input.x * rot * delta)
+	#apply gravity
+	velocity.y -= gravity * delta	
+	_killOrthogonalVelocity(xForm, velocity)
+
+func _airMovement(delta):
+	#movement while in air
+	rotate_object_local(Vector3.UP, input.x * rotJump * delta)
+	velocity.y -= gravity * delta
+	up_direction = Vector3.UP	
+	
+func _pipeSnapMovement(delta):
+	#movement while snapped to a pipe
+	rotate_object_local(Vector3.UP, input.x * rotJump * delta)
+	curveSnap = _getClosestCurvePoint(path, global_position)
+	curveTangent = _getPathTangent(path, global_position)
+	var newUpDir = Vector3.UP.cross(curveTangent)
+	if(newUpDir != Vector3.ZERO):
+		up_direction = newUpDir
+	else:
+		up_direction = lastUpDir
+	position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * 0.25
+	velocity.y -= gravity * delta
+	if (!_getStickCurve(path, global_position)):
+		pass
+
+func _pipeSnapAirMovement(delta):
+	#movement when snapped pipe is left in air
+	rotate_object_local(Vector3.UP, input.x * rotJump * delta)
+	velocity.y -= gravity * delta
+
+func _grindMovement(delta):
+	#movement logic while grinding a rail
+	#disable collision detection while grinding
+	collision.disabled = true
+	var grindVel = velocity.length() * 0.99
+	up_direction = Vector3.UP
+	pathPosition -= grindVel * pathDir * delta
+	position = _getPositionOnCurve(path, pathPosition) + up_direction * 0.0
+	curveTangent = _getPathTangent(path, global_position) * -pathDir
+	pathVelocity = curveTangent  * grindVel
+	rotation.y = atan2(curveTangent.x,curveTangent.z)
+	if(input.z):
+		velocity = curveTangent * grindVel
+		velocity += xForm.basis.y * input.z * jumpVel
+		playerState = PlayerState.AIR
+		balanceTime = 1.0
+		#collision.disabled = false
+	if (!_getStickCurve(path, global_position)):
+		velocity = curveTangent  * grindVel
+		#collision.disabled = false
+	#balance logic
+	balanceTime += 0.2 * delta
+	balanceAngle += balanceMulti * delta * balanceDir * balanceTime
+	if(input.x != 0):
+		balanceDir = input.x
+	ingameUI._setBalanceValue(-balanceAngle)
+	if (balanceAngle > PI /4 or balanceAngle < -PI /4):
+		velocity = curveTangent * grindVel
+		_fall()
+		return
+
+func _lipMovement(delta):
+	#Lip Logic
+	position = _getPositionOnCurve(path, pathPosition)
+	up_direction =Vector3.UP
+	curveTangent = _getPathTangent(path, global_position)
+	rotation.y = atan2(lipStartDir.x,lipStartDir.z)
+	if(input.z):
+		velocity = velocity.normalized() * -1
+		playerState = PlayerState.AIR	
+		position += lipStartUp + Vector3.UP -lipStartDir * Vector3(1,0,1)
+		velocity = lipStartVel.normalized() * -1	
+		up_direction = Vector3.UP
+		rotation.y = atan2(-lipStartDir.x,-lipStartDir.z)
+		balanceTime = 1.0
+	#balance logic
+	balanceTime += 0.2 * delta
+	balanceAngle += balanceMulti * delta * balanceDir * balanceTime
+	if(input.y != 0):
+		balanceDir = -input.y
+		#to do fix updirection and alignment after lip trick is done
+	ingameUI._setBalanceValue(-balanceAngle)
+	if (balanceAngle > PI /4 or balanceAngle < -PI /4):
+		#velocity = Vector3.DOWN
+		velocity = Vector3.DOWN
+		_fall()
+		return
+
