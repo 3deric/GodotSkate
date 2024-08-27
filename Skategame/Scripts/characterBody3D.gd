@@ -464,7 +464,7 @@ func _grindMovement(delta):
 		velocity = curveTangent  * grindVel
 		#collision.disabled = false
 	#balance logic
-	balanceTime += 0.2 * delta
+	balanceTime += 0.05 * delta
 	balanceAngle += balanceMulti * delta * balanceDir * balanceTime
 	if(input.x != 0):
 		balanceDir = input.x
@@ -489,7 +489,7 @@ func _lipMovement(delta):
 		rotation.y = atan2(-lipStartDir.x,-lipStartDir.z)
 		balanceTime = 1.0
 	#balance logic
-	balanceTime += 0.2 * delta
+	balanceTime += 0.05 * delta
 	balanceAngle += balanceMulti * delta * balanceDir * balanceTime
 	if(input.y != 0):
 		balanceDir = -input.y

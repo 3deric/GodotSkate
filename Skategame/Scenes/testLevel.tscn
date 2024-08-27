@@ -87,6 +87,7 @@ reflected_light_source = 2
 [node name="IngameOverlay" parent="." instance=ExtResource("4_hwdxu")]
 
 [node name="DebugView" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_cf44f")]
+visible = false
 player = NodePath("../Character")
 
 [node name="Floor" type="Node3D" parent="."]
@@ -124,7 +125,7 @@ ingameUI = NodePath("../IngameOverlay")
 [node name="Node3D" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="Node3D"]
-transform = Transform3D(0.851626, 0.483314, -0.202829, 0, 0.386968, 0.922093, 0.524149, -0.785279, 0.329552, -2.53933, 11.0993, 4.24463)
+transform = Transform3D(0.851626, 0.393751, -0.345967, 0, 0.660054, 0.751218, 0.524149, -0.639757, 0.562119, -4.10902, 9.84252, 6.79503)
 current = true
 fov = 38.0
 size = 8.0
@@ -156,6 +157,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.013, 0, -0.022)
 curve = SubResource("Curve3D_ethqy")
 
 [node name="RampRail2" type="CSGPolygon3D" parent="." groups=["rampRail"]]
+cast_shadow = 0
 use_collision = true
 collision_layer = 8
 collision_mask = 0
@@ -178,6 +180,7 @@ offset = 0.1
 curve = SubResource("Curve3D_k1nno")
 
 [node name="BoxRail1" type="CSGPolygon3D" parent="." groups=["rampRail"]]
+cast_shadow = 0
 use_collision = true
 collision_layer = 8
 collision_mask = 0
@@ -200,6 +203,7 @@ offset = 0.1
 curve = SubResource("Curve3D_y15ls")
 
 [node name="BoxRail2" type="CSGPolygon3D" parent="." groups=["rampRail"]]
+cast_shadow = 0
 use_collision = true
 collision_layer = 8
 collision_mask = 0
@@ -222,6 +226,7 @@ offset = 0.1
 curve = SubResource("Curve3D_lv8ww")
 
 [node name="BoxRail3" type="CSGPolygon3D" parent="." groups=["rampRail"]]
+cast_shadow = 0
 use_collision = true
 collision_layer = 8
 collision_mask = 0
@@ -244,6 +249,7 @@ offset = 0.1
 curve = SubResource("Curve3D_hmyyr")
 
 [node name="BoxRail4" type="CSGPolygon3D" parent="." groups=["rampRail"]]
+cast_shadow = 0
 use_collision = true
 collision_layer = 8
 collision_mask = 0
