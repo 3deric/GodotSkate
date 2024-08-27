@@ -3,4 +3,5 @@
 [ext_resource type="Texture2D" uid="uid://c18thxnf5ehny" path="res://Textures/T_default_orange.png" id="1_i5bfm"]
 
 [resource]
+cull_mode = 2
 albedo_texture = ExtResource("1_i5bfm")
