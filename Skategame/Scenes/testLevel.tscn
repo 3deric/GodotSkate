@@ -10,7 +10,7 @@
 [ext_resource type="Material" uid="uid://cae5vktgfvi2v" path="res://Materials/M_path.tres" id="5_x0agk"]
 [ext_resource type="Texture2D" uid="uid://c18thxnf5ehny" path="res://Textures/T_default_orange.png" id="6_88ofx"]
 [ext_resource type="ArrayMesh" uid="uid://d6xca2v5m4jv" path="res://Meshes/box.obj" id="6_e40s7"]
-[ext_resource type="Script" path="res://Scripts/railCSG.gd" id="6_j3wpt"]
+[ext_resource type="Script" path="res://Scripts/Editor/railCSG.gd" id="6_j3wpt"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wnnvr"]
 
