@@ -33,3 +33,13 @@ func _run():
 				])
 			#add csg to rampRail group
 			csg.add_to_group('rampRail', true)
+			#enable collision
+			csg.use_collision = true
+			#set collision layer
+			csg.set_collision_layer_value(1,false)
+			csg.set_collision_layer_value(4,true)
+			#turn off shadow casting
+			csg.cast_shadow = 0
+			#set material
+			csg.material = load("res://Materials/M_path.tres")
+			

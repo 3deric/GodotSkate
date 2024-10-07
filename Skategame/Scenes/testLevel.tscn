@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://duaw5sk1sesed"]
+[gd_scene load_steps=25 format=3 uid="uid://duaw5sk1sesed"]
 
 [ext_resource type="Material" uid="uid://dshu268utf6sb" path="res://Materials/M_default_grey.tres" id="1_8lo03"]
 [ext_resource type="ArrayMesh" uid="uid://dn2pofrv450ea" path="res://Meshes/pipe.obj" id="3_wclpi"]
@@ -10,7 +10,6 @@
 [ext_resource type="Material" uid="uid://cae5vktgfvi2v" path="res://Materials/M_path.tres" id="5_x0agk"]
 [ext_resource type="Texture2D" uid="uid://c18thxnf5ehny" path="res://Textures/T_default_orange.png" id="6_88ofx"]
 [ext_resource type="ArrayMesh" uid="uid://d6xca2v5m4jv" path="res://Meshes/box.obj" id="6_e40s7"]
-[ext_resource type="Script" path="res://Scripts/Editor/railCSG.gd" id="6_j3wpt"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wnnvr"]
 
@@ -132,35 +131,15 @@ size = 8.0
 near = 3.221
 far = 39.42
 
-[node name="RampRail1Path" type="Path3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.013, 0, -0.022)
-curve = SubResource("Curve3D_ethqy")
-
-[node name="RampRail2Path" type="Path3D" parent="."]
-curve = SubResource("Curve3D_k1nno")
-
-[node name="Path3D" type="Path3D" parent="."]
-curve = SubResource("Curve3D_y15ls")
-
-[node name="Path3D2" type="Path3D" parent="."]
-curve = SubResource("Curve3D_lv8ww")
-
-[node name="Path3D3" type="Path3D" parent="."]
-curve = SubResource("Curve3D_hmyyr")
-
-[node name="Path3D4" type="Path3D" parent="."]
-curve = SubResource("Curve3D_wteos")
-
-[node name="BoxRail4" type="CSGPolygon3D" parent="." groups=["rampRail"]]
+[node name="@CSGPolygon3D@31078" type="CSGPolygon3D" parent="." groups=["rampRail"]]
 cast_shadow = 0
 use_collision = true
 collision_layer = 8
-collision_mask = 0
-polygon = PackedVector2Array(-0.05, -0.05, -0.05, 0.05, 0.05, 0.05, 0.05, -0.05)
+polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
 mode = 2
-path_node = NodePath("../Path3D")
+path_node = NodePath("RampRail1Path")
 path_interval_type = 0
-path_interval = 0.5
+path_interval = 1.0
 path_simplify_angle = 0.0
 path_rotation = 2
 path_local = false
@@ -168,8 +147,110 @@ path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
 material = ExtResource("5_x0agk")
-script = ExtResource("6_j3wpt")
-offset = 0.1
+
+[node name="RampRail1Path" type="Path3D" parent="@CSGPolygon3D@31078"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.013, 0, -0.022)
+curve = SubResource("Curve3D_ethqy")
+
+[node name="@CSGPolygon3D@31079" type="CSGPolygon3D" parent="." groups=["rampRail"]]
+cast_shadow = 0
+use_collision = true
+collision_layer = 8
+polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+mode = 2
+path_node = NodePath("RampRail2Path")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("5_x0agk")
+
+[node name="RampRail2Path" type="Path3D" parent="@CSGPolygon3D@31079"]
+curve = SubResource("Curve3D_k1nno")
+
+[node name="@CSGPolygon3D@31080" type="CSGPolygon3D" parent="." groups=["rampRail"]]
+cast_shadow = 0
+use_collision = true
+collision_layer = 8
+polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+mode = 2
+path_node = NodePath("Path3D")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("5_x0agk")
+
+[node name="Path3D" type="Path3D" parent="@CSGPolygon3D@31080"]
+curve = SubResource("Curve3D_y15ls")
+
+[node name="@CSGPolygon3D@31081" type="CSGPolygon3D" parent="." groups=["rampRail"]]
+cast_shadow = 0
+use_collision = true
+collision_layer = 8
+polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+mode = 2
+path_node = NodePath("Path3D2")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("5_x0agk")
+
+[node name="Path3D2" type="Path3D" parent="@CSGPolygon3D@31081"]
+curve = SubResource("Curve3D_lv8ww")
+
+[node name="@CSGPolygon3D@31082" type="CSGPolygon3D" parent="." groups=["rampRail"]]
+cast_shadow = 0
+use_collision = true
+collision_layer = 8
+polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+mode = 2
+path_node = NodePath("Path3D3")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("5_x0agk")
+
+[node name="Path3D3" type="Path3D" parent="@CSGPolygon3D@31082"]
+curve = SubResource("Curve3D_hmyyr")
+
+[node name="@CSGPolygon3D@31083" type="CSGPolygon3D" parent="." groups=["rampRail"]]
+cast_shadow = 0
+use_collision = true
+collision_layer = 8
+polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+mode = 2
+path_node = NodePath("Path3D4")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("5_x0agk")
+
+[node name="Path3D4" type="Path3D" parent="@CSGPolygon3D@31083"]
+curve = SubResource("Curve3D_wteos")
 
 [node name="RampAndRail" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.539588, 0)
