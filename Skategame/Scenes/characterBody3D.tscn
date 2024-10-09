@@ -6,8 +6,8 @@
 
 [sub_resource type="PrismMesh" id="PrismMesh_rlg6s"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_igf5e"]
-radius = 0.149071
+[sub_resource type="SphereShape3D" id="SphereShape3D_t8jpy"]
+radius = 0.345765
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xhtrt"]
 size = Vector3(0.394165, 0.267609, 1.53833)
@@ -19,9 +19,10 @@ height = 1.17579
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gsf53"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_7wc51"]
-radius = 1.00564
+radius = 0.561023
 
 [node name="Character" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.57115e-05, 0.00309938, 1.13249e-05)
 collision_mask = 7
 axis_lock_angular_x = true
 axis_lock_angular_y = true
@@ -34,8 +35,8 @@ visible = false
 mesh = SubResource("PrismMesh_rlg6s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0216691, 0)
-shape = SubResource("SphereShape3D_igf5e")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.72989e-05, 0.322653, 1.37091e-06)
+shape = SubResource("SphereShape3D_t8jpy")
 
 [node name="RBDBoard" type="RigidBody3D" parent="."]
 top_level = true
@@ -81,3 +82,7 @@ collision_mask = 8
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.109757, 0)
 shape = SubResource("SphereShape3D_7wc51")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.174579, 0)
+target_position = Vector3(0, -0.5, 0)

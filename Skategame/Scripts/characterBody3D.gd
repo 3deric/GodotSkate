@@ -9,10 +9,13 @@ const gravity = 25.0
 const maxBounces = 5
 const balanceMulti= 1.0
 
+const pipesnapOffset = 0.0
+
 var balanceTime = 1.0
 
 enum PlayerState {RESET, GROUND, PIPE, PIPESNAP, PIPESNAPAIR, AIR, FALL, GRIND, LIP, MANUAL}
 
+var raycast : RayCast3D
 var input = Vector3.ZERO #input values
 var inputTricks = Vector3.ZERO #input values for tricks
 var dir = Vector3.ZERO #current direction of motion
@@ -50,6 +53,7 @@ var lipStartDir: Vector3 = Vector3.ZERO
 @export var ingameUI: Control = null
 
 func _ready():
+	raycast = $RayCast3D
 	_resetPlayer(Vector3.UP * 5.0)
 
 func _physics_process(delta):
@@ -209,6 +213,7 @@ func _playerState():
 				playerState = PlayerState.PIPE
 		if(collInfo):
 			groundNormal = (collInfo.get_normal() * Vector3(1,0,1)).normalized()
+			
 	
 	if is_on_wall():
 		#not used at the moment
@@ -309,7 +314,7 @@ func _getStickCurve(path: Path3D,pos: Vector3):
 		
 func _setUpDirection():
 	if is_on_floor():
-		up_direction = get_floor_normal()
+		up_direction = raycast.get_collision_normal()
 	else:
 		up_direction = lastUpDir		
 	if playerState == PlayerState.AIR:
@@ -433,7 +438,7 @@ func _pipeSnapMovement(delta):
 		up_direction = newUpDir
 	else:
 		up_direction = lastUpDir
-	position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * 0.25
+	position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * pipesnapOffset
 	velocity.y -= gravity * delta
 	if (!_getStickCurve(path, global_position)):
 		pass

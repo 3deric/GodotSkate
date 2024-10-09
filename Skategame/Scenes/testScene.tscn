@@ -1,0 +1,116 @@
+[gd_scene load_steps=7 format=3 uid="uid://vicj58dntsdt"]
+
+[ext_resource type="PackedScene" uid="uid://cm44b70fye21a" path="res://Meshes/Cube.glb" id="1_vk2fy"]
+[ext_resource type="Material" uid="uid://cae5vktgfvi2v" path="res://Materials/M_path.tres" id="2_pb4mb"]
+
+[sub_resource type="Curve3D" id="Curve3D_llhj6"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 1, 1, -1, 0, 0, 0, 0, 0, 0, -1, 1, -1),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_yxm38"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 1, 1, -1, 0, 0, 0, 0, 0, 0, 1, 1, 1),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_vdt6g"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, -1, 1, 1),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_y7gyt"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -1, 1, -1, 0, 0, 0, 0, 0, 0, -1, 1, 1),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[node name="Root" type="Node3D"]
+
+[node name="Cube" parent="." instance=ExtResource("1_vk2fy")]
+
+[node name="Cube_Rail_A_Path" type="Path3D" parent="Cube"]
+curve = SubResource("Curve3D_llhj6")
+
+[node name="Cube_Rail_A_CSG" type="CSGPolygon3D" parent="Cube/Cube_Rail_A_Path" groups=["rampRail"]]
+cast_shadow = 0
+use_collision = true
+collision_layer = 8
+polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+mode = 2
+path_node = NodePath("/root/@EditorNode@17171/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/Root/Cube/Cube_Rail_A_Path")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("2_pb4mb")
+
+[node name="Cube_Rail_B_Path" type="Path3D" parent="Cube"]
+curve = SubResource("Curve3D_yxm38")
+
+[node name="Cube_Rail_B_CSG" type="CSGPolygon3D" parent="Cube/Cube_Rail_B_Path" groups=["rampRail"]]
+cast_shadow = 0
+use_collision = true
+collision_layer = 8
+polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+mode = 2
+path_node = NodePath("/root/@EditorNode@17171/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/Root/Cube/Cube_Rail_B_Path")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("2_pb4mb")
+
+[node name="Cube_Rail_C_Path" type="Path3D" parent="Cube"]
+curve = SubResource("Curve3D_vdt6g")
+
+[node name="Cube_Rail_C_CSG" type="CSGPolygon3D" parent="Cube/Cube_Rail_C_Path" groups=["rampRail"]]
+cast_shadow = 0
+use_collision = true
+collision_layer = 8
+polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+mode = 2
+path_node = NodePath("/root/@EditorNode@17171/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/Root/Cube/Cube_Rail_C_Path")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("2_pb4mb")
+
+[node name="Cube_Rail_D_Path" type="Path3D" parent="Cube"]
+curve = SubResource("Curve3D_y7gyt")
+
+[node name="Cube_Rail_D_CSG" type="CSGPolygon3D" parent="Cube/Cube_Rail_D_Path" groups=["rampRail"]]
+cast_shadow = 0
+use_collision = true
+collision_layer = 8
+polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+mode = 2
+path_node = NodePath("/root/@EditorNode@17171/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/Root/Cube/Cube_Rail_D_Path")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("2_pb4mb")
