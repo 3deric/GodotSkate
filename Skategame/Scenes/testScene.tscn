@@ -1,48 +1,117 @@
-[gd_scene load_steps=7 format=3 uid="uid://vicj58dntsdt"]
+[gd_scene load_steps=14 format=3 uid="uid://vicj58dntsdt"]
 
 [ext_resource type="PackedScene" uid="uid://cm44b70fye21a" path="res://Meshes/Cube.glb" id="1_vk2fy"]
 [ext_resource type="Material" uid="uid://cae5vktgfvi2v" path="res://Materials/M_path.tres" id="2_pb4mb"]
+[ext_resource type="Material" uid="uid://1ccrgh68ww8p" path="res://Materials/M_default_orange.tres" id="3_mtj73"]
 
-[sub_resource type="Curve3D" id="Curve3D_llhj6"]
+[sub_resource type="Curve3D" id="Curve3D_6ldiv"]
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 1, 1, -1, 0, 0, 0, 0, 0, 0, -1, 1, -1),
 "tilts": PackedFloat32Array(0, 0)
 }
 point_count = 2
 
-[sub_resource type="Curve3D" id="Curve3D_yxm38"]
+[sub_resource type="Curve3D" id="Curve3D_i648h"]
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 1, 1, -1, 0, 0, 0, 0, 0, 0, 1, 1, 1),
 "tilts": PackedFloat32Array(0, 0)
 }
 point_count = 2
 
-[sub_resource type="Curve3D" id="Curve3D_vdt6g"]
+[sub_resource type="Curve3D" id="Curve3D_ejosd"]
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, -1, 1, 1),
 "tilts": PackedFloat32Array(0, 0)
 }
 point_count = 2
 
-[sub_resource type="Curve3D" id="Curve3D_y7gyt"]
+[sub_resource type="Curve3D" id="Curve3D_drl3q"]
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, -1, 1, -1, 0, 0, 0, 0, 0, 0, -1, 1, 1),
 "tilts": PackedFloat32Array(0, 0)
 }
 point_count = 2
 
+[sub_resource type="ArrayMesh" id="ArrayMesh_nps3d"]
+_surfaces = [{
+"aabb": AABB(-1, 0, -1, 2.00001, 1.00001, 2),
+"format": 34896613377,
+"index_count": 24,
+"index_data": PackedByteArray(3, 0, 6, 0, 2, 0, 3, 0, 7, 0, 6, 0, 7, 0, 4, 0, 6, 0, 7, 0, 5, 0, 4, 0, 1, 0, 2, 0, 0, 0, 1, 0, 3, 0, 2, 0, 5, 0, 0, 0, 4, 0, 5, 0, 1, 0, 0, 0),
+"name": "M_default_orange",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray(254, 255, 254, 255, 0, 0, 0, 0, 254, 255, 0, 0, 0, 0, 0, 0, 254, 255, 254, 255, 255, 255, 0, 0, 254, 255, 0, 0, 255, 255, 0, 0, 0, 0, 254, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 254, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 0, 0)
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_pdhxu"]
+resource_name = "Cube_Cube_003"
+_surfaces = [{
+"aabb": AABB(-1, 0, -1, 2.00001, 1.00001, 2),
+"attribute_data": PackedByteArray(255, 255, 255, 63, 255, 255, 255, 63, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 63, 0, 0, 255, 63, 255, 255, 255, 191, 0, 0, 255, 191, 0, 0, 255, 63, 255, 255, 255, 63, 0, 0, 255, 191, 255, 255, 255, 191, 0, 0, 255, 63, 0, 0, 255, 63, 0, 0, 255, 191, 0, 0, 255, 191),
+"format": 34896613399,
+"index_count": 24,
+"index_data": PackedByteArray(6, 0, 12, 0, 4, 0, 6, 0, 14, 0, 12, 0, 15, 0, 9, 0, 13, 0, 15, 0, 11, 0, 9, 0, 3, 0, 5, 0, 1, 0, 3, 0, 7, 0, 5, 0, 10, 0, 0, 0, 8, 0, 10, 0, 2, 0, 0, 0),
+"material": ExtResource("3_mtj73"),
+"name": "M_default_orange",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 16,
+"vertex_data": PackedByteArray(254, 255, 254, 255, 0, 0, 0, 0, 254, 255, 254, 255, 0, 0, 255, 191, 254, 255, 0, 0, 0, 0, 0, 0, 254, 255, 0, 0, 0, 0, 255, 191, 254, 255, 254, 255, 255, 255, 0, 128, 254, 255, 254, 255, 255, 255, 255, 191, 254, 255, 0, 0, 255, 255, 0, 128, 254, 255, 0, 0, 255, 255, 255, 191, 0, 0, 254, 255, 0, 0, 0, 0, 0, 0, 254, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 254, 255, 255, 255, 0, 128, 0, 0, 254, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 0, 128, 0, 0, 0, 0, 255, 255, 0, 0, 255, 255, 255, 127, 255, 127, 0, 0, 255, 255, 255, 127, 255, 127, 0, 0, 255, 127, 255, 255, 255, 127, 0, 0, 255, 127, 255, 255, 255, 127, 0, 0, 255, 255, 255, 127, 255, 63, 255, 127, 255, 255, 255, 127, 255, 63, 255, 127, 255, 127, 255, 255, 255, 63, 255, 127, 255, 127, 255, 255, 255, 63, 255, 127)
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_nps3d")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_patvs"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_munsw"]
+_surfaces = [{
+"aabb": AABB(-1, 1, -1, 2.00001, 1.00136e-05, 2),
+"format": 34896613377,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 3, 0, 2, 0, 0, 0, 1, 0, 3, 0),
+"name": "M_default_orange",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(254, 255, 0, 0, 0, 0, 0, 0, 254, 255, 0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 0, 0)
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_5116r"]
+resource_name = "Cube_Cube_007"
+_surfaces = [{
+"aabb": AABB(-1, 1, -1, 2.00001, 1.00136e-05, 2),
+"attribute_data": PackedByteArray(255, 255, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255),
+"format": 34896613399,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 3, 0, 2, 0, 0, 0, 1, 0, 3, 0),
+"material": ExtResource("3_mtj73"),
+"name": "M_default_orange",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(254, 255, 0, 0, 0, 0, 255, 191, 254, 255, 0, 0, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 255, 191, 0, 0, 0, 0, 255, 255, 255, 191, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127)
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_munsw")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_g6ofc"]
+
 [node name="Root" type="Node3D"]
 
 [node name="Cube" parent="." instance=ExtResource("1_vk2fy")]
 
 [node name="Cube_Rail_A_Path" type="Path3D" parent="Cube"]
-curve = SubResource("Curve3D_llhj6")
+curve = SubResource("Curve3D_6ldiv")
 
 [node name="Cube_Rail_A_CSG" type="CSGPolygon3D" parent="Cube/Cube_Rail_A_Path" groups=["rampRail"]]
 cast_shadow = 0
 use_collision = true
 collision_layer = 8
-polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+polygon = PackedVector2Array(-0.05, -0.05, -0.05, 0.05, 0.05, 0.05, 0.05, -0.05)
 mode = 2
 path_node = NodePath("/root/@EditorNode@17171/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/Root/Cube/Cube_Rail_A_Path")
 path_interval_type = 0
@@ -56,13 +125,13 @@ path_joined = false
 material = ExtResource("2_pb4mb")
 
 [node name="Cube_Rail_B_Path" type="Path3D" parent="Cube"]
-curve = SubResource("Curve3D_yxm38")
+curve = SubResource("Curve3D_i648h")
 
 [node name="Cube_Rail_B_CSG" type="CSGPolygon3D" parent="Cube/Cube_Rail_B_Path" groups=["rampRail"]]
 cast_shadow = 0
 use_collision = true
 collision_layer = 8
-polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+polygon = PackedVector2Array(-0.05, -0.05, -0.05, 0.05, 0.05, 0.05, 0.05, -0.05)
 mode = 2
 path_node = NodePath("/root/@EditorNode@17171/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/Root/Cube/Cube_Rail_B_Path")
 path_interval_type = 0
@@ -76,13 +145,13 @@ path_joined = false
 material = ExtResource("2_pb4mb")
 
 [node name="Cube_Rail_C_Path" type="Path3D" parent="Cube"]
-curve = SubResource("Curve3D_vdt6g")
+curve = SubResource("Curve3D_ejosd")
 
 [node name="Cube_Rail_C_CSG" type="CSGPolygon3D" parent="Cube/Cube_Rail_C_Path" groups=["rampRail"]]
 cast_shadow = 0
 use_collision = true
 collision_layer = 8
-polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+polygon = PackedVector2Array(-0.05, -0.05, -0.05, 0.05, 0.05, 0.05, 0.05, -0.05)
 mode = 2
 path_node = NodePath("/root/@EditorNode@17171/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/Root/Cube/Cube_Rail_C_Path")
 path_interval_type = 0
@@ -96,13 +165,13 @@ path_joined = false
 material = ExtResource("2_pb4mb")
 
 [node name="Cube_Rail_D_Path" type="Path3D" parent="Cube"]
-curve = SubResource("Curve3D_y7gyt")
+curve = SubResource("Curve3D_drl3q")
 
 [node name="Cube_Rail_D_CSG" type="CSGPolygon3D" parent="Cube/Cube_Rail_D_Path" groups=["rampRail"]]
 cast_shadow = 0
 use_collision = true
 collision_layer = 8
-polygon = PackedVector2Array(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1, 0.1, -0.1)
+polygon = PackedVector2Array(-0.05, -0.05, -0.05, 0.05, 0.05, 0.05, 0.05, -0.05)
 mode = 2
 path_node = NodePath("/root/@EditorNode@17171/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/Root/Cube/Cube_Rail_D_Path")
 path_interval_type = 0
@@ -114,3 +183,21 @@ path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
 material = ExtResource("2_pb4mb")
+
+[node name="Cube_Col_Wall_ColMesh" type="MeshInstance3D" parent="Cube"]
+visible = false
+mesh = SubResource("ArrayMesh_pdhxu")
+
+[node name="Cube_Col_Wall_StaticBody" type="StaticBody3D" parent="Cube/Cube_Col_Wall_ColMesh"]
+
+[node name="Cube_Col_Wall_ColShape" type="CollisionShape3D" parent="Cube/Cube_Col_Wall_ColMesh/Cube_Col_Wall_StaticBody" groups=["wall"]]
+shape = SubResource("ConcavePolygonShape3D_patvs")
+
+[node name="Cube_Col_Floor_ColMesh" type="MeshInstance3D" parent="Cube"]
+visible = false
+mesh = SubResource("ArrayMesh_5116r")
+
+[node name="Cube_Col_Floor_StaticBody" type="StaticBody3D" parent="Cube/Cube_Col_Floor_ColMesh"]
+
+[node name="Cube_Col_Floor_ColShape" type="CollisionShape3D" parent="Cube/Cube_Col_Floor_ColMesh/Cube_Col_Floor_StaticBody" groups=["floor"]]
+shape = SubResource("ConcavePolygonShape3D_g6ofc")

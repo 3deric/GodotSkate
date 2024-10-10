@@ -1,17 +1,16 @@
 @tool
 extends EditorScript
 
-const offset : float = 0.2
+const offset : float = 0.1
 
 func _run():
 	var nodes: Array = get_editor_interface().get_selection().get_selected_nodes()[0].get_children()
-	
 	for node in nodes:
 		##get rails of park element
 		##elements are from type MeshInstance3D
+		var name = node.name
 		var parent : Node = node.get_parent()
-		if node.name.split('_')[1] == 'Rail':
-			var name = node.name
+		if name.split('_')[1] == 'Rail':		
 			var csg: CSGPolygon3D = CSGPolygon3D.new()
 			var mesh = node.get_mesh()
 			var meshArrays = mesh.surface_get_arrays(0)
@@ -50,4 +49,28 @@ func _run():
 			csg.cast_shadow = 0
 			#set material
 			csg.material = load("res://Materials/M_path.tres")
-			
+		#generate colliders
+		if name.split('_')[1] == 'Col':
+			var meshInstance : MeshInstance3D = MeshInstance3D.new()
+			var staticBody : StaticBody3D = StaticBody3D.new()
+			var colShape : CollisionShape3D = CollisionShape3D.new()
+			colShape.shape = ConcavePolygonShape3D.new()
+			meshInstance.name = name + "_ColMesh"
+			meshInstance.mesh = node.mesh
+			node.visible = false
+			meshInstance.visible = false
+			staticBody.name = name + "_StaticBody"
+			colShape.name = name + "_ColShape"
+			match name.split('_')[2]:
+				'Floor':
+					colShape.add_to_group('floor', true)
+				'Wall':
+					colShape.add_to_group('wall', true)
+				'Pipe':
+					colShape.add_to_group('pipe', true)
+			parent.add_child(meshInstance)
+			meshInstance.set_owner(node.get_tree().get_edited_scene_root())
+			meshInstance.add_child(staticBody)
+			staticBody.set_owner(meshInstance.get_tree().get_edited_scene_root())
+			staticBody.add_child(colShape)
+			colShape.set_owner(staticBody.get_tree().get_edited_scene_root())
