@@ -1,26 +1,27 @@
 extends CharacterBody3D
 
 #global movement constants
-const acc = 0.2
-const jumpVel = 10.0
-const rot = 2.0
-const rotJump = 7.0
-const maxVel = 25.0
-const gravity = 25.0
-const balanceMulti= 1.0
-const pipesnapOffset = 0.0
+const acc :float= 0.2
+const jumpVel :float = 10.0
+const rot :float= 2.0
+const rotJump :float= 7.0
+const maxVel :float = 25.0
+const gravity :float = 25.0
+const balanceMulti : float= 1.0
+const pipesnapOffset :float = 0.15
+const upAlignSpd :float = 5.0
 
 #global movement variables
 var xForm = null
-var dir = Vector3.ZERO #current direction of motion
-var lastDir = Vector3.ZERO #direction of last frame for falling check
-var lastGroundPos = Vector3.ZERO
-var lastPhysicsPosition = Vector3.ZERO
-var fallTimer = 0.0
-var lastUpDir = Vector3.ZERO
-var lastVel = Vector3.ZERO
-var rampPos = Vector3.ZERO
-var groundNormal = Vector3.RIGHT
+var dir : Vector3= Vector3.ZERO #current direction of motion
+var lastDir : Vector3 = Vector3.ZERO #direction of last frame for falling check
+var lastGroundPos : Vector3 = Vector3.ZERO
+var lastPhysicsPosition : Vector3 = Vector3.ZERO
+var fallTimer : float = 0.0
+var lastUpDir : Vector3 = Vector3.ZERO
+var lastVel : Vector3 = Vector3.ZERO
+var rampPos : Vector3 = Vector3.ZERO
+var groundNormal : Vector3 = Vector3.RIGHT
 
 #global object references
 @onready var raycast : RayCast3D = get_node('RayCast3D')
@@ -40,13 +41,13 @@ var lastPlayerState = PlayerState.RESET
 var lastCollLayer = CollLayer.AIR
 
 #input variables
-var input = Vector3.ZERO #input values
-var inputTricks = Vector3.ZERO #input values for tricks
+var input : Vector3 = Vector3.ZERO #input values
+var inputTricks : Vector3 = Vector3.ZERO #input values for tricks
 
 #grind and lip trick variables
-var balanceTime = 1.0
-var balanceAngle = 0.0 #value between - pi and pi to balance the player on grinds, lips and manuals
-var balanceDir = 0 #defines balance direction based on last input
+var balanceTime  : float = 1.0
+var balanceAngle : float = 0.0 #value between - pi and pi to balance the player on grinds, lips and manuals
+var balanceDir : int = 0 #defines balance direction based on last input
 var path: Path3D = null
 var pathPosition: float = -1
 var pathLength: float = -1
@@ -67,7 +68,6 @@ func _physics_process(delta):
 	xForm = global_transform
 	_inputHandler()	
 	_playerState()
-	
 	match playerState:
 		PlayerState.FALL:
 			#dont execute any movement logic if player has fallen
@@ -88,7 +88,6 @@ func _physics_process(delta):
 	#align upvector with up_direction
 	global_transform = _align(global_transform, up_direction)
 	#set player parameters for next physics iteration
-	lastPlayerState = playerState
 	lastPhysicsPosition = global_position
 	lastUpDir = up_direction
 	lastVel = velocity
@@ -100,24 +99,22 @@ func _physics_process(delta):
 		move_and_slide()
 
 func _playerState():
+	#debug logic to print the player state only on change
+	if(playerState != lastPlayerState):
+		print(PlayerState.find_key(playerState))
+	lastPlayerState = playerState	
+	
 	if (playerState == PlayerState.FALL):
 		#dont change the state if player is fallen
 		return
-		
-	if(playerState == PlayerState.GRIND):
+	
+	if(playerState == PlayerState.GRIND or playerState == PlayerState.LIP):
 		ingameUI._setBalanceView(true)
 		collision.disabled = true
 		if !_getStickCurve(path,  global_position):
 			playerState = PlayerState.AIR
 			return
 		return
-	else:
-		ingameUI._setBalanceView(false)
-		collision.disabled = false
-			
-	if(playerState == PlayerState.LIP):
-		ingameUI._setBalanceView(true)
-		collision.disabled = true
 	else:
 		ingameUI._setBalanceView(false)
 		collision.disabled = false
@@ -136,22 +133,21 @@ func _playerState():
 	
 	var closestPath = null
 	var pathDist = 10000
-	for body in area.get_overlapping_bodies():
-		if (playerState == PlayerState.GRIND or playerState == PlayerState.LIP):
-			return
-		#get closest ramp or rail
-		#loop through all ramps / rails
-		#check which distance is the lowest
-		#use the ramp / rail with the lowest distance
-		#usally there should not be more then 2 ramps / rails in close proximity
-		if(body.is_in_group('rampRail')):
-			var currentPath = body.get_node(body.get_path_node())
-			var currentOffset = _getClosestCurveOffset(currentPath, position)
-			var closestPos = _getPositionOnCurve(currentPath, currentOffset)
-			var closestDist = position.distance_to(closestPos)
-			if(closestDist < pathDist):
-				pathDist = closestDist
-				closestPath = currentPath
+	if (playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
+		for body in area.get_overlapping_bodies():
+			#get closest ramp or rail
+			#loop through all ramps / rails
+			#check which distance is the lowest
+			#use the ramp / rail with the lowest distance
+			#usally there should not be more then 2 ramps / rails in close proximity
+			if(body.is_in_group('rampRail')):
+				var currentPath = body.get_node(body.get_path_node())
+				var currentOffset = _getClosestCurveOffset(currentPath, position)
+				var closestPos = _getPositionOnCurve(currentPath, currentOffset)
+				var closestDist = position.distance_to(closestPos)
+				if(closestDist < pathDist):
+					pathDist = closestDist
+					closestPath = currentPath
 		
 	if closestPath != null:
 		path = closestPath
@@ -160,7 +156,6 @@ func _playerState():
 			pathPosition = _getClosestCurveOffset(path, position)
 			curveTangent = _getPathTangent(path, position)
 			if(curveTangent == Vector3.ZERO):
-				print('nope')
 				return
 			pathDir = _getPathDir(curveTangent)
 			_randomizeBalance()
@@ -184,25 +179,27 @@ func _playerState():
 		collInfo = get_slide_collision(0)
 	var collLayer = CollLayer.AIR
 		
-	if is_on_floor():
-		path = null
-		var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
-		if(fallCheck < 0.75 and fallCheck != 0 and velocity.length() > 1.0):
-			_fall()
-			return
-		if collInfo:
-			if collInfo.get_collider(0).is_in_group('floor'):
-				playerState = PlayerState.GROUND
-				lastGroundPos = global_position
-			if collInfo.get_collider(0).is_in_group('pipe'):
-				playerState = PlayerState.PIPE
-			groundNormal = (collInfo.get_normal() * Vector3(1,0,1)).normalized()			
 	
-	if is_on_wall():
-		if(lastVel.length() > 10):
-			print(lastVel.length())
-			_fall()
-			return
+	if (playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
+		if is_on_floor():
+			path = null
+			var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
+			if(fallCheck < 0.75 and fallCheck != 0 and velocity.length() > 1.0):
+				_fall("floor fall")
+				return
+			if collInfo:
+				if collInfo.get_collider(0).is_in_group('floor'):
+					playerState = PlayerState.GROUND
+					lastGroundPos = global_position
+				if collInfo.get_collider(0).is_in_group('pipe'):
+					playerState = PlayerState.PIPE
+				groundNormal = (collInfo.get_normal() * Vector3(1,0,1)).normalized()			
+			
+		if is_on_wall():
+			if(lastVel.length() > 10):
+				playerState = PlayerState.FALL
+				_fall("hit the wall")
+				return
 	
 	if !is_on_floor():	
 		#behavior while in air, or sticked to a pipe
@@ -214,11 +211,6 @@ func _playerState():
 			playerState = PlayerState.AIR			
 	#set current collision layer als last collision layer for next physics cycle	
 	lastCollLayer = collLayer
-
-	#debug logic to print the player state only on change
-	if(playerState != lastPlayerState):
-		print(PlayerState.find_key(playerState))
-	lastPlayerState = playerState	
 	
 func _getPathTangent(path: Path3D, pos: Vector3):
 	#returns the curve tangent
@@ -319,7 +311,8 @@ func _process(delta):
 		
 	cameraPos.position = cameraPos.position.lerp(global_position, delta * 10)
 				
-func _fall():
+func _fall(fallReason):
+	print(fallReason)
 	playerState = PlayerState.FALL
 	lastVel = Vector3.ZERO
 	ingameUI._setFailView(true)
@@ -328,7 +321,6 @@ func _fall():
 	rbdChar.apply_impulse(velocity)
 	rbdBoard.freeze = false
 	rbdBoard.apply_impulse(velocity)
-	balanceTime = 1.0
 	
 func _resetPlayer(pos):
 	if fallTimer > 0:
@@ -340,6 +332,7 @@ func _resetPlayer(pos):
 	rbdChar.freeze = true
 	rbdBoard.freeze = true
 	playerState = PlayerState.RESET
+	balanceAngle = 0.0
 
 func _inputHandler():
 	#handles player inputs
@@ -347,7 +340,7 @@ func _inputHandler():
 	#todo: add more trick inputs
 	input.x = int(Input.is_action_pressed('Left')) - int(Input.is_action_pressed('Right'))
 	input.y = int(Input.is_action_pressed('Forward')) - int(Input.is_action_pressed('Backward'))
-	input.z = int(Input.is_action_just_pressed('Jump'))
+	input.z = int(Input.is_action_pressed('Jump'))
 	inputTricks.x = int(Input.is_action_pressed('Grind'))
 	inputTricks.y = int(Input.is_action_pressed('Revert'))
 	if(input.y and playerState == PlayerState.FALL):
@@ -360,12 +353,12 @@ func _killOrthogonalVelocity(xForm, vel):
 	var upVel = xForm.basis.y  * vel.dot(xForm.basis.y)
 	velocity = fwdVel + ortVel * 0.25 + upVel
 	return velocity
-
-func _raycast(from, to):
-	var space_state = get_world_3d().direct_space_state
-	var query = PhysicsRayQueryParameters3D.create(from, to)
-	query.collide_with_areas = true
-	return space_state.intersect_ray(query)
+	
+func _killPipeOrthogonalVelocity(vel, tangent):
+	var newVel = vel.dot(tangent) * tangent
+	newVel.y = vel.y
+	velocity = newVel
+	return velocity
 
 func _align(xform, newUp):
 	#align xform to up vector
@@ -406,7 +399,7 @@ func _airMovement(delta):
 	#movement while in air
 	rotate_object_local(Vector3.UP, input.x * rotJump * delta)
 	velocity.y -= gravity * delta
-	up_direction = Vector3.UP	
+	up_direction = lerp(up_direction,Vector3.UP, delta * upAlignSpd)
 	
 func _pipeSnapMovement(delta):
 	#movement while snapped to a pipe
@@ -420,6 +413,7 @@ func _pipeSnapMovement(delta):
 		up_direction = lastUpDir
 	position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * pipesnapOffset
 	velocity.y -= gravity * delta
+	velocity = _killPipeOrthogonalVelocity(velocity, curveTangent)
 	if (!_getStickCurve(path, global_position)):
 		pass
 
@@ -443,7 +437,6 @@ func _grindMovement(delta):
 		velocity = curveTangent * grindVel
 		velocity += xForm.basis.y * input.z * jumpVel
 		playerState = PlayerState.AIR
-		balanceTime = 1.0
 		#collision.disabled = false
 	if (!_getStickCurve(path, global_position)):
 		velocity = curveTangent  * grindVel
@@ -456,11 +449,13 @@ func _grindMovement(delta):
 	ingameUI._setBalanceValue(-balanceAngle)
 	if (balanceAngle > PI /4 or balanceAngle < -PI /4):
 		velocity = curveTangent * grindVel
-		_fall()
+		_fall("balance issues")
 		return
 
 func _lipMovement(delta):
 	#Lip Logic
+	#disable collision detection while grinding
+	collision.disabled = true
 	position = _getPositionOnCurve(path, pathPosition)
 	up_direction =Vector3.UP
 	curveTangent = _getPathTangent(path, global_position)
@@ -468,11 +463,10 @@ func _lipMovement(delta):
 	if(input.z):
 		velocity = velocity.normalized() * -1
 		playerState = PlayerState.AIR	
-		position += lipStartUp + Vector3.UP -lipStartDir * Vector3(1,0,1)
+		position += lipStartUp + Vector3.UP -lipStartDir * Vector3(1,0,1) * 0.1
 		velocity = lipStartVel.normalized() * -1	
 		up_direction = Vector3.UP
 		rotation.y = atan2(-lipStartDir.x,-lipStartDir.z)
-		balanceTime = 1.0
 	#balance logic
 	balanceTime += 0.05 * delta
 	balanceAngle += balanceMulti * delta * balanceDir * balanceTime
@@ -483,10 +477,12 @@ func _lipMovement(delta):
 	if (balanceAngle > PI /4 or balanceAngle < -PI /4):
 		#velocity = Vector3.DOWN
 		velocity = Vector3.DOWN
-		_fall()
+		_fall("balance issues")
 		return
 
 func _randomizeBalance():
+	balanceTime = 1.0
+	balanceAngle = 0.0
 	var rand = randf()
 	if (rand >= 0.5):
 		balanceDir = 1

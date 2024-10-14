@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://flyceowtgqrp"
-path="res://.godot/imported/PipeA.glb-4cee5552c18d49691b81e386ffc73b25.scn"
+uid="uid://beju7ap4ly1sn"
+path="res://.godot/imported/Funbox.glb-9ccab1e1a1203aa551de8bb94b3c241b.scn"
 
 [deps]
 
-source_file="res://Meshes/PipeA.glb"
-dest_files=["res://.godot/imported/PipeA.glb-4cee5552c18d49691b81e386ffc73b25.scn"]
+source_file="res://Meshes/Funbox.glb"
+dest_files=["res://.godot/imported/Funbox.glb-9ccab1e1a1203aa551de8bb94b3c241b.scn"]
 
 [params]
 

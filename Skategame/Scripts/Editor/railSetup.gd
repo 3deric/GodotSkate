@@ -8,9 +8,7 @@ func _run():
 			var name = node.name
 			var csg: CSGPolygon3D = CSGPolygon3D.new()
 			var path : Path3D = node
-			var parent : Node = path.get_parent()
-			
-			
+			var parent : Node = path.get_parent()		
 			#add csg to scene root
 			#parent path to csg
 			parent.remove_child(node)
@@ -18,7 +16,6 @@ func _run():
 			csg.set_owner(parent.get_tree().get_edited_scene_root())
 			csg.add_child(path)
 			path.set_owner(csg.get_tree().get_edited_scene_root())
-		
 			#change csg mode
 			#assign path to csg
 			#center extruded path and change thickness

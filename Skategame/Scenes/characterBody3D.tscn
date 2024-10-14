@@ -18,8 +18,9 @@ height = 1.17579
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gsf53"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_7wc51"]
-radius = 0.561023
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3a2dr"]
+radius = 0.816293
+height = 2.13238
 
 [node name="Character" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.57115e-05, 0.00309938, 1.13249e-05)
@@ -27,6 +28,7 @@ collision_mask = 7
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
+platform_floor_layers = 4294967287
 script = ExtResource("1_5mxk1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -80,8 +82,8 @@ collision_layer = 8
 collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.109757, 0)
-shape = SubResource("SphereShape3D_7wc51")
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.0965011, 0)
+shape = SubResource("CapsuleShape3D_3a2dr")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.174579, 0)
