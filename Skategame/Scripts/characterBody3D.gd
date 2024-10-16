@@ -20,6 +20,7 @@ var lastPhysicsPosition : Vector3 = Vector3.ZERO
 var fallTimer : float = 0.0
 var lastUpDir : Vector3 = Vector3.ZERO
 var lastVel : Vector3 = Vector3.ZERO
+var pipeSnapFlip : bool = false
 var rampPos : Vector3 = Vector3.ZERO
 var groundNormal : Vector3 = Vector3.RIGHT
 
@@ -125,8 +126,10 @@ func _playerState():
 			curveSnap = _getClosestCurvePoint(path, global_position)
 			curveTangent = _getPathTangent(path, global_position)
 			var newUpDir = Vector3.UP.cross(curveTangent)
+			if pipeSnapFlip:
+				newUpDir*=-1
 			if(newUpDir != Vector3.ZERO):
-				up_direction = newUpDir
+				up_direction = newUpDir 
 			else:
 				up_direction = lastUpDir
 			return
@@ -185,7 +188,7 @@ func _playerState():
 			path = null
 			var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
 			if(fallCheck < 0.75 and fallCheck != 0 and velocity.length() > 1.0):
-				_fall("floor fall")
+				_fall("floor fall", fallCheck)
 				return
 			if collInfo:
 				if collInfo.get_collider(0).is_in_group('floor'):
@@ -198,7 +201,7 @@ func _playerState():
 		if is_on_wall():
 			if(lastVel.length() > 10):
 				playerState = PlayerState.FALL
-				_fall("hit the wall")
+				_fall("hit the wall", lastVel)
 				return
 	
 	if !is_on_floor():	
@@ -206,6 +209,14 @@ func _playerState():
 		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.5 and playerState == PlayerState.PIPE and input.z == 0):
 			if path != null:
 				playerState = PlayerState.PIPESNAP
+				var tangent = _getPathTangent(path, global_position)
+				var dir = tangent.cross(Vector3(0,1,0))
+				var dirCheck = (_getClosestCurvePoint(path, position) - lastGroundPos).normalized()
+				if(dirCheck.dot(dir) < 0):
+					pipeSnapFlip = true
+				else:
+					pipeSnapFlip = false
+				
 				rampPos = global_position - get_last_motion() - Vector3.UP * 0.2
 		if(playerState != PlayerState.PIPESNAP and playerState != PlayerState.PIPESNAPAIR):
 			playerState = PlayerState.AIR			
@@ -311,8 +322,8 @@ func _process(delta):
 		
 	cameraPos.position = cameraPos.position.lerp(global_position, delta * 10)
 				
-func _fall(fallReason):
-	print(fallReason)
+func _fall(fallReason, fallValue):
+	print(fallReason + ": " + str(fallValue))
 	playerState = PlayerState.FALL
 	lastVel = Vector3.ZERO
 	ingameUI._setFailView(true)
@@ -407,6 +418,8 @@ func _pipeSnapMovement(delta):
 	curveSnap = _getClosestCurvePoint(path, global_position)
 	curveTangent = _getPathTangent(path, global_position)
 	var newUpDir = Vector3.UP.cross(curveTangent)
+	if pipeSnapFlip:
+		newUpDir *= -1
 	if(newUpDir != Vector3.ZERO):
 		up_direction = newUpDir
 	else:
@@ -449,7 +462,7 @@ func _grindMovement(delta):
 	ingameUI._setBalanceValue(-balanceAngle)
 	if (balanceAngle > PI /4 or balanceAngle < -PI /4):
 		velocity = curveTangent * grindVel
-		_fall("balance issues")
+		_fall("balance issues", balanceAngle)
 		return
 
 func _lipMovement(delta):
@@ -477,7 +490,7 @@ func _lipMovement(delta):
 	if (balanceAngle > PI /4 or balanceAngle < -PI /4):
 		#velocity = Vector3.DOWN
 		velocity = Vector3.DOWN
-		_fall("balance issues")
+		_fall("balance issues", balanceAngle)
 		return
 
 func _randomizeBalance():
