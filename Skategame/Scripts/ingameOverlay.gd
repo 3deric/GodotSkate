@@ -1,8 +1,8 @@
 extends Control
 
-@onready var failView: Label = get_node("FailView")
-@onready var balanceView: Control = get_node("BalanceView")
-@onready var balanceIndicator: Control = get_node("BalanceView/BalanceIndicator")
+@onready var failView: Label = get_node('FailView')
+@onready var balanceView: Control = get_node('BalanceView')
+@onready var balanceIndicator: Control = get_node('BalanceView/BalanceIndicator')
 
 func _ready():
 	_setFailView(false)

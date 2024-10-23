@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://d2nejhxrsjjgk"]
+[gd_scene load_steps=9 format=3 uid="uid://d2nejhxrsjjgk"]
 
 [ext_resource type="Script" path="res://Scripts/characterBody3D.gd" id="1_5mxk1"]
 [ext_resource type="PackedScene" uid="uid://h7ks2r24cnfi" path="res://Meshes/skateboard.glb" id="1_qu824"]
@@ -6,29 +6,27 @@
 
 [sub_resource type="PrismMesh" id="PrismMesh_rlg6s"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_igf5e"]
-radius = 0.149071
+[sub_resource type="SphereShape3D" id="SphereShape3D_t8jpy"]
+radius = 0.345765
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xhtrt"]
-size = Vector3(0.394165, 0.267609, 1.53833)
+size = Vector3(0.239716, 0.213936, 0.785828)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_k6oyy"]
-radius = 0.527288
-height = 1.17579
+radius = 0.360771
+height = 1.05316
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_gsf53"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_7wc51"]
-radius = 1.49354
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3a2dr"]
+radius = 0.816293
+height = 2.13238
 
 [node name="Character" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.57115e-05, 0.00309938, 1.13249e-05)
 collision_mask = 7
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-slide_on_ceiling = false
-wall_min_slide_angle = 0.785398
-floor_stop_on_slope = false
+platform_floor_layers = 4294967287
 script = ExtResource("1_5mxk1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -37,8 +35,8 @@ visible = false
 mesh = SubResource("PrismMesh_rlg6s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0216691, 0)
-shape = SubResource("SphereShape3D_igf5e")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.72989e-05, 0.322653, 1.37091e-06)
+shape = SubResource("SphereShape3D_t8jpy")
 
 [node name="RBDBoard" type="RigidBody3D" parent="."]
 top_level = true
@@ -47,10 +45,9 @@ collision_mask = 2049
 freeze = true
 
 [node name="skateboard" parent="RBDBoard" instance=ExtResource("1_qu824")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RBDBoard"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00701904, 0.146561, -0.0184326)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00787492, 0.126471, -0.00431727)
 shape = SubResource("BoxShape3D_xhtrt")
 
 [node name="RBDCharacter" type="RigidBody3D" parent="."]
@@ -60,17 +57,11 @@ collision_mask = 2049
 freeze = true
 
 [node name="plushy" parent="RBDCharacter" instance=ExtResource("3_o11d6")]
-transform = Transform3D(-0.135664, 0, 0.990755, 0, 1, 0, -0.990755, 0, -0.135664, 0, 0, 0)
+transform = Transform3D(-0.0949648, 0, 0.693528, 0, 0.7, 0, -0.693528, 0, -0.0949648, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RBDCharacter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.893927, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.591653, 0)
 shape = SubResource("CapsuleShape3D_k6oyy")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RBDCharacter"]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.816679, 0)
-visible = false
-mesh = SubResource("CapsuleMesh_gsf53")
-skeleton = NodePath("../..")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-1, -1.77636e-15, -8.74228e-08, -2.31406e-08, 0.964331, 0.264698, 8.43045e-08, 0.264698, -0.964331, 0, 1.80857, -2.081)
@@ -82,5 +73,9 @@ collision_layer = 8
 collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0418166, 0)
-shape = SubResource("SphereShape3D_7wc51")
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.0965011, 0)
+shape = SubResource("CapsuleShape3D_3a2dr")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.174579, 0)
+target_position = Vector3(0, -0.5, 0)
