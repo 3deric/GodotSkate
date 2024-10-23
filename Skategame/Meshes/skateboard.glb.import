@@ -29,6 +29,13 @@ animation/fps=30
 animation/trimming=false
 animation/remove_immutable_tracks=true
 import_script/path=""
-_subresources={}
+_subresources={
+"materials": {
+"M_Skateboard": {
+"use_external/enabled": true,
+"use_external/path": "res://Materials/M_skateboard.tres"
+}
+}
+}
 gltf/naming_version=0
 gltf/embedded_image_handling=1
