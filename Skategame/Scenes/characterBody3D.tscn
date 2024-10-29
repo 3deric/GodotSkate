@@ -26,6 +26,7 @@ collision_mask = 7
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
+floor_stop_on_slope = false
 platform_floor_layers = 4294967287
 script = ExtResource("1_5mxk1")
 
@@ -63,11 +64,6 @@ transform = Transform3D(-0.0949648, 0, 0.693528, 0, 0.7, 0, -0.693528, 0, -0.094
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.591653, 0)
 shape = SubResource("CapsuleShape3D_k6oyy")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-1, -1.77636e-15, -8.74228e-08, -2.31406e-08, 0.964331, 0.264698, 8.43045e-08, 0.264698, -0.964331, 0, 1.80857, -2.081)
-visible = false
-fov = 90.0
-
 [node name="Area3D" type="Area3D" parent="."]
 collision_layer = 8
 collision_mask = 8
@@ -77,5 +73,5 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.0
 shape = SubResource("CapsuleShape3D_3a2dr")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.174579, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0568891, 0)
 target_position = Vector3(0, -0.5, 0)

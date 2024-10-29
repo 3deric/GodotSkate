@@ -5,7 +5,7 @@ const acc :float= 0.2
 const jumpVel :float = 10.0
 const rot :float= 2.0
 const rotJump :float= 7.0
-const maxVel :float = 25.0
+const maxVel :float = 20.0
 const gravity :float = 25.0
 const balanceMulti : float= 1.0
 const pipesnapOffset :float = 0.15
@@ -23,6 +23,7 @@ var lastVel : Vector3 = Vector3.ZERO
 var pipeSnapFlip : bool = false
 var rampPos : Vector3 = Vector3.ZERO
 var groundNormal : Vector3 = Vector3.RIGHT
+var accTime : float = 0.0
 
 #global object references
 @onready var raycast : RayCast3D = get_node('RayCast3D')
@@ -68,7 +69,6 @@ func _ready():
 func _physics_process(delta):
 	xForm = global_transform
 	_debugPlayerState()
-	_inputHandler()	
 	_playerState()
 	match playerState:
 		PlayerState.FALL:
@@ -288,29 +288,25 @@ func _getStickCurve(path: Path3D,pos: Vector3):
 		
 func _setUpDirection():
 	if is_on_floor():
-		up_direction = raycast.get_collision_normal()
+		up_direction = get_floor_normal()
 	else:
-		up_direction = lastUpDir		
+		up_direction = lastUpDir	
 	if playerState == PlayerState.AIR:
 		up_direction = Vector3.UP
 
 func _process(delta):
-	#to do: interpolate rotation to get smoother motion on slopesm, while player is grounded
+	_inputHandler()	
 	if(playerState != PlayerState.FALL):
 		rbdChar.global_transform = global_transform
 		rbdBoard.global_transform = global_transform
-		#rbdChar.rotation.x = lerpf(rbdChar.rotation.x, rotation.x, delta)
-		#rbdBoard.rotation.x = lerpf(rbdBoard.rotation.x, rotation.x, delta)
 	else:
 		fallTimer -= delta
 	if(playerState == PlayerState.GRIND):
 		rbdChar.rotation.z = -balanceAngle
 		rbdBoard.rotation.z = -balanceAngle
-		
 	if(playerState == PlayerState.LIP):
 		rbdChar.rotation.x = -balanceAngle
-		rbdBoard.rotation.x = -balanceAngle
-		
+		rbdBoard.rotation.x = -balanceAngle		
 	cameraPos.position = cameraPos.position.lerp(global_position, delta * 10)
 				
 func _fall(fallReason, fallValue):
@@ -381,21 +377,21 @@ func _revertMotion():
 
 func _groundMovement(delta):
 	#movement while grounded
-	_setUpDirection()		
-	if((input.z > 0 and velocity.length() <= maxVel) or (input.z < 0 and velocity.length() >= -maxVel)):
+	if input.z == 1:
+		accTime += delta
+	if input.y < 0:
+		velocity *= 0.9
+	if input.y >= 0 and velocity.length() < maxVel/4:
+		velocity +=xForm.basis.z * acc
+	if((input.z > 0 and accTime > 0.5 and velocity.length() <= maxVel) or (input.z < 0 and velocity.length() >= -maxVel)):
 		velocity += xForm.basis.z * input.z * acc
-		#deceleration
 	else:
 		velocity *= 0.98	
-		#jump acceleration
-	
-	if(inputTricks.y >0):
-		_revertMotion()
-	
-	velocity += xForm.basis.y * inputTricks.z * jumpVel
+	if inputTricks.z > 0:
+		velocity += xForm.basis.y * jumpVel
 	rotate_object_local(Vector3.UP, input.x * rot * delta)
-	#apply gravity
-	velocity.y -= gravity * delta	
+	velocity.y -= gravity * delta
+	_setUpDirection()		
 	_killOrthogonalVelocity(xForm, velocity)
 
 func _airMovement(delta):
