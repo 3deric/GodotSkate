@@ -4,11 +4,12 @@ extends CharacterBody3D
 const acc :float= 0.2
 const jumpVel :float = 10.0
 const rot :float= 2.0
+const rotKickturn : float = 4.0
 const rotJump :float= 7.0
-const maxVel :float = 20.0
-const gravity :float = 25.0
+const maxVel :float = 15.0
+const gravity :float = 20
 const balanceMulti : float= 1.0
-const pipesnapOffset :float = 0.15
+const pipesnapOffset :float = 0.05
 const upAlignSpd :float = 5.0
 
 #global movement variables
@@ -23,10 +24,8 @@ var lastVel : Vector3 = Vector3.ZERO
 var pipeSnapFlip : bool = false
 var rampPos : Vector3 = Vector3.ZERO
 var groundNormal : Vector3 = Vector3.RIGHT
-var accTime : float = 0.0
 
 #global object references
-@onready var raycast : RayCast3D = get_node('RayCast3D')
 @onready var rbdBoard: RigidBody3D = get_node('RBDBoard')
 @onready var rbdChar: RigidBody3D = get_node('RBDCharacter')
 @onready var area: Area3D = get_node('Area3D')
@@ -172,7 +171,6 @@ func _playerState():
 	if get_slide_collision_count() != 0:
 		collInfo = get_slide_collision(0)
 	var collLayer = CollLayer.AIR
-		
 	
 	if (playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
 		if is_on_floor():
@@ -190,7 +188,8 @@ func _playerState():
 				groundNormal = (collInfo.get_normal() * Vector3(1,0,1)).normalized()			
 			
 		if is_on_wall():
-			if(lastVel.length() > 10):
+			print("hit a wall!")
+			if(lastVel.length() > 5):
 				playerState = PlayerState.FALL
 				_fall("hit the wall", lastVel)
 				return
@@ -371,25 +370,24 @@ func _limitVelocity():
 		velocity = velocity.normalized() * maxVel
 	
 func _revertMotion():
-	#revert logic
-	#rotation.y = atan2(-velocity.normalized().x,-velocity.normalized().z)
-	pass
+	rotate_object_local(Vector3.UP, PI)
 
 func _groundMovement(delta):
 	#movement while grounded
-	if input.z == 1:
-		accTime += delta
+	_checkRevertMotion()
 	if input.y < 0:
-		velocity *= 0.9
-	if input.y >= 0 and velocity.length() < maxVel/4:
-		velocity +=xForm.basis.z * acc
-	if((input.z > 0 and accTime > 0.5 and velocity.length() <= maxVel) or (input.z < 0 and velocity.length() >= -maxVel)):
-		velocity += xForm.basis.z * input.z * acc
+		velocity *= 0.95
+		rotate_object_local(Vector3.UP, input.x * rotKickturn * delta)
 	else:
-		velocity *= 0.98	
+		rotate_object_local(Vector3.UP, input.x * rot * delta)
+	if input.y >= 0 and velocity.length() < maxVel/8:
+		velocity +=xForm.basis.z * acc * 0.25
+	if((input.z > 0 and velocity.length() <= maxVel and input.y != -1) or (input.z < 0 and velocity.length() >= -maxVel)):
+		velocity += xForm.basis.z * input.z * acc
+	#else:
+	#	velocity *= 0.9999	
 	if inputTricks.z > 0:
 		velocity += xForm.basis.y * jumpVel
-	rotate_object_local(Vector3.UP, input.x * rot * delta)
 	velocity.y -= gravity * delta
 	_setUpDirection()		
 	_killOrthogonalVelocity(xForm, velocity)
@@ -491,7 +489,12 @@ func _randomizeBalance():
 		balanceAngle = 0
 
 func _initPlayer():
-	raycast = $RayCast3D
+	pass
+
+func _checkRevertMotion():
+	var revertCheck = velocity.normalized().dot(xForm.basis.z)
+	if revertCheck < 0:
+		_revertMotion()
 		
 func _debugPlayerState():
 	#debug logic to print the player state only on change
