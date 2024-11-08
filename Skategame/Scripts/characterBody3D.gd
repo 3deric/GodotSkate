@@ -199,7 +199,6 @@ func _playerState():
 		#behavior while in air, or sticked to a pipe
 		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.5 and playerState == PlayerState.PIPE and inputTricks.z == 0):
 			if path != null:
-				print(up_direction)
 				playerState = PlayerState.PIPESNAP
 				var curveTangent = _getPathTangent(path, global_position)
 				_pipeSnapUpDir(curveTangent)
@@ -497,6 +496,8 @@ func _initPlayer():
 	pass
 
 func _checkRevertMotion():
+	if velocity.length() < 0.5:
+		return
 	var revertCheck = velocity.normalized().dot(xForm.basis.z)
 	if revertCheck < 0:
 		_revertMotion()
