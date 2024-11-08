@@ -1,15 +1,15 @@
 extends CharacterBody3D
 
 #global movement constants
-const acc :float= 0.2
+const acc :float= 0.1
 const jumpVel :float = 10.0
 const rot :float= 2.0
 const rotKickturn : float = 4.0
 const rotJump :float= 7.0
-const maxVel :float = 15.0
+const maxVel :float = 25.0
 const gravity :float = 20
 const balanceMulti : float= 1.0
-const pipesnapOffset :float = 0.05
+const pipesnapOffset :float = 0.0
 const upAlignSpd :float = 5.0
 
 #global movement variables
@@ -93,6 +93,7 @@ func _physics_process(delta):
 	lastVel = velocity
 	_limitVelocity()
 	move_and_slide()
+	_setUpDirection()	
 
 func _playerState():	
 	if (playerState == PlayerState.FALL):
@@ -198,9 +199,11 @@ func _playerState():
 		#behavior while in air, or sticked to a pipe
 		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.5 and playerState == PlayerState.PIPE and inputTricks.z == 0):
 			if path != null:
+				print(up_direction)
 				playerState = PlayerState.PIPESNAP
-				var tangent = _getPathTangent(path, global_position)
-				var dir = tangent.cross(Vector3(0,1,0))
+				var curveTangent = _getPathTangent(path, global_position)
+				_pipeSnapUpDir(curveTangent)
+				var dir = curveTangent.cross(Vector3(0,1,0))
 				var dirCheck = (_getClosestCurvePoint(path, position) - lastGroundPos).normalized()
 				if(dirCheck.dot(dir) < 0):
 					pipeSnapFlip = true
@@ -388,8 +391,7 @@ func _groundMovement(delta):
 	#	velocity *= 0.9999	
 	if inputTricks.z > 0:
 		velocity += xForm.basis.y * jumpVel
-	velocity.y -= gravity * delta
-	_setUpDirection()		
+	velocity.y -= gravity * delta	
 	_killOrthogonalVelocity(xForm, velocity)
 
 func _airMovement(delta):
@@ -403,6 +405,14 @@ func _pipeSnapMovement(delta):
 	rotate_object_local(Vector3.UP, input.x * rotJump * delta)
 	curveSnap = _getClosestCurvePoint(path, global_position)
 	curveTangent = _getPathTangent(path, global_position)
+	_pipeSnapUpDir(curveTangent)
+	position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * pipesnapOffset
+	velocity.y -= gravity * delta
+	velocity = _killPipeOrthogonalVelocity(velocity, curveTangent)
+	if (!_getStickCurve(path, global_position)):
+		pass
+
+func _pipeSnapUpDir(curveTangent):
 	var newUpDir = Vector3.UP.cross(curveTangent)
 	if pipeSnapFlip:
 		newUpDir *= -1
@@ -410,11 +420,6 @@ func _pipeSnapMovement(delta):
 		up_direction = newUpDir
 	else:
 		up_direction = lastUpDir
-	position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * pipesnapOffset
-	velocity.y -= gravity * delta
-	velocity = _killPipeOrthogonalVelocity(velocity, curveTangent)
-	if (!_getStickCurve(path, global_position)):
-		pass
 
 func _pipeSnapAirMovement(delta):
 	#movement when snapped pipe is left in air
