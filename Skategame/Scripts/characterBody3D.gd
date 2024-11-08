@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 #global movement constants
-const acc :float= 0.1
+const acc :float= 0.15
 const jumpVel :float = 10.0
 const rot :float= 2.0
 const rotKickturn : float = 4.0
@@ -9,8 +9,9 @@ const rotJump :float= 7.0
 const maxVel :float = 25.0
 const gravity :float = 20
 const balanceMulti : float= 1.0
-const pipesnapOffset :float = 0.0
+const pipesnapOffset :float = 0.05
 const upAlignSpd :float = 5.0
+const interpSpd: float = 15.0
 
 #global movement variables
 var xForm = null
@@ -30,6 +31,7 @@ var groundNormal : Vector3 = Vector3.RIGHT
 @onready var rbdChar: RigidBody3D = get_node('RBDCharacter')
 @onready var area: Area3D = get_node('Area3D')
 @onready var collision: CollisionShape3D = get_node('CollisionShape3D')
+@onready var raycast: RayCast3D = get_node('RayCast3D')
 @export var camera: Camera3D = null
 @export var cameraPos: Node3D = null
 @export var ingameUI: Control = null
@@ -201,7 +203,6 @@ func _playerState():
 			if path != null:
 				playerState = PlayerState.PIPESNAP
 				var curveTangent = _getPathTangent(path, global_position)
-				_pipeSnapUpDir(curveTangent)
 				var dir = curveTangent.cross(Vector3(0,1,0))
 				var dirCheck = (_getClosestCurvePoint(path, position) - lastGroundPos).normalized()
 				if(dirCheck.dot(dir) < 0):
@@ -289,7 +290,8 @@ func _getStickCurve(path: Path3D,pos: Vector3):
 		
 func _setUpDirection():
 	if is_on_floor():
-		up_direction = get_floor_normal()
+		up_direction = raycast.get_collision_normal()
+		#up_direction = get_floor_normal()
 	else:
 		up_direction = lastUpDir	
 	if playerState == PlayerState.AIR:
@@ -297,9 +299,9 @@ func _setUpDirection():
 
 func _process(delta):
 	_inputHandler()	
+	
 	if(playerState != PlayerState.FALL):
-		rbdChar.global_transform = global_transform
-		rbdBoard.global_transform = global_transform
+		_lerpVisTransform(delta, interpSpd)
 	else:
 		fallTimer -= delta
 	if(playerState == PlayerState.GRIND):
@@ -309,6 +311,12 @@ func _process(delta):
 		rbdChar.rotation.x = -balanceAngle
 		rbdBoard.rotation.x = -balanceAngle		
 	cameraPos.position = cameraPos.position.lerp(global_position, delta * 10)
+	
+func _lerpVisTransform(delta, speed):
+	rbdChar.global_transform = rbdChar.transform.interpolate_with(global_transform, delta * speed)
+	rbdBoard.global_transform = rbdBoard.transform.interpolate_with(global_transform, delta * speed)
+	rbdChar.global_position = global_position
+	rbdBoard.global_position = global_position
 				
 func _fall(fallReason, fallValue):
 	print(fallReason + ": " + str(fallValue))
