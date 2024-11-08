@@ -7,7 +7,7 @@ const rot :float= 2.0
 const rotKickturn : float = 4.0
 const rotJump :float= 7.0
 const maxVel :float = 25.0
-const gravity :float = 20
+const gravity :float = 20.0
 const balanceMulti : float= 1.0
 const pipesnapOffset :float = 0.05
 const upAlignSpd :float = 5.0
@@ -24,7 +24,7 @@ var lastUpDir : Vector3 = Vector3.ZERO
 var lastVel : Vector3 = Vector3.ZERO
 var pipeSnapFlip : bool = false
 var rampPos : Vector3 = Vector3.ZERO
-var groundNormal : Vector3 = Vector3.RIGHT
+#var groundNormal : Vector3 = Vector3.RIGHT
 
 #global object references
 @onready var rbdBoard: RigidBody3D = get_node('RBDBoard')
@@ -65,9 +65,10 @@ var pathTanDir : int = 1
 
 func _ready():
 	_initPlayer()
-	_resetPlayer(Vector3.UP * 5.0)
+	_resetPlayer(Vector3.UP * 5.0 + Vector3(7,0,0))
 
 func _physics_process(delta):
+	velocity.y -= gravity*delta
 	xForm = global_transform
 	_debugPlayerState()
 	_playerState()
@@ -95,6 +96,7 @@ func _physics_process(delta):
 	lastVel = velocity
 	_limitVelocity()
 	move_and_slide()
+	apply_floor_snap()
 	_setUpDirection()	
 
 func _playerState():	
@@ -177,22 +179,22 @@ func _playerState():
 	
 	if (playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
 		if is_on_floor():
-			path = null
 			var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
-			if(fallCheck < 0.75 and fallCheck != 0 and velocity.length() > 1.0):
+			if(fallCheck < 0.5 and fallCheck != 0 and velocity.length() > 1.0):
 				_fall("floor fall", fallCheck)
 				return
 			if collInfo:
 				if collInfo.get_collider(0).is_in_group('floor'):
 					playerState = PlayerState.GROUND
 					lastGroundPos = global_position
+					path = null	
 				if collInfo.get_collider(0).is_in_group('pipe'):
 					playerState = PlayerState.PIPE
-				groundNormal = (collInfo.get_normal() * Vector3(1,0,1)).normalized()			
-			
+					path = null	
+	
 		if is_on_wall():
 			print("hit a wall!")
-			if(lastVel.length() > 5):
+			if(lastVel.length() > 10):
 				playerState = PlayerState.FALL
 				_fall("hit the wall", lastVel)
 				return
@@ -290,16 +292,16 @@ func _getStickCurve(path: Path3D,pos: Vector3):
 		
 func _setUpDirection():
 	if is_on_floor():
-		up_direction = raycast.get_collision_normal()
-		#up_direction = get_floor_normal()
+		#up_direction = raycast.get_collision_normal()
+		up_direction = get_floor_normal()
 	else:
 		up_direction = lastUpDir	
 	if playerState == PlayerState.AIR:
 		up_direction = Vector3.UP
 
 func _process(delta):
+	#print(velocity)
 	_inputHandler()	
-	
 	if(playerState != PlayerState.FALL):
 		_lerpVisTransform(delta, interpSpd)
 	else:
@@ -314,9 +316,8 @@ func _process(delta):
 	
 func _lerpVisTransform(delta, speed):
 	rbdChar.global_transform = rbdChar.transform.interpolate_with(global_transform, delta * speed)
-	rbdBoard.global_transform = rbdBoard.transform.interpolate_with(global_transform, delta * speed)
 	rbdChar.global_position = global_position
-	rbdBoard.global_position = global_position
+	rbdBoard.global_transform = rbdChar.global_transform
 				
 func _fall(fallReason, fallValue):
 	print(fallReason + ": " + str(fallValue))
@@ -394,8 +395,6 @@ func _groundMovement(delta):
 		velocity +=xForm.basis.z * acc * 0.25
 	if((input.z > 0 and velocity.length() <= maxVel and input.y != -1) or (input.z < 0 and velocity.length() >= -maxVel)):
 		velocity += xForm.basis.z * input.z * acc
-	#else:
-	#	velocity *= 0.9999	
 	if inputTricks.z > 0:
 		velocity += xForm.basis.y * jumpVel
 	velocity.y -= gravity * delta	
@@ -404,7 +403,7 @@ func _groundMovement(delta):
 func _airMovement(delta):
 	#movement while in air
 	rotate_object_local(Vector3.UP, input.x * rotJump * delta)
-	velocity.y -= gravity * delta
+	velocity.y -= gravity * delta	
 	up_direction = lerp(up_direction,Vector3.UP, delta * upAlignSpd)
 	
 func _pipeSnapMovement(delta):
