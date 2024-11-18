@@ -7,7 +7,7 @@ const rot :float= 2.0
 const rotKickturn : float = 4.0
 const rotJump :float= 7.0
 const maxVel :float = 25.0
-const gravity :float = 20.0
+const gravity :float = 10.0
 const balanceMulti : float= 1.0
 const pipesnapOffset :float = 0.05
 const upAlignSpd :float = 5.0
@@ -24,7 +24,8 @@ var lastUpDir : Vector3 = Vector3.ZERO
 var lastVel : Vector3 = Vector3.ZERO
 var pipeSnapFlip : bool = false
 var rampPos : Vector3 = Vector3.ZERO
-#var groundNormal : Vector3 = Vector3.RIGHT
+var isOnFloor: bool = false
+var jumpTimer : float = 0.0
 
 #global object references
 @onready var rbdBoard: RigidBody3D = get_node('RBDBoard')
@@ -71,7 +72,9 @@ func _physics_process(delta):
 	velocity.y -= gravity*delta
 	xForm = global_transform
 	_debugPlayerState()
+	_floorCheck()
 	_playerState()
+	jumpTimer -= delta
 	match playerState:
 		PlayerState.FALL:
 			#dont execute any movement logic if player has fallen
@@ -94,10 +97,10 @@ func _physics_process(delta):
 	lastPhysicsPosition = global_position
 	lastUpDir = up_direction
 	lastVel = velocity
+	_setUpDirection()	
 	_limitVelocity()
 	move_and_slide()
 	apply_floor_snap()
-	_setUpDirection()	
 
 func _playerState():	
 	if (playerState == PlayerState.FALL):
@@ -178,11 +181,11 @@ func _playerState():
 	var collLayer = CollLayer.AIR
 	
 	if (playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
-		if is_on_floor():
+		if isOnFloor:
 			var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
-			if(fallCheck < 0.5 and fallCheck != 0 and velocity.length() > 1.0):
-				_fall("floor fall", fallCheck)
-				return
+			#if(fallCheck < 0.5 and fallCheck != 0 and velocity.length() > 1.0):
+			#	_fall("floor fall", fallCheck)
+			#	return
 			if collInfo:
 				if collInfo.get_collider(0).is_in_group('floor'):
 					playerState = PlayerState.GROUND
@@ -199,7 +202,7 @@ func _playerState():
 				_fall("hit the wall", lastVel)
 				return
 	
-	if !is_on_floor():	
+	if !isOnFloor:	
 		#behavior while in air, or sticked to a pipe
 		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.5 and playerState == PlayerState.PIPE and inputTricks.z == 0):
 			if path != null:
@@ -291,13 +294,20 @@ func _getStickCurve(path: Path3D,pos: Vector3):
 		return true
 		
 func _setUpDirection():
-	if is_on_floor():
-		#up_direction = raycast.get_collision_normal()
-		up_direction = get_floor_normal()
+	if isOnFloor:
+		up_direction = raycast.get_collision_normal()
 	else:
 		up_direction = lastUpDir	
 	if playerState == PlayerState.AIR:
 		up_direction = Vector3.UP
+		
+func _floorCheck():
+	print(jumpTimer)
+	if raycast.is_colliding() and jumpTimer < 0.1:
+		isOnFloor = true
+		global_position = raycast.get_collision_point()
+	else:
+		isOnFloor = false
 
 func _process(delta):
 	#print(velocity)
@@ -397,6 +407,7 @@ func _groundMovement(delta):
 		velocity += xForm.basis.z * input.z * acc
 	if inputTricks.z > 0:
 		velocity += xForm.basis.y * jumpVel
+		jumpTimer = 1.0
 	velocity.y -= gravity * delta	
 	_killOrthogonalVelocity(xForm, velocity)
 
