@@ -7,8 +7,8 @@ const rot :float= 2.0
 const rotKickturn : float = 4.0
 const rotJump :float= 7.0
 const maxVel :float = 25.0
-const gravity :float = 10.0
-const balanceMulti : float= 1.0
+const gravity :float = 20.0
+const balanceMulti : float= 0.0
 const pipesnapOffset :float = 0.05
 const upAlignSpd :float = 5.0
 const interpSpd: float = 15.0
@@ -69,15 +69,13 @@ func _ready():
 	_resetPlayer(Vector3.UP * 5.0 + Vector3(7,0,0))
 
 func _physics_process(delta):
-	velocity.y -= gravity*delta
 	xForm = global_transform
 	_debugPlayerState()
 	_floorCheck()
 	_playerState()
-	jumpTimer -= delta
+	_jumpTimer(delta)
 	match playerState:
 		PlayerState.FALL:
-			#dont execute any movement logic if player has fallen
 			return
 		PlayerState.GROUND, PlayerState.PIPE:
 			_groundMovement(delta)	
@@ -91,28 +89,24 @@ func _physics_process(delta):
 			_grindMovement(delta)
 		PlayerState.LIP:
 			_lipMovement(delta)	
-	#align upvector
 	global_transform = _align(global_transform, up_direction) 
-	#set player parameters for next physics iteration
 	lastPhysicsPosition = global_position
 	lastUpDir = up_direction
 	lastVel = velocity
 	_setUpDirection()	
-	_limitVelocity()
+	#_limitVelocity()
 	move_and_slide()
-	apply_floor_snap()
 
 func _playerState():	
-	if (playerState == PlayerState.FALL):
-		#dont change the state if player is fallen
+	if (playerState == PlayerState.FALL):	#dont change the state if fallen
 		return
 	
 	if(playerState == PlayerState.GRIND or playerState == PlayerState.LIP):
 		ingameUI._setBalanceView(true)
 		collision.disabled = true
-		if !_getStickCurve(path,  global_position):
-			playerState = PlayerState.AIR
-			return
+		#if !_getStickCurve(path,  global_position):
+		#	playerState = PlayerState.AIR
+		#	return
 		return
 	else:
 		ingameUI._setBalanceView(false)
@@ -182,28 +176,16 @@ func _playerState():
 	
 	if (playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
 		if isOnFloor:
-			var fallCheck = (abs(velocity.normalized().dot(xForm.basis.z)))
-			#if(fallCheck < 0.5 and fallCheck != 0 and velocity.length() > 1.0):
-			#	_fall("floor fall", fallCheck)
-			#	return
 			if collInfo:
-				if collInfo.get_collider(0).is_in_group('floor'):
+				if collInfo.get_collider(0).is_in_group('pipe'):
+					playerState = PlayerState.PIPE	
+				else:
 					playerState = PlayerState.GROUND
 					lastGroundPos = global_position
 					path = null	
-				if collInfo.get_collider(0).is_in_group('pipe'):
-					playerState = PlayerState.PIPE
-					path = null	
-	
-		if is_on_wall():
-			print("hit a wall!")
-			if(lastVel.length() > 10):
-				playerState = PlayerState.FALL
-				_fall("hit the wall", lastVel)
 				return
 	
-	if !isOnFloor:	
-		#behavior while in air, or sticked to a pipe
+	if !isOnFloor:	#behavior while in air, or sticked to a pipe
 		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.5 and playerState == PlayerState.PIPE and inputTricks.z == 0):
 			if path != null:
 				playerState = PlayerState.PIPESNAP
@@ -213,42 +195,29 @@ func _playerState():
 				if(dirCheck.dot(dir) < 0):
 					pipeSnapFlip = true
 				else:
-					pipeSnapFlip = false
-				
+					pipeSnapFlip = false		
 				rampPos = global_position - get_last_motion() - Vector3.UP * 0.2
 		if(playerState != PlayerState.PIPESNAP and playerState != PlayerState.PIPESNAPAIR):
-			playerState = PlayerState.AIR			
-	#set current collision layer als last collision layer for next physics cycle	
+			playerState = PlayerState.AIR				
 	lastCollLayer = collLayer
 	
-func _getPathTangent(path: Path3D, pos: Vector3):
-	#returns the curve tangent
-	#interpolates between two close points on the curve to generate tangent direction
+func _getPathTangent(path: Path3D, pos: Vector3): #returns the curve tangent
 	var curve: Curve3D = path.curve	
-	#sample curve for last physics iteration
-	var pathTransform: Transform3D = path.global_transform
+	var pathTransform: Transform3D = path.global_transform 
 	var lastLocalPos: Vector3 = lastPhysicsPosition * pathTransform
-  	# get the nearest offset on the curve
 	var lastOffset: float = curve.get_closest_offset(lastLocalPos)
-  	# get the local position at this offset
 	var lastCurvePos: Vector3 = curve.sample_baked(lastOffset, true)
-  	# transform it back to world space
 	lastCurvePos = pathTransform * lastCurvePos
-	#sample curve for current physics iteraiton
 	var localPos: Vector3 = pos * pathTransform
-  	# get the nearest offset on the curve
 	var offset: float = curve.get_closest_offset(localPos)
-  	# get the local position at this offset
 	var curvePos: Vector3 = curve.sample_baked(offset, true)
-  	# transform it back to world space
 	curvePos = pathTransform * curvePos
 	var tangent = (curvePos - lastCurvePos).normalized()
 	if(offset - lastOffset < 0):
 		tangent *= Vector3(-1,-1,-1)
 	return tangent
 	
-func _getPathDir(tangent: Vector3):
-	#function to get direction along the curve, based on the starting direction
+func _getPathDir(tangent: Vector3): #direction along curve based on start pos
 	var dir = tangent.dot(velocity.normalized())
 	var treshold = 0.2
 	if(dir > treshold):
@@ -260,15 +229,11 @@ func _getPathDir(tangent: Vector3):
 
 func _getClosestCurvePoint(path: Path3D,pos: Vector3):
 	var curve: Curve3D = path.curve
- 	# transform the target position to local space
-	var pathTransform: Transform3D = path.global_transform
+	var pathTransform: Transform3D = path.global_transform  # target position to local space
 	var localPos: Vector3 = pos * pathTransform
-  # get the nearest offset on the curve
 	var offset: float = curve.get_closest_offset(localPos)
-  # get the local position at this offset
 	var curvePos: Vector3 = curve.sample_baked(offset, true)
-  # transform it back to world space
-	curvePos = pathTransform * curvePos
+	curvePos = pathTransform * curvePos   # transform back to world space
 	return curvePos
 
 func _getClosestCurveOffset(path: Path3D, pos: Vector3):
@@ -302,15 +267,13 @@ func _setUpDirection():
 		up_direction = Vector3.UP
 		
 func _floorCheck():
-	print(jumpTimer)
-	if raycast.is_colliding() and jumpTimer < 0.1:
+	isOnFloor = is_on_floor()
+	if raycast.is_colliding() and jumpTimer < .9:
 		isOnFloor = true
-		global_position = raycast.get_collision_point()
 	else:
 		isOnFloor = false
 
 func _process(delta):
-	#print(velocity)
 	_inputHandler()	
 	if(playerState != PlayerState.FALL):
 		_lerpVisTransform(delta, interpSpd)
@@ -352,21 +315,17 @@ func _resetPlayer(pos):
 	playerState = PlayerState.RESET
 	balanceAngle = 0.0
 
-func _inputHandler():
-	#handles player inputs
-	#resetting of player happens by moving forward when fallen
-	#todo: add more trick inputs
+func _inputHandler(): 	#handles player inputs
 	input.x = int(Input.is_action_pressed('Left')) - int(Input.is_action_pressed('Right'))
 	input.y = int(Input.is_action_pressed('Forward')) - int(Input.is_action_pressed('Backward'))
 	input.z = int(Input.is_action_pressed('Jump'))
-	inputTricks.x = int(Input.is_action_pressed('Grind'))
+	inputTricks.x = int(Input.is_action_just_pressed('Grind'))
 	inputTricks.y = int(Input.is_action_pressed('Revert'))
 	inputTricks.z = int(Input.is_action_just_released('Jump'))
-	if(input.z and playerState == PlayerState.FALL):
-		_resetPlayer(lastGroundPos)
+	if(input.y and playerState == PlayerState.FALL):
+		_resetPlayer(lastGroundPos + Vector3.UP * 5.0)
 
-func _killOrthogonalVelocity(xForm, vel):
-	#remove orthogonal component of velocity
+func _killOrthogonalVelocity(xForm, vel): 	#remove orthogonal component of velocity
 	var fwdVel = xForm.basis.z * vel.dot(xForm.basis.z)
 	var ortVel = xForm.basis.x * vel.dot(xForm.basis.x)
 	var upVel = xForm.basis.y  * vel.dot(xForm.basis.y)
@@ -379,8 +338,7 @@ func _killPipeOrthogonalVelocity(vel, tangent):
 	velocity = newVel
 	return velocity
 
-func _align(xform, newUp):
-	#align xform to up vector
+func _align(xform, newUp): 	#align xform to up vector
 	xform.basis.y = newUp
 	xform.basis.x = -xform.basis.z.cross(newUp)
 	xform.basis = xform.basis.orthonormalized()
@@ -393,9 +351,10 @@ func _limitVelocity():
 func _revertMotion():
 	rotate_object_local(Vector3.UP, PI)
 
-func _groundMovement(delta):
-	#movement while grounded
+func _groundMovement(delta): 	#movement while grounded
+	_fallCheck()
 	_checkRevertMotion()
+	global_position = raycast.get_collision_point()
 	if input.y < 0:
 		velocity *= 0.95
 		rotate_object_local(Vector3.UP, input.x * rotKickturn * delta)
@@ -408,17 +367,15 @@ func _groundMovement(delta):
 	if inputTricks.z > 0:
 		velocity += xForm.basis.y * jumpVel
 		jumpTimer = 1.0
-	velocity.y -= gravity * delta	
+	velocity.y -= gravity * delta
 	_killOrthogonalVelocity(xForm, velocity)
 
-func _airMovement(delta):
-	#movement while in air
+func _airMovement(delta): 	#movement while in air
 	rotate_object_local(Vector3.UP, input.x * rotJump * delta)
-	velocity.y -= gravity * delta	
+	velocity.y -= gravity * delta
 	up_direction = lerp(up_direction,Vector3.UP, delta * upAlignSpd)
 	
-func _pipeSnapMovement(delta):
-	#movement while snapped to a pipe
+func _pipeSnapMovement(delta): 	#movement while snapped to a pipe
 	rotate_object_local(Vector3.UP, input.x * rotJump * delta)
 	curveSnap = _getClosestCurvePoint(path, global_position)
 	curveTangent = _getPathTangent(path, global_position)
@@ -429,7 +386,7 @@ func _pipeSnapMovement(delta):
 	if (!_getStickCurve(path, global_position)):
 		pass
 
-func _pipeSnapUpDir(curveTangent):
+func _pipeSnapUpDir(curveTangent): #calculate upvector while snapped to a pipe
 	var newUpDir = Vector3.UP.cross(curveTangent)
 	if pipeSnapFlip:
 		newUpDir *= -1
@@ -438,16 +395,13 @@ func _pipeSnapUpDir(curveTangent):
 	else:
 		up_direction = lastUpDir
 
-func _pipeSnapAirMovement(delta):
-	#movement when snapped pipe is left in air
+func _pipeSnapAirMovement(delta):	#movement when snapped pipe is left in air
 	rotate_object_local(Vector3.UP, input.x * rotJump * delta)
 	velocity.y -= gravity * delta
 
-func _grindMovement(delta):
-	#movement logic while grinding a rail
-	#disable collision detection while grinding
+func _grindMovement(delta): 	#movement logic while grinding a rail
 	collision.disabled = true
-	var grindVel = velocity.length() * 0.99
+	var grindVel = _forwardVelocity().length() * 0.99
 	up_direction = Vector3.UP
 	pathPosition -= grindVel * pathDir * delta
 	position = _getPositionOnCurve(path, pathPosition) + up_direction * 0.0
@@ -455,11 +409,16 @@ func _grindMovement(delta):
 	pathVelocity = curveTangent  * grindVel
 	rotation.y = atan2(curveTangent.x,curveTangent.z)
 	if(inputTricks.z):
-		velocity = curveTangent * grindVel
+		velocity = xForm.basis.z * grindVel
 		velocity += xForm.basis.y * inputTricks.z * jumpVel
 		playerState = PlayerState.AIR
+		path = null
+		return
 	if (!_getStickCurve(path, global_position)):
-		velocity = curveTangent  * grindVel
+		playerState = PlayerState.AIR
+		velocity = xForm.basis.z * grindVel
+		path = null
+		return
 	#balance logic
 	balanceTime += 0.05 * delta
 	balanceAngle += balanceMulti * delta * balanceDir * balanceTime
@@ -525,3 +484,21 @@ func _debugPlayerState():
 	if(playerState != lastPlayerState):
 		print(PlayerState.find_key(playerState))
 	lastPlayerState = playerState	
+
+func _jumpTimer(delta):
+	if jumpTimer > 0:
+		jumpTimer -= delta
+		
+func _forwardVelocity():
+	return velocity.slide(up_direction)
+	
+func _fallCheck():
+	var fallCheck = (abs(velocity.slide(up_direction).normalized().dot(xForm.basis.z)))
+	if(fallCheck < 0.5 and fallCheck != 0 and velocity.slide(up_direction).length() > 2.0):
+		_fall("Ground", fallCheck)
+		return
+	#if is_on_wall() and velocity.slide(up_direction).length() * velocity.length() > 1:
+	if is_on_wall():	
+		print("hit the wall")	
+		#_fall("Wall", velocity.slide(up_direction).length())
+	#	return
