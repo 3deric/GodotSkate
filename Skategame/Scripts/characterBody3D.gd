@@ -21,10 +21,10 @@ var lastGroundPos : Vector3 = Vector3.ZERO
 var lastPhysicsPosition : Vector3 = Vector3.ZERO
 var fallTimer : float = 0.0
 var lastUpDir : Vector3 = Vector3.ZERO
-var lastVel : Vector3 = Vector3.ZERO
 var pipeSnapFlip : bool = false
 var rampPos : Vector3 = Vector3.ZERO
 var isOnFloor: bool = false
+var isOnWall: bool = false
 var jumpTimer : float = 0.0
 
 #global object references
@@ -39,10 +39,10 @@ var jumpTimer : float = 0.0
 
 #Enums for player state and collision detection
 enum PlayerState {RESET, GROUND, PIPE, PIPESNAP, PIPESNAPAIR, AIR, FALL, GRIND, LIP, MANUAL}
-enum CollLayer {AIR, FLOOR, PIPE}
+#enum CollLayer {AIR, FLOOR, PIPE}
 var playerState = PlayerState.RESET
 var lastPlayerState = PlayerState.RESET
-var lastCollLayer = CollLayer.AIR
+#var lastCollLayer = CollLayer.AIR
 
 #input variables
 var input : Vector3 = Vector3.ZERO #input values
@@ -71,8 +71,9 @@ func _ready():
 func _physics_process(delta):
 	xForm = global_transform
 	_debugPlayerState()
-	_floorCheck()
 	_playerState()
+	_fallCheck()
+	_surfaceCheck()
 	_jumpTimer(delta)
 	match playerState:
 		PlayerState.FALL:
@@ -92,9 +93,7 @@ func _physics_process(delta):
 	global_transform = _align(global_transform, up_direction) 
 	lastPhysicsPosition = global_position
 	lastUpDir = up_direction
-	lastVel = velocity
 	_setUpDirection()	
-	#_limitVelocity()
 	move_and_slide()
 
 func _playerState():	
@@ -170,21 +169,18 @@ func _playerState():
 				return
 		
 	var collInfo = null
-	if get_slide_collision_count() != 0:
-		collInfo = get_slide_collision(0)
-	var collLayer = CollLayer.AIR
-	
+	if raycast.is_colliding():
+		collInfo = raycast.get_collider()
 	if (playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
 		if isOnFloor:
 			if collInfo:
-				if collInfo.get_collider(0).is_in_group('pipe'):
+				if collInfo.is_in_group('pipe'):
 					playerState = PlayerState.PIPE	
 				else:
 					playerState = PlayerState.GROUND
 					lastGroundPos = global_position
 					path = null	
 				return
-	
 	if !isOnFloor:	#behavior while in air, or sticked to a pipe
 		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.5 and playerState == PlayerState.PIPE and inputTricks.z == 0):
 			if path != null:
@@ -199,7 +195,6 @@ func _playerState():
 				rampPos = global_position - get_last_motion() - Vector3.UP * 0.2
 		if(playerState != PlayerState.PIPESNAP and playerState != PlayerState.PIPESNAPAIR):
 			playerState = PlayerState.AIR				
-	lastCollLayer = collLayer
 	
 func _getPathTangent(path: Path3D, pos: Vector3): #returns the curve tangent
 	var curve: Curve3D = path.curve	
@@ -266,12 +261,15 @@ func _setUpDirection():
 	if playerState == PlayerState.AIR:
 		up_direction = Vector3.UP
 		
-func _floorCheck():
+func _surfaceCheck():
+	if playerState == PlayerState.FALL:
+		return
 	isOnFloor = is_on_floor()
 	if raycast.is_colliding() and jumpTimer < .9:
 		isOnFloor = true
 	else:
 		isOnFloor = false
+	isOnWall = is_on_wall() or is_on_ceiling()
 
 func _process(delta):
 	_inputHandler()	
@@ -295,7 +293,6 @@ func _lerpVisTransform(delta, speed):
 func _fall(fallReason, fallValue):
 	print(fallReason + ": " + str(fallValue))
 	playerState = PlayerState.FALL
-	lastVel = Vector3.ZERO
 	ingameUI._setFailView(true)
 	fallTimer = 2.0
 	rbdChar.freeze = false
@@ -304,12 +301,13 @@ func _fall(fallReason, fallValue):
 	rbdBoard.apply_impulse(velocity)
 	
 func _resetPlayer(pos):
-	if fallTimer > 0:
-		return
 	ingameUI._setFailView(false)
+	isOnFloor = false
+	isOnWall = false
 	up_direction = Vector3.UP
 	velocity = Vector3.ZERO
-	global_position = pos + Vector3.UP
+	global_position = pos
+	global_rotation =  Vector3(0,3.14/2,0)
 	rbdChar.freeze = true
 	rbdBoard.freeze = true
 	playerState = PlayerState.RESET
@@ -323,7 +321,7 @@ func _inputHandler(): 	#handles player inputs
 	inputTricks.y = int(Input.is_action_pressed('Revert'))
 	inputTricks.z = int(Input.is_action_just_released('Jump'))
 	if(input.y and playerState == PlayerState.FALL):
-		_resetPlayer(lastGroundPos + Vector3.UP * 5.0)
+		_resetPlayer(Vector3.UP * 5.0 + Vector3(7,0,0))
 
 func _killOrthogonalVelocity(xForm, vel): 	#remove orthogonal component of velocity
 	var fwdVel = xForm.basis.z * vel.dot(xForm.basis.z)
@@ -352,7 +350,6 @@ func _revertMotion():
 	rotate_object_local(Vector3.UP, PI)
 
 func _groundMovement(delta): 	#movement while grounded
-	_fallCheck()
 	_checkRevertMotion()
 	global_position = raycast.get_collision_point()
 	if input.y < 0:
@@ -402,6 +399,8 @@ func _pipeSnapAirMovement(delta):	#movement when snapped pipe is left in air
 func _grindMovement(delta): 	#movement logic while grinding a rail
 	collision.disabled = true
 	var grindVel = _forwardVelocity().length() * 0.99
+	if grindVel < 0.1:
+		grindVel = 1.0
 	up_direction = Vector3.UP
 	pathPosition -= grindVel * pathDir * delta
 	position = _getPositionOnCurve(path, pathPosition) + up_direction * 0.0
@@ -430,9 +429,7 @@ func _grindMovement(delta): 	#movement logic while grinding a rail
 		_fall("balance issues", balanceAngle)
 		return
 
-func _lipMovement(delta):
-	#Lip Logic
-	#disable collision detection while grinding
+func _lipMovement(delta): 
 	collision.disabled = true
 	position = _getPositionOnCurve(path, pathPosition)
 	up_direction =Vector3.UP
@@ -445,15 +442,12 @@ func _lipMovement(delta):
 		velocity = lipStartVel.normalized() * -1	
 		up_direction = Vector3.UP
 		rotation.y = atan2(-lipStartDir.x,-lipStartDir.z)
-	#balance logic
 	balanceTime += 0.05 * delta
 	balanceAngle += balanceMulti * delta * balanceDir * balanceTime
 	if(input.y != 0):
 		balanceDir = -input.y
-		#to do fix updirection and alignment after lip trick is done
 	ingameUI._setBalanceValue(-balanceAngle)
 	if (balanceAngle > PI /4 or balanceAngle < -PI /4):
-		#velocity = Vector3.DOWN
 		velocity = Vector3.DOWN
 		_fall("balance issues", balanceAngle)
 		return
@@ -466,7 +460,6 @@ func _randomizeBalance():
 		balanceDir = 1
 	else:
 		balanceDir = -1
-		#reset balance angle once grind or lip starts
 		balanceAngle = 0
 
 func _initPlayer():
@@ -493,12 +486,13 @@ func _forwardVelocity():
 	return velocity.slide(up_direction)
 	
 func _fallCheck():
-	var fallCheck = (abs(velocity.slide(up_direction).normalized().dot(xForm.basis.z)))
-	if(fallCheck < 0.5 and fallCheck != 0 and velocity.slide(up_direction).length() > 2.0):
-		_fall("Ground", fallCheck)
+	if playerState == PlayerState.FALL:
 		return
-	#if is_on_wall() and velocity.slide(up_direction).length() * velocity.length() > 1:
-	if is_on_wall():	
-		print("hit the wall")	
-		#_fall("Wall", velocity.slide(up_direction).length())
-	#	return
+	if isOnFloor:
+		var fallCheck = (abs(velocity.slide(up_direction).normalized().dot(xForm.basis.z)))
+		if fallCheck < 0.5 and fallCheck != 0:
+			_fall("Ground", fallCheck)
+			return
+	if isOnWall:	
+		_fall("Wall", velocity.slide(up_direction).length())
+		return

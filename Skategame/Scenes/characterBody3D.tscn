@@ -27,7 +27,8 @@ collision_mask = 7
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-floor_stop_on_slope = false
+floor_block_on_wall = false
+floor_max_angle = 0.361283
 platform_floor_layers = 4294967287
 script = ExtResource("1_5mxk1")
 
