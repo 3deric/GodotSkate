@@ -486,7 +486,7 @@ func _forwardVelocity():
 	return velocity.slide(up_direction)
 	
 func _fallCheck():
-	if playerState != PlayerState.GROUND or playerState != PlayerState.AIR:
+	if playerState == PlayerState.GRIND or playerState == PlayerState.LIP:
 		return
 	if isOnFloor:
 		var fallCheck = (abs(velocity.slide(up_direction).normalized().dot(xForm.basis.z)))
