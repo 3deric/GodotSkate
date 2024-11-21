@@ -37,7 +37,7 @@ Removes the orthogonal component from the player velocity.
 Modifies the velocity so it follows the curve tangent.
 Keeps the current y velocity but replaces the horizontal velocity based on the tangent.
 
-##setupPark
+## setupPark
 
 Park setup runs only in the editor. It requires 3d models as packed gltf scenes.
 
