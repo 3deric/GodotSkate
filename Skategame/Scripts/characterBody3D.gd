@@ -8,7 +8,7 @@ const rotKickturn : float = 4.0
 const rotJump :float= 7.0
 const maxVel :float = 25.0
 const gravity :float = 20.0
-const balanceMulti : float= 0.0
+const balanceMulti : float= 1.0
 const pipesnapOffset :float = 0.05
 const upAlignSpd :float = 5.0
 const interpSpd: float = 15.0
@@ -72,7 +72,6 @@ func _physics_process(delta):
 	xForm = global_transform
 	_debugPlayerState()
 	_playerState()
-	_fallCheck()
 	_surfaceCheck()
 	_jumpTimer(delta)
 	match playerState:
@@ -95,6 +94,7 @@ func _physics_process(delta):
 	lastUpDir = up_direction
 	_setUpDirection()	
 	move_and_slide()
+	_fallCheck()
 
 func _playerState():	
 	if (playerState == PlayerState.FALL):	#dont change the state if fallen
@@ -323,14 +323,14 @@ func _inputHandler(): 	#handles player inputs
 	if(input.y and playerState == PlayerState.FALL):
 		_resetPlayer(Vector3.UP * 5.0 + Vector3(7,0,0))
 
-func _killOrthogonalVelocity(xForm, vel): 	#remove orthogonal component of velocity
+func _killOrthogonalVelocity(xForm : Transform3D, vel: Vector3): 	#remove orthogonal component of velocity
 	var fwdVel = xForm.basis.z * vel.dot(xForm.basis.z)
 	var ortVel = xForm.basis.x * vel.dot(xForm.basis.x)
 	var upVel = xForm.basis.y  * vel.dot(xForm.basis.y)
 	velocity = fwdVel + ortVel * 0.25 + upVel
 	return velocity
 	
-func _killPipeOrthogonalVelocity(vel, tangent):
+func _killPipeOrthogonalVelocity(vel: Vector3, tangent: Vector3):
 	var newVel = vel.dot(tangent) * tangent
 	newVel.y = vel.y
 	velocity = newVel
@@ -486,13 +486,14 @@ func _forwardVelocity():
 	return velocity.slide(up_direction)
 	
 func _fallCheck():
-	if playerState == PlayerState.FALL:
+	if playerState != PlayerState.GROUND or playerState != PlayerState.AIR:
 		return
 	if isOnFloor:
 		var fallCheck = (abs(velocity.slide(up_direction).normalized().dot(xForm.basis.z)))
 		if fallCheck < 0.5 and fallCheck != 0:
 			_fall("Ground", fallCheck)
 			return
-	if isOnWall:	
-		_fall("Wall", velocity.slide(up_direction).length())
-		return
+	if isOnWall:
+		if velocity.slide(up_direction).length() > 5:
+			_fall("Wall", velocity.slide(up_direction).length())
+			return

@@ -7,8 +7,7 @@
 [sub_resource type="PrismMesh" id="PrismMesh_rlg6s"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rqvrm"]
-radius = 0.346652
-height = 1.22331
+height = 1.8
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xhtrt"]
 size = Vector3(0.239716, 0.213936, 0.785828)
@@ -28,7 +27,7 @@ axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
 floor_block_on_wall = false
-floor_max_angle = 0.361283
+floor_max_angle = 1.39626
 platform_floor_layers = 4294967287
 script = ExtResource("1_5mxk1")
 
@@ -38,7 +37,7 @@ visible = false
 mesh = SubResource("PrismMesh_rlg6s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.72989e-05, 0.614617, 1.37091e-06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_rqvrm")
 
 [node name="RBDBoard" type="RigidBody3D" parent="."]
@@ -76,4 +75,4 @@ shape = SubResource("CapsuleShape3D_3a2dr")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0568891, 0)
-target_position = Vector3(0, -0.25, 0)
+target_position = Vector3(0, -0.3, 0)
