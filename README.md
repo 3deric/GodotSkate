@@ -6,7 +6,7 @@ Textures by https://www.kenney.nl/
 # Function Documentation
 I tried to keep most function self explainatory
 
-##characterBody3D
+## characterBody3D
 
 ### _getStickCurve(path: Path3D,pos: Vector3)
 Used to check if the player is on a curve.
@@ -43,15 +43,17 @@ Park setup runs only in the editor. It requires 3d models as packed gltf scenes.
 
 Select a packed gltf-scene in the editor and run the script.
 
-###setupPark requirements
-![GodotS Skate Preview](/img/parksetup.png)
+### setupPark requirements
+![Park Setup](/img/parksetup.png)
 
-*assetname*_Col_Pipe -> "Pipe collision"
-*assetname*_Col_Floor -> "Floor collision"
-*assetname*_Col_Wall -> "Wall collision"
+- *assetname*_Col_Pipe -> **Pipe collision**
+- *assetname*_Col_Floor -> **Floor collision**
+- *assetname*_Col_Wall -> **Wall collision**
 
 There can only be one of those 3 collision meshes inside of a packed scene. Concave colliders are created for each mesh. Keep them simple.
 
-*assetname*_Rail_*X*
+- *assetname*_Rail_*X* -> **Rail line**
 
-Used to create rails, there can be multiple rails inside of one packed scene. Each rail needs a unique identifier. For example A,B,C etc.
+Used to create rails, there can be multiple rails inside of one packed scene. Each rail needs a unique identifier. For example A,B,C etc. Rails need to be created as polylines. You need to take care of the vertex order. 
+To order the vertices you can convert the polyline to a curve and then back to a mesh in blender. This will order vertices based on connectivity.
+![Order Vertices](/img/vertexorder.png)
