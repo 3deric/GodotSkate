@@ -74,7 +74,7 @@ func _physics_process(delta):
 	_jumpTimer(delta)
 	_debugPlayerState()
 	_surfaceCheck()
-	_getClosestPath()
+	_getClosestPath()	
 	_playerState()
 	_playerMovement(delta)
 	_saveLastState()
@@ -83,6 +83,84 @@ func _physics_process(delta):
 	move_and_slide()
 	if jumpTime < 0.1:
 		apply_floor_snap()
+		
+func _playerState():	
+	if (playerState == PlayerState.FALL):	#dont change the state if fallen
+		return
+	
+	if(playerState == PlayerState.GRIND or playerState == PlayerState.LIP):
+		ingameUI._setBalanceView(true)
+		collision.disabled = true
+		#if !_getStickCurve(path,  global_position):
+		#	playerState = PlayerState.AIR
+		#	return
+		return
+	else:
+		ingameUI._setBalanceView(false)
+		collision.disabled = false
+		
+	if(playerState == PlayerState.PIPESNAP):
+		if !_getStickCurve(path,  global_position):
+			playerState = PlayerState.PIPESNAPAIR
+			curveSnap = _getClosestCurvePoint(path, global_position)
+			curveTangent = _getPathTangent(path, global_position)
+			var newUpDir = Vector3.UP.cross(curveTangent)
+			if pipeSnapFlip:
+				newUpDir*=-1
+			if(newUpDir != Vector3.ZERO):
+				up_direction = newUpDir 
+			else:
+				up_direction = lastUpDir
+			return	
+	#if closestPath != null: #grinding or pipesnap start
+		#path = closestPath
+		#pathLength = path.curve.get_baked_length()
+		#if inputTricks.x == 1 and playerState != PlayerState.GRIND:
+			#pathPosition = _getClosestCurveOffset(path, position)
+			#curveTangent = _getPathTangent(path, position)
+			#if(curveTangent == Vector3.ZERO):
+				#return
+			#pathDir = _getPathDir(curveTangent)
+			#_randomizeBalance()
+			#if(pathDir != 0):
+				#playerState = PlayerState.GRIND		
+				#return
+			#if(pathDir == 0 and playerState != PlayerState.PIPESNAP):
+				#playerState = PlayerState.LIP
+				#lipStartUp = up_direction
+				#lipStartVel = velocity
+				#var tangent = _getPathTangent(path, global_position)
+				#var dir = tangent.cross(Vector3(0,1,0))
+				#var dirCheck = (_getClosestCurvePoint(path, position) - lastGroundPos).normalized()
+				#if(dirCheck.dot(dir) < 0):
+					#dir*=-1
+				#lipStartDir = dir
+				#return
+	if (playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
+		if isOnFloor:
+			if isOnPipe:
+				playerState = PlayerState.PIPE
+			else:
+				lastGroundPos = global_position
+				isOnFloor = true;
+				playerState = PlayerState.GROUND		
+			return
+	if !isOnFloor:	#behavior while in air, or sticked to a pipe
+		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.5 and playerState == PlayerState.PIPE and inputTricks.z == 0):
+			path = closestPath
+			print(path)
+			if path != null:
+				playerState = PlayerState.PIPESNAP
+				var curveTangent = _getPathTangent(path, global_position)
+				var dir = curveTangent.cross(Vector3(0,1,0))
+				var dirCheck = (_getClosestCurvePoint(path, position) - lastGroundPos).normalized()
+				if(dirCheck.dot(dir) < 0):
+					pipeSnapFlip = true
+				else:
+					pipeSnapFlip = false		
+				rampPos = global_position - get_last_motion() - Vector3.UP * 0.2
+		if(playerState != PlayerState.PIPESNAP and playerState != PlayerState.PIPESNAPAIR):
+			playerState = PlayerState.AIR				
 
 func _groundMovement(delta): #movement while on floor and pipe
 	if _checkRevertMotion():
@@ -122,50 +200,10 @@ func _surfaceCheck():
 func _jumpTimer(delta):
 	jumpTime -= delta
 
-func _playerState():	
-	if (playerState == PlayerState.FALL):
-		return
-	if(playerState == PlayerState.PIPESNAP):
-		if !_getStickCurve(path,  global_position):
-			playerState = PlayerState.PIPESNAPAIR
-			curveSnap = _getClosestCurvePoint(path, global_position)
-			curveTangent = _getPathTangent(path, global_position)
-			var newUpDir = Vector3.UP.cross(curveTangent)
-			if pipeSnapFlip:
-				newUpDir*=-1
-			if(newUpDir != Vector3.ZERO):
-				up_direction = newUpDir 
-			else:
-				up_direction = lastUpDir
-			return
-	if isOnFloor:
-		if isOnPipe:
-			playerState = PlayerState.PIPE
-		else:
-			lastGroundPos = global_position
-			isOnFloor = true;
-			playerState = PlayerState.GROUND		
-		return
-	if !isOnFloor:
-		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.5 and playerState == PlayerState.PIPE and inputTricks.z == 0):
-			path = closestPath
-			if path != null:
-				print(path)
-				playerState = PlayerState.PIPESNAP
-				var curveTangent = _getPathTangent(path, global_position)
-				var dir = curveTangent.cross(Vector3(0,1,0))
-				var dirCheck = (_getClosestCurvePoint(path, position) - lastGroundPos).normalized()
-				if(dirCheck.dot(dir) < 0):
-					pipeSnapFlip = true
-				else:
-					pipeSnapFlip = false		
-				rampPos = global_position - get_last_motion() - Vector3.UP * 0.2
-		else:
-			playerState = PlayerState.AIR
-		
 func _setUpDirection():
 	if isOnFloor:
-		up_direction = raycast.get_collision_normal()
+		up_direction = get_floor_normal()
+		#up_direction = raycast.get_collision_normal()
 	else:
 		up_direction = lastUpDir	
 	if playerState == PlayerState.AIR:
@@ -251,10 +289,10 @@ func _playerMovement(delta):
 			_pipeSnapMovement(delta)
 		PlayerState.PIPESNAPAIR:
 			_pipeSnapAirMovement(delta)	
-	#	PlayerState.GRIND:
-	#		_grindMovement(delta)
-	#	PlayerState.LIP:
-	#		_lipMovement(delta)	
+		PlayerState.GRIND:
+			_grindMovement(delta)
+		PlayerState.LIP:
+			_lipMovement(delta)	
 
 func _saveLastState():
 	lastPhysicsPosition = global_position
