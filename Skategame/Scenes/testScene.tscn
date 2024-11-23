@@ -1,7 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://vicj58dntsdt"]
+[gd_scene load_steps=21 format=3 uid="uid://b3qoonpk5ocbi"]
 
 [ext_resource type="PackedScene" uid="uid://cm44b70fye21a" path="res://Meshes/Cube.glb" id="1_vk2fy"]
-[ext_resource type="Material" uid="uid://cae5vktgfvi2v" path="res://Materials/M_path.tres" id="2_pb4mb"]
+[ext_resource type="Material" uid="uid://bq024sjps0gm4" path="res://Materials/M_path.tres" id="2_pb4mb"]
 [ext_resource type="Material" uid="uid://1ccrgh68ww8p" path="res://Materials/M_default_orange.tres" id="3_mtj73"]
 [ext_resource type="Script" path="res://Scripts/railInit.gd" id="3_qkabb"]
 [ext_resource type="PackedScene" uid="uid://flyceowtgqrp" path="res://Meshes/PipeA.glb" id="4_sqtvg"]

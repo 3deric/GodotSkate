@@ -71,9 +71,9 @@ func _ready():
 func _physics_process(delta):
 	xForm = global_transform
 	_debugPlayerState()
-	_playerState()
-	_surfaceCheck()
 	_jumpTimer(delta)
+	_surfaceCheck()
+	_playerState()
 	match playerState:
 		PlayerState.FALL:
 			return
@@ -94,6 +94,8 @@ func _physics_process(delta):
 	lastUpDir = up_direction
 	_setUpDirection()	
 	move_and_slide()
+	if jumpTimer < 0.5:
+		apply_floor_snap()
 	_fallCheck()
 
 func _playerState():	
@@ -103,9 +105,9 @@ func _playerState():
 	if(playerState == PlayerState.GRIND or playerState == PlayerState.LIP):
 		ingameUI._setBalanceView(true)
 		collision.disabled = true
-		#if !_getStickCurve(path,  global_position):
-		#	playerState = PlayerState.AIR
-		#	return
+		if !_getStickCurve(path,  global_position):
+			playerState = PlayerState.AIR
+			return
 		return
 	else:
 		ingameUI._setBalanceView(false)
@@ -129,11 +131,6 @@ func _playerState():
 	var pathDist = 10000
 	if (playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
 		for body in area.get_overlapping_bodies():
-			#get closest ramp or rail
-			#loop through all ramps / rails
-			#check which distance is the lowest
-			#use the ramp / rail with the lowest distance
-			#usally there should not be more then 2 ramps / rails in close proximity
 			if(body.is_in_group('rampRail')):
 				var currentPath = body.get_node(body.get_path_node())
 				var currentOffset = _getClosestCurveOffset(currentPath, position)
@@ -265,10 +262,6 @@ func _surfaceCheck():
 	if playerState == PlayerState.FALL:
 		return
 	isOnFloor = is_on_floor()
-	if raycast.is_colliding() and jumpTimer < .9:
-		isOnFloor = true
-	else:
-		isOnFloor = false
 	isOnWall = is_on_wall() or is_on_ceiling()
 
 func _process(delta):
@@ -351,7 +344,7 @@ func _revertMotion():
 
 func _groundMovement(delta): 	#movement while grounded
 	_checkRevertMotion()
-	global_position = raycast.get_collision_point()
+	#global_position = raycast.get_collision_point()
 	if input.y < 0:
 		velocity *= 0.95
 		rotate_object_local(Vector3.UP, input.x * rotKickturn * delta)
