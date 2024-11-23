@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://f8h2uynd2b7n" path="res://Scenes/ingameOverlay.tscn" id="4_hwdxu"]
 [ext_resource type="PackedScene" uid="uid://cctt1un35hyco" path="res://Scenes/debugView.tscn" id="5_cf44f"]
 [ext_resource type="ArrayMesh" uid="uid://17bereoeaire" path="res://Meshes/kicker.obj" id="5_foj1a"]
-[ext_resource type="Material" uid="uid://cae5vktgfvi2v" path="res://Materials/M_path.tres" id="5_x0agk"]
+[ext_resource type="Material" uid="uid://bq024sjps0gm4" path="res://Materials/M_path.tres" id="5_x0agk"]
 [ext_resource type="Texture2D" uid="uid://c18thxnf5ehny" path="res://Textures/T_default_orange.png" id="6_88ofx"]
 [ext_resource type="PackedScene" uid="uid://flyceowtgqrp" path="res://Meshes/PipeA.glb" id="11_db5eh"]
 [ext_resource type="PackedScene" uid="uid://beju7ap4ly1sn" path="res://Meshes/Funbox.glb" id="11_vi717"]
