@@ -458,7 +458,6 @@ shadow_blur = 6.306
 
 [node name="Character" parent="." node_paths=PackedStringArray("camera", "cameraPos", "ingameUI") instance=ExtResource("4_d8v8c")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.762664, 2.22471, -1.1789)
-floor_max_angle = 0.785398
 safe_margin = 0.01
 camera = NodePath("../Node3D/Camera3D")
 cameraPos = NodePath("../Node3D")
