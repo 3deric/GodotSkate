@@ -8,7 +8,7 @@ const rotKickturn : float = 4.0
 const rotJump :float= 7.0
 const maxVel :float = 25.0
 const gravity :float = 20.0
-const balanceMulti : float= 1.0
+const balanceMulti : float= 0.0
 const pipesnapOffset :float = 0.025
 const upAlignSpd :float = 5.0
 const interpSpd: float = 15.0
@@ -94,7 +94,7 @@ func _physics_process(delta):
 	lastUpDir = up_direction
 	_setUpDirection()	
 	move_and_slide()
-	if jumpTimer < 0.5 and raycast.is_colliding():
+	if jumpTimer < 0.1 and raycast.is_colliding():
 		apply_floor_snap()
 	_fallCheck()
 
@@ -165,13 +165,15 @@ func _playerState():
 				lipStartDir = dir
 				return
 		
-	var collInfo = null
-	if raycast.is_colliding():
-		collInfo = raycast.get_collider()
+
+	#if raycast.is_colliding():
+	#	collInfo = raycast.get_collider()
 	if (playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
 		if isOnFloor:
+			var collInfo = null
+			collInfo = get_last_slide_collision()
 			if collInfo:
-				if collInfo.is_in_group('pipe'):
+				if collInfo.get_collider().is_in_group('pipe'):
 					playerState = PlayerState.PIPE	
 				else:
 					playerState = PlayerState.GROUND
@@ -393,7 +395,7 @@ func _grindMovement(delta): 	#movement logic while grinding a rail
 	collision.disabled = true
 	var grindVel = _forwardVelocity().length() * 0.99
 	if grindVel < 0.1:
-		grindVel = 1.0
+		grindVel = 0.0
 	up_direction = Vector3.UP
 	pathPosition -= grindVel * pathDir * delta
 	position = _getPositionOnCurve(path, pathPosition) + up_direction * 0.0
