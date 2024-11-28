@@ -1,7 +1,7 @@
 @tool
 extends EditorScript
 
-const offset : float = 0.1
+const offset : float = 0.05
 const pathInterval : float = 0.25
 
 func _run():
@@ -12,6 +12,7 @@ func _run():
 		var name = node.name
 		var parent : Node = node.get_parent()
 		if name.split('_')[1] == 'Rail':		
+			print(name)
 			var csg: CSGPolygon3D = CSGPolygon3D.new()
 			var mesh = node.get_mesh()
 			var meshArrays = mesh.surface_get_arrays(0)
@@ -59,13 +60,13 @@ func _run():
 			csg.cast_shadow = 0
 			#set material
 			csg.material = load('res://Materials/M_path.tres')
-			csg.set_script(load('res://Scripts/railInit.gd'))
-		#generate colliders
+			csg.set_script(load('res://Scripts/Editor/railInit.gd'))
+		##generate colliders
 		if name.split('_')[1] == 'Col':
+			print(name)
 			var meshInstance : MeshInstance3D = MeshInstance3D.new()
 			meshInstance.name = name + '_ColMesh'
 			meshInstance.mesh = node.mesh
-			node.visible = false
 			meshInstance.visible = false	
 			parent.add_child(meshInstance)
 			meshInstance.set_owner(parent.get_tree().get_edited_scene_root())

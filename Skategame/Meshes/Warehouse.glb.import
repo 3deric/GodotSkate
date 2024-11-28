@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://flyceowtgqrp"
-path="res://.godot/imported/PipeA.glb-4cee5552c18d49691b81e386ffc73b25.scn"
+uid="uid://1up2mjm8l6ew"
+path="res://.godot/imported/Warehouse.glb-6e813ba61a314ec29d72d728a30671d2.scn"
 
 [deps]
 
-source_file="res://Meshes/PipeA.glb"
-dest_files=["res://.godot/imported/PipeA.glb-4cee5552c18d49691b81e386ffc73b25.scn"]
+source_file="res://Meshes/Warehouse.glb"
+dest_files=["res://.godot/imported/Warehouse.glb-6e813ba61a314ec29d72d728a30671d2.scn"]
 
 [params]
 
@@ -29,13 +29,6 @@ animation/fps=30
 animation/trimming=false
 animation/remove_immutable_tracks=true
 import_script/path=""
-_subresources={
-"materials": {
-"M_default_orange": {
-"use_external/enabled": true,
-"use_external/path": "res://Materials/M_default_orange.tres"
-}
-}
-}
+_subresources={}
 gltf/naming_version=1
 gltf/embedded_image_handling=1

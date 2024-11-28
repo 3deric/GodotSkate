@@ -1,6 +1,6 @@
 extends Control
 
-@onready var failView: Label = get_node('FailView')
+@onready var failView: Sprite2D = get_node('FailView')
 @onready var balanceView: Control = get_node('BalanceView')
 @onready var balanceIndicator: Control = get_node('BalanceView/BalanceIndicator')
 

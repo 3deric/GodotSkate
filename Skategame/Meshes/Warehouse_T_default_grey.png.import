@@ -2,20 +2,18 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chp0qtgtwqm6s"
-path.s3tc="res://.godot/imported/PipeD_T_default_orange.png-2d1c917b3f342d59b78937ab1745ffc0.s3tc.ctex"
+uid="uid://b1jxbqocxtrrs"
+path.s3tc="res://.godot/imported/Warehouse_T_default_grey.png-87a5434984bec30a988599c4181b716b.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "d66a07766bc5cdcaf8911c389a853562"
-}
+generator_parameters={}
 
 [deps]
 
-source_file="res://Meshes/PipeD_T_default_orange.png"
-dest_files=["res://.godot/imported/PipeD_T_default_orange.png-2d1c917b3f342d59b78937ab1745ffc0.s3tc.ctex"]
+source_file="res://Meshes/Warehouse_T_default_grey.png"
+dest_files=["res://.godot/imported/Warehouse_T_default_grey.png-87a5434984bec30a988599c4181b716b.s3tc.ctex"]
 
 [params]
 
