@@ -15,7 +15,6 @@ const interpSpd: float = 15.0
 
 #global movement variables
 var xForm = null
-var dir : Vector3= Vector3.ZERO #current direction of motion
 var lastDir : Vector3 = Vector3.ZERO #direction of last frame for falling check
 var lastGroundPos : Vector3 = Vector3.ZERO
 var lastPhysicsPosition : Vector3 = Vector3.ZERO
@@ -27,6 +26,7 @@ var isOnFloor: bool = false
 var isOnWall: bool = false
 var jumpTimer : float = 0.0
 var raycastDist : float = 0.0
+var pathOffset : float = 0.0
 
 #global object references
 @onready var rbdBoard: RigidBody3D = get_node('RBDBoard')
@@ -124,8 +124,9 @@ func _playerState():
 	if(playerState == PlayerState.PIPESNAP):
 		if !_getStickCurve(path,  global_position):
 			playerState = PlayerState.PIPESNAPAIR
-			curveSnap = _getClosestCurvePoint(path, global_position)
-			curveTangent = _getPathTangent(path, global_position)
+			#curveSnap = _getClosestCurvePoint(path, global_position)
+			curveSnap = path.curve.sample_baked(pathOffset, true)
+			curveTangent = _getPathTangentNew(path, pathOffset)
 			var newUpDir = Vector3.UP.cross(curveTangent)
 			if pipeSnapFlip:
 				newUpDir*=-1
@@ -152,25 +153,29 @@ func _playerState():
 		path = closestPath
 		pathLength = path.curve.get_baked_length()
 		if inputTricks.x == 1 and playerState != PlayerState.GRIND:
-			pathPosition = _getClosestCurveOffset(path, position)
-			curveTangent = _getPathTangent(path, position)
+			pathOffset = path.curve.get_closest_offset(position * path.global_transform)
+			#pathPosition = _getClosestCurveOffset(path, position)
+			curveTangent = _getPathTangentNew(path, pathOffset)
+			#curveTangent = _getPathTangent(path, position)
 			if(curveTangent == Vector3.ZERO):
 				return
 			pathDir = _getPathDir(curveTangent)
 			_randomizeBalance()
 			if(pathDir != 0):
+				print(pathOffset)
 				playerState = PlayerState.GRIND		
 				return
 			if(pathDir == 0 and playerState != PlayerState.PIPESNAP):
 				playerState = PlayerState.LIP
+				pathOffset = path.curve.get_closest_offset(position * path.global_transform)
+				print(pathOffset)
 				lipStartUp = up_direction
 				lipStartVel = velocity
-				var tangent = _getPathTangent(path, global_position)
-				var upDir = tangent.cross(Vector3(0,1,0))
-				#var dirCheck = (_getClosestCurvePoint(path, position) - lastGroundPos).normalized()
-				if(xForm.basis.z.dot(upDir) < 0):
-					dir*=-1
-				lipStartDir = upDir
+				curveTangent = _getPathTangentNew(path, pathOffset)
+				var dir = curveTangent.cross(Vector3(0,1,0))
+				if(xForm.basis.y.dot(dir) > 0):
+					dir *= Vector3(-1,-1,-1)
+				lipStartDir = dir
 				return
 		
 	#if (playerState != PlayerState.GRIND and playerState != PlayerState.LIP):
@@ -193,8 +198,10 @@ func _playerState():
 		if(abs(xForm.basis.z.dot(Vector3.UP)) > 0.1 and lastPlayerState == PlayerState.PIPE and inputTricks.z == 0 and input.y == 0):
 			if path != null:
 				print(path)
+				pathOffset = path.curve.get_closest_offset(position * path.global_transform)
+				print(pathOffset)
 				playerState = PlayerState.PIPESNAP
-				var curveTangent = _getPathTangent(path, global_position)
+				var curveTangent = _getPathTangentNew(path, pathOffset)
 				var dir = curveTangent.cross(Vector3(0,1,0))
 				#print(str(xForm.basis.y.dot(dir)) + " " + str(dir))
 				if(xForm.basis.y.dot(dir) > 0):
@@ -217,7 +224,15 @@ func _getPathTangent(path: Path3D, pos: Vector3): #returns the curve tangent
 	var curvePos: Vector3 = curve.sample_baked(offset, true)
 	curvePos = pathTransform * curvePos
 	var tangent = (curvePos - lastCurvePos).normalized()
-	#print(str(offset) + " - " + str(lastOffset))
+	if(offset - lastOffset < 0):
+		tangent *= Vector3(-1,-1,-1)
+	return tangent
+	
+func _getPathTangentNew(path: Path3D, offset: float): #returns the curve tangent
+	var lastOffset = offset + 0.01 * pathDir
+	var curvePos = path.curve.sample_baked(offset, true)
+	var lastCurvePos = path.curve.sample_baked(offset - 0.025, true)
+	var tangent = (curvePos - lastCurvePos).normalized()
 	if(offset - lastOffset < 0):
 		tangent *= Vector3(-1,-1,-1)
 	return tangent
@@ -384,7 +399,7 @@ func _airMovement(delta): 	#movement while in air
 func _pipeSnapMovement(delta): 	#movement while snapped to a pipe
 	rotate_object_local(Vector3.UP, input.x * rotJump * delta)
 	curveSnap = _getClosestCurvePoint(path, global_position)
-	curveTangent = _getPathTangent(path, global_position)
+	curveTangent = _getPathTangentNew(path, pathOffset)
 	_pipeSnapUpDir(curveTangent)
 	position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * pipesnapOffset
 	velocity.y -= gravity * delta
@@ -410,26 +425,22 @@ func _grindMovement(delta): 	#movement logic while grinding a rail
 	var grindVel = _forwardVelocity().length() * 0.999
 	if grindVel < 0.5:
 		grindVel = 0.5
-	up_direction = Vector3.UP
-	pathPosition -= grindVel * pathDir * delta
-	position = _getPositionOnCurve(path, pathPosition) + up_direction * 0.0
-	curveTangent = _getPathTangent(path, global_position) * -pathDir
+	pathOffset -= grindVel * delta * pathDir	
+	#pathPosition -= grindVel * pathDir * delta
+	#position = _getPositionOnCurve(path, pathPosition) + up_direction * 0.0
+	position = path.curve.sample_baked(pathOffset, true)
+	#print(path.curve.sample_baked(pathOffset, true))
+	up_direction = path.curve.sample_baked_up_vector(pathOffset)
+	curveTangent = _getPathTangentNew(path, pathOffset)
+	print(curveTangent)
 	pathVelocity = curveTangent  * grindVel
 	rotation.y = atan2(curveTangent.x,curveTangent.z)
 	look_at(global_position - curveTangent, up_direction)
 	if inputTricks.z:
 		velocity = xForm.basis.z * grindVel
 		velocity += Vector3.UP * inputTricks.z * jumpVel
-		#playerState = PlayerState.AIR
 		path = null
 		return
-	#if !_getStickCurve(path, global_position):
-		##playerState = PlayerState.AIR
-		#velocity = xForm.basis.z * grindVel
-		#print(xForm.basis.z)
-		#print(velocity)
-		#path = null
-		#return
 	#balance logic
 	balanceTime += 0.05 * delta
 	balanceAngle += balanceMulti * delta * balanceDir * balanceTime
@@ -440,9 +451,8 @@ func _grindMovement(delta): 	#movement logic while grinding a rail
 
 func _lipMovement(delta): 
 	#collision.disabled = true
-	position = _getPositionOnCurve(path, pathPosition)
-	up_direction =Vector3.UP
-	curveTangent = _getPathTangent(path, global_position)
+	position = path.curve.sample_baked(pathOffset)
+	up_direction = path.curve.sample_baked_up_vector(pathOffset)
 	rotation.y = atan2(lipStartDir.x,lipStartDir.z)
 	if(inputTricks.z):
 		velocity = velocity.normalized() * -1
