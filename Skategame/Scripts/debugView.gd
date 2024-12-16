@@ -12,8 +12,8 @@ func _draw():
 	_debugDraw(player.global_position, player.global_position + player.transform.basis.z, Color.BLUE ,2.0)
 	if (player.playerState != player.PlayerState.GRIND):
 		_debugDraw(player.global_position, player.global_position + player.velocity * 0.25, Color.PURPLE, 4.0)
-	else:
-		_debugDraw(player.global_position, player.global_position + player.pathVelocity * 0.25, Color.PURPLE, 4.0)
+	else:		
+		_debugDraw(player.global_position, player.global_position + player.xForm.basis.z * player.pathVel * 0.25, Color.PURPLE, 4.0)
 	_debugDraw(player.global_position, player.global_position + player.up_direction * 2, Color.PINK, 2.0)
 	_debugDraw(player.curveSnap, player.curveSnap + Vector3.UP * 2, Color.PINK, 2.0)
 	_debugDraw(player.global_position, player.lastGroundPos, Color.BLUE, 2.0)
