@@ -3,7 +3,7 @@ extends Control
 #@export var camera: Camera3D
 @export var player: Node3D
 
-func _process(delta):
+func _process(_delta):
 	queue_redraw()
 
 func _draw():
@@ -20,7 +20,3 @@ func _draw():
 	
 func _debugDraw(from, to, col, thickness):
 	draw_line(player.camera.unproject_position(from), player.camera.unproject_position(to), col, thickness)
-
-
-
-

@@ -10,14 +10,14 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_sjbhh")
 
 [node name="FailView" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(643, 355)
-scale = Vector2(2.2093, 2.2093)
+position = Vector2(965, 579.562)
+scale = Vector2(3.16674, 3.1061)
 texture = ExtResource("2_76kcf")
 
 [node name="BalanceView" type="Control" parent="."]
