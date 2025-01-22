@@ -8,7 +8,7 @@ const rotKickturn : float = 4.0
 const rotJump :float= 7.0
 const maxVel :float = 12.0
 const gravity :float = 15.0
-const balanceMulti : float= 1.0
+const balanceMulti : float= 0.0
 const pipesnapOffset :float = 0.0
 const upAlignSpd :float = 10.0
 const interpSpd: float = 15.0
@@ -23,13 +23,15 @@ var jumpTimer : float = 0.0
 var pathOffset : float = 0.0
 var pathVel : float = 0.0
 var lastVel : Vector3 = Vector3.ZERO
+var revertGrind : bool = false
+
 #global object references
 @onready var rbdBoard: RigidBody3D = get_node('RBDBoard')
 @onready var rbdChar: RigidBody3D = get_node('RBDCharacter')
 @onready var area: Area3D = get_node('Area3D')
 @onready var collision: CollisionShape3D = get_node('CollisionShape3D')
-@onready var raycastGnd: RayCast3D = get_node('RayCast3DGround')
-@onready var raycastFwd: RayCast3D = get_node('RayCast3DForward')
+@onready var raycastGnd: RayCast3D = get_node('RayCast3DGnd')
+@onready var raycastFwd: RayCast3D = get_node('RayCast3DFwd')
 @export var camera: Camera3D = null
 @export var cameraPos: Node3D = null
 @export var ingameUI: Control = null
@@ -64,24 +66,21 @@ func _physics_process(delta):
 	_debugPlayerState()
 	_jumpTimer(delta)
 	_playerState()
+	_raycast(position + xForm.basis.y, xForm.basis.z,0.5)
 	match playerState:
 		PlayerState.FALL:
 			return
 		PlayerState.GROUND, PlayerState.PIPE:
-			_checkTurnAround()
 			_checkRevertMotion()
 			_groundMovement(delta)
 		PlayerState.AIR:
-			_checkRevertMotion()
 			_airMovement(delta)
 		PlayerState.PIPESNAP:
-			_checkRevertMotion()
 			_pipeSnapMovement(delta)
 		PlayerState.PIPESNAPAIR:
-			_checkRevertMotion()
 			_pipeSnapAirMovement(delta)
 		PlayerState.GRIND:
-			_checkGrindRevertMotion()
+			_checkRevertGrind()
 			_grindMovement(delta)
 		PlayerState.LIP:
 			_lipMovement(delta)
@@ -92,7 +91,7 @@ func _physics_process(delta):
 	move_and_slide()
 	_fallCheck()
 	if jumpTimer < 0.1 and raycastGnd.is_colliding():
-		apply_floor_snap()
+		apply_floor_snap() #todo, only snap to floor objects, not walls, wrap in function
 
 func _playerState():
 	if (playerState == PlayerState.FALL):	#dont change the state if fallen
@@ -203,15 +202,10 @@ func _playerState():
 func _surfaceCheck():
 	#if playerState == PlayerState.FALL:
 	#	return
-	#raycastDist = global_position.distance_to(raycast.get_collision_point())
-	#if raycastDist < 0.25:
-	#	isOnFloor = true
-	#else:
-	#	isOnFloor = false
-	#isOnFloor = raycast.is_colliding() and is_on_floor()
+	#isOnFloor = is_on_floor()
 	#isOnWall = is_on_wall() or is_on_ceiling()
 	pass
-
+	
 func _getPathTangent(_path: Path3D, _offset: float): #returns the curve tangent
 	var _lastOffset = _offset + 0.01
 	var _curvePos = _path.curve.sample_baked(_offset, true)
@@ -278,7 +272,8 @@ func _process(delta):
 	
 func _lerpVisTransform(delta, speed):
 	rbdChar.global_transform = rbdChar.transform.interpolate_with(global_transform, delta * speed)
-	rbdChar.global_position = global_position
+	if playerState != PlayerState.GRIND: #interpolate position to remove jitter on rails
+		rbdChar.global_position = global_position
 	rbdBoard.global_transform = rbdChar.global_transform
 				
 func _fall(fallReason, fallValue):
@@ -336,17 +331,8 @@ func _limitVelocity():
 	if velocity.length() > maxVel:
 		velocity = velocity.normalized() * maxVel
 	
-func _turnAround():
+func _revertMotion():
 	global_rotate(xForm.basis.y, PI)
-	
-func _revertMotion(_normal):
-	global_rotate(xForm.basis.y, PI)
-	var _reflected = velocity.reflect(_normal)
-	velocity = Vector3(_reflected.x, velocity.y, _reflected.z)
-	
-func _grindRevertMotion():
-	pathDir *= -1
-	pathVel *= -1
 
 func _groundMovement(delta): 	#movement while grounded
 	if playerState == PlayerState.GROUND:
@@ -377,7 +363,7 @@ func _pipeSnapMovement(delta): 	#movement while snapped to a pipe
 	pathOffset += pathVel * delta
 	curveTangent = (_getPathTangent(path, pathOffset) * Vector3(1,0,1)).normalized()
 	up_direction = _pipeSnapUpDir(curveTangent)
-	position = Vector3(curveSnap.x, position.y, curveSnap.z)
+	position = Vector3(curveSnap.x, position.y, curveSnap.z) + up_direction * pipesnapOffset
 	velocity.y -= gravity * delta
 	velocity = _killPipeOrthogonalVelocity(velocity, curveTangent)
 		
@@ -447,24 +433,23 @@ func _randomizeBalance():
 
 func _initPlayer():
 	pass
-	
-func _checkTurnAround():
+
+func _checkRevertMotion():
 	if _forwardVelocity().length() < 1.0:
 		return
 	var revertCheck = velocity.normalized().dot(xForm.basis.z)
 	if revertCheck < 0:
-		_turnAround()
+		_revertMotion()
 
-func _checkRevertMotion():
-	if raycastFwd.is_colliding():
-		_revertMotion(raycastFwd.get_collision_normal())
-	pass
+func _checkRevertGrind():
+	if raycastFwd.is_colliding() and !revertGrind:
+		pathDir *= -1
+		pathVel *= -1
+		print("reversing!")
+		revertGrind = true
+	if !raycastFwd.is_colliding():
+		revertGrind = false
 
-func _checkGrindRevertMotion():
-	if raycastFwd.is_colliding():
-		_grindRevertMotion()
-	pass
-		
 func _debugPlayerState():
 	#debug logic to print the player state only on change
 	if(playerState != lastPlayerState):
@@ -477,6 +462,13 @@ func _jumpTimer(delta):
 		
 func _forwardVelocity():
 	return velocity.slide(up_direction)
+	
+func _raycast(_from: Vector3, _dir: Vector3, _len: float):
+	var _spaceState = get_world_3d().direct_space_state
+	var _query = PhysicsRayQueryParameters3D.create(_from, _from + _dir * _len)
+	_query.exclude = [self]
+	var _col = _spaceState.intersect_ray(_query)
+	print(_col)
 	
 func _fallCheck():
 	if playerState == PlayerState.GRIND or playerState == PlayerState.LIP:

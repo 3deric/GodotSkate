@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://d2nejhxrsjjgk"]
 
 [ext_resource type="Script" path="res://Scripts/characterBody3D.gd" id="1_5mxk1"]
-[ext_resource type="PackedScene" uid="uid://h7ks2r24cnfi" path="res://Meshes/skateboard.glb" id="1_qu824"]
-[ext_resource type="PackedScene" uid="uid://dm5xy7jcydj6j" path="res://Meshes/plushy.glb" id="3_o11d6"]
+[ext_resource type="PackedScene" uid="uid://h7ks2r24cnfi" path="res://Assets/Debug/skateboard.glb" id="1_qu824"]
+[ext_resource type="PackedScene" uid="uid://dm5xy7jcydj6j" path="res://Assets/Debug/plushy.glb" id="3_o11d6"]
 
 [sub_resource type="PrismMesh" id="PrismMesh_rlg6s"]
 
@@ -76,12 +76,12 @@ collision_mask = 8
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.0965011, 0)
 shape = SubResource("CapsuleShape3D_3a2dr")
 
-[node name="RayCast3DGround" type="RayCast3D" parent="."]
+[node name="RayCast3DGnd" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0895714, 0.187471)
 target_position = Vector3(0, -0.5, 0)
 hit_back_faces = false
 
-[node name="RayCast3DForward" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.184337, 0)
+[node name="RayCast3DFwd" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.423154, 0)
 target_position = Vector3(0, -0.5, 0)
 hit_back_faces = false

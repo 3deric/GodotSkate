@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://f8h2uynd2b7n"]
 
 [ext_resource type="Script" path="res://Scripts/ingameOverlay.gd" id="1_sjbhh"]
-[ext_resource type="Texture2D" uid="uid://cm2vewm0ogqjl" path="res://Textures/UI/you_died.png" id="2_76kcf"]
-[ext_resource type="Texture2D" uid="uid://cmsr6ypv1frsi" path="res://Textures/UI/balanceBackground.png" id="2_jsnj5"]
-[ext_resource type="Texture2D" uid="uid://y5g3w80lojem" path="res://Textures/UI/balanceIndicator.png" id="3_vfp08"]
+[ext_resource type="Texture2D" uid="uid://cm2vewm0ogqjl" path="res://Assets/UI/you_died.png" id="2_76kcf"]
+[ext_resource type="Texture2D" uid="uid://cmsr6ypv1frsi" path="res://Assets/UI/balanceBackground.png" id="2_jsnj5"]
+[ext_resource type="Texture2D" uid="uid://y5g3w80lojem" path="res://Assets/UI/balanceIndicator.png" id="3_vfp08"]
 
 [node name="IngameOverlay" type="Control"]
 layout_mode = 3

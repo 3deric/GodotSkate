@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://bir44wjxvcs1h"]
+
+[ext_resource type="Texture2D" uid="uid://cunlykwgnkh8w" path="res://Assets/Characters/Meshes/SK_char_male_T_sneaker_diffuse.jpg" id="1_jbnvm"]
+[ext_resource type="Texture2D" uid="uid://bqv0blspuipl1" path="res://Assets/Characters/Meshes/SK_char_male_T_sneaker_normal.jpg" id="2_8p6jk"]
+
+[resource]
+resource_name = "M_shoe_sneakers"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_jbnvm")
+roughness = 0.5
+normal_enabled = true
+normal_texture = ExtResource("2_8p6jk")
+rim_enabled = true
+rim = 0.49
+texture_filter = 0

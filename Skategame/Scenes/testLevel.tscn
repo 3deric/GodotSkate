@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://d2nejhxrsjjgk" path="res://Scenes/characterBody3D.tscn" id="4_d8v8c"]
 [ext_resource type="PackedScene" uid="uid://f8h2uynd2b7n" path="res://Scenes/ingameOverlay.tscn" id="4_hwdxu"]
 [ext_resource type="PackedScene" uid="uid://cctt1un35hyco" path="res://Scenes/debugView.tscn" id="5_cf44f"]
-[ext_resource type="PackedScene" uid="uid://1up2mjm8l6ew" path="res://Meshes/Warehouse.glb" id="6_ku4f1"]
-[ext_resource type="Material" uid="uid://bq024sjps0gm4" path="res://Materials/M_path.tres" id="7_8arjm"]
+[ext_resource type="PackedScene" uid="uid://1up2mjm8l6ew" path="res://Assets/Debug/Warehouse.glb" id="6_ku4f1"]
+[ext_resource type="Material" uid="uid://bq024sjps0gm4" path="res://Assets/Materials/M_path.tres" id="7_8arjm"]
 [ext_resource type="Script" path="res://Scripts/Editor/railInit.gd" id="8_mxexg"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4d1rt"]
@@ -1504,7 +1504,6 @@ reflected_light_source = 2
 [node name="IngameOverlay" parent="." instance=ExtResource("4_hwdxu")]
 
 [node name="DebugView" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_cf44f")]
-visible = false
 player = NodePath("../Character")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
