@@ -1504,6 +1504,7 @@ reflected_light_source = 2
 [node name="IngameOverlay" parent="." instance=ExtResource("4_hwdxu")]
 
 [node name="DebugView" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_cf44f")]
+visible = false
 player = NodePath("../Character")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -1515,7 +1516,7 @@ shadow_opacity = 0.59
 shadow_blur = 6.306
 
 [node name="Character" parent="." node_paths=PackedStringArray("camera", "cameraPos", "ingameUI") instance=ExtResource("4_d8v8c")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.762664, 2.22471, 0.125948)
+transform = Transform3D(0.994854, 0, -0.101317, 0, 1, 0, 0.101317, 0, 0.994854, -2.93907, 2.22471, 0.125948)
 camera = NodePath("../Node3D/Camera3D")
 cameraPos = NodePath("../Node3D")
 ingameUI = NodePath("../IngameOverlay")
@@ -1523,7 +1524,7 @@ ingameUI = NodePath("../IngameOverlay")
 [node name="Node3D" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="Node3D"]
-transform = Transform3D(0.851626, 0.393751, -0.345967, 0, 0.660054, 0.751218, 0.524149, -0.639757, 0.562119, -4.10902, 9.84252, 6.79503)
+transform = Transform3D(0.851626, 0.393751, -0.345967, 0, 0.660054, 0.751218, 0.524149, -0.639757, 0.562119, -3.29751, 8.08044, 5.47651)
 current = true
 fov = 38.0
 size = 8.0

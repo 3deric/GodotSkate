@@ -24,10 +24,11 @@ var pathOffset : float = 0.0
 var pathVel : float = 0.0
 var lastVel : Vector3 = Vector3.ZERO
 var revertGrind : bool = false
+var animBlend : Vector3 = Vector3.ZERO
 
 #global object references
-@onready var rbdBoard: RigidBody3D = get_node('RBDBoard')
-@onready var rbdChar: RigidBody3D = get_node('RBDCharacter')
+@onready var char : Node3D = get_node('godot_rig')
+@onready var anim : AnimationTree = get_node('AnimationTree')
 @onready var area: Area3D = get_node('Area3D')
 @onready var collision: CollisionShape3D = get_node('CollisionShape3D')
 @onready var raycastGnd: RayCast3D = get_node('RayCast3DGnd')
@@ -258,33 +259,27 @@ func _setUpDirection():
 		
 func _process(delta):
 	_inputHandler()
+	_animationHandler(delta)
 	if(playerState != PlayerState.FALL):
 		_lerpVisTransform(delta, interpSpd)
 	else:
 		fallTimer -= delta
 	if(playerState == PlayerState.GRIND):
-		rbdChar.rotation.z = -balanceAngle
-		rbdBoard.rotation.z = -balanceAngle
+		char.rotation.z = -balanceAngle
 	if(playerState == PlayerState.LIP):
-		rbdChar.rotation.x = -balanceAngle
-		rbdBoard.rotation.x = -balanceAngle
+		char.rotation.x = -balanceAngle
 	cameraPos.position = cameraPos.position.lerp(global_position, delta * 10)
 	
 func _lerpVisTransform(delta, speed):
-	rbdChar.global_transform = rbdChar.transform.interpolate_with(global_transform, delta * speed)
+	char.global_transform = char.global_transform.interpolate_with(global_transform, delta * speed)
 	if playerState != PlayerState.GRIND: #interpolate position to remove jitter on rails
-		rbdChar.global_position = global_position
-	rbdBoard.global_transform = rbdChar.global_transform
+		char.global_position = global_position
 				
 func _fall(fallReason, fallValue):
 	print(fallReason + ": " + str(fallValue))
 	playerState = PlayerState.FALL
 	ingameUI._setFailView(true)
 	fallTimer = 2.0
-	rbdChar.freeze = false
-	rbdChar.apply_impulse(velocity)
-	rbdBoard.freeze = false
-	rbdBoard.apply_impulse(velocity)
 	
 func _resetPlayer(pos):
 	ingameUI._setFailView(false)
@@ -292,8 +287,6 @@ func _resetPlayer(pos):
 	velocity = Vector3.ZERO
 	global_position = pos
 	global_rotation =  Vector3(0,3.14/2,0)
-	rbdChar.freeze = true
-	rbdBoard.freeze = true
 	playerState = PlayerState.RESET
 	lastPlayerState = PlayerState.RESET
 	balanceAngle = 0.0
@@ -307,6 +300,45 @@ func _inputHandler(): 	#handles player inputs
 	inputTricks.z = int(Input.is_action_just_released('Jump'))
 	if(input.y and playerState == PlayerState.FALL and fallTimer < 0.1):
 		_resetPlayer(lastGroundPos + Vector3.UP * 5.0)
+
+func _animationHandler(delta):
+	animBlend = animBlend.lerp(input, delta * interpSpd)
+	match playerState:
+		PlayerState.FALL:
+			return
+		PlayerState.GROUND, PlayerState.PIPE:	
+			anim.set('parameters/conditions/is_stopped', true)
+			anim.set('parameters/conditions/is_air',false)
+			anim.set('parameters/conditions/is_grind', false)
+			anim.set('parameters/conditions/is_lip', false)
+			if velocity.length() > 0.25:
+				anim.set('parameters/conditions/is_riding', true)
+				anim.set('parameters/conditions/is_stopped', false)
+			else:
+				anim.set('parameters/conditions/is_riding', false)
+				anim.set('parameters/conditions/is_stopped', true)
+			anim.set('parameters/Ground/blend_position', animBlend)
+		PlayerState.AIR, PlayerState.PIPESNAP, PlayerState.PIPESNAPAIR:
+			anim.set('parameters/conditions/is_riding', false)
+			anim.set('parameters/conditions/is_stopped', false)
+			anim.set('parameters/conditions/is_air', true)
+			anim.set('parameters/conditions/is_grind', false)
+			anim.set('parameters/conditions/is_lip', false)
+			anim.set('parameters/Air/blend_position', animBlend)
+		PlayerState.GRIND:
+			anim.set('parameters/conditions/is_riding', false)
+			anim.set('parameters/conditions/is_stopped', false)
+			anim.set('parameters/conditions/is_air', false)
+			anim.set('parameters/conditions/is_grind', true)
+			anim.set('parameters/conditions/is_lip', false)
+			anim.set('parameters/Grind/blend_position', animBlend)
+		PlayerState.LIP:
+			anim.set('parameters/conditions/is_riding', false)
+			anim.set('parameters/conditions/is_stopped', false)
+			anim.set('parameters/conditions/is_air', false)
+			anim.set('parameters/conditions/is_grind', false)
+			anim.set('parameters/conditions/is_lip', true)
+			anim.set('parameters/Lip/blend_position', animBlend)
 
 func _killOrthogonalVelocity(_xForm : Transform3D, _vel: Vector3): 	#remove orthogonal component of velocity
 	var _fwdVel = _xForm.basis.z * _vel.dot(_xForm.basis.z)

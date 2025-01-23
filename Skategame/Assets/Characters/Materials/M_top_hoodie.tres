@@ -1,16 +1,16 @@
 [gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://d1nbjosj462ay"]
 
-[ext_resource type="Texture2D" uid="uid://h8y71a0mdctc" path="res://Assets/Characters/Meshes/SK_char_male_T_hoodie_color.jpg" id="1_la6la"]
-[ext_resource type="Texture2D" uid="uid://c2i2gpr2mgra8" path="res://Assets/Characters/Meshes/SK_char_male_T_hoodie_normal.jpg" id="2_kjmfl"]
+[ext_resource type="Texture2D" uid="uid://h8y71a0mdctc" path="res://Assets/Characters/Textures/T_hoodie_color.jpg" id="1_hd1sa"]
+[ext_resource type="Texture2D" uid="uid://c2i2gpr2mgra8" path="res://Assets/Characters/Textures/T_hoodie_normal.jpg" id="2_o4a62"]
 
 [resource]
 resource_name = "M_top_hoodie"
 cull_mode = 2
 vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("1_la6la")
+albedo_texture = ExtResource("1_hd1sa")
 roughness = 0.825514
 normal_enabled = true
-normal_texture = ExtResource("2_kjmfl")
+normal_texture = ExtResource("2_o4a62")
 rim_enabled = true
-rim = 0.5
+rim = 0.25
 texture_filter = 0

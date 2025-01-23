@@ -28,7 +28,7 @@ min = 256.0
 max = 512.0
 step = 2.0
 default_value_enabled = true
-default_value = 256.0
+default_value = 128.0
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_2dvsc"]
 expanded_output_ports = [0]
@@ -38,14 +38,35 @@ source = 1
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
+uniform float FloatParameter : hint_range(256, 512, 2) = 128;
 uniform sampler2D screen_tex_frg_3 : hint_screen_texture;
 
 
 
 void fragment() {
+// Input:24
+	vec2 n_out24p0 = UV;
+
+
+// FloatParameter:25
+	float n_out25p0 = FloatParameter;
+
+
+// VectorOp:21
+	vec2 n_out21p0 = n_out24p0 * vec2(n_out25p0);
+
+
+// VectorFunc:23
+	vec2 n_out23p0 = roundEven(n_out21p0);
+
+
+// VectorOp:22
+	vec2 n_out22p0 = n_out23p0 / vec2(n_out25p0);
+
+
 	vec4 n_out3p0;
 // Texture2D:3
-	n_out3p0 = texture(screen_tex_frg_3, SCREEN_UV);
+	n_out3p0 = texture(screen_tex_frg_3, n_out22p0);
 
 
 // Output:0
@@ -58,15 +79,15 @@ mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(800, 380)
 nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_2dvsc")
-nodes/fragment/3/position = Vector2(520, 360)
+nodes/fragment/3/position = Vector2(360, 400)
 nodes/fragment/21/node = SubResource("VisualShaderNodeVectorOp_41ahn")
 nodes/fragment/21/position = Vector2(-760, 440)
 nodes/fragment/22/node = SubResource("VisualShaderNodeVectorOp_j0kmn")
 nodes/fragment/22/position = Vector2(-80, 500)
 nodes/fragment/23/node = SubResource("VisualShaderNodeVectorFunc_lqx3y")
-nodes/fragment/23/position = Vector2(-300, 480)
+nodes/fragment/23/position = Vector2(-380, 480)
 nodes/fragment/24/node = SubResource("VisualShaderNodeInput_u0k7d")
 nodes/fragment/24/position = Vector2(-1280, 440)
 nodes/fragment/25/node = SubResource("VisualShaderNodeFloatParameter_8cpgl")
 nodes/fragment/25/position = Vector2(-1280, 560)
-nodes/fragment/connections = PackedInt32Array(23, 0, 22, 0, 3, 0, 0, 0, 24, 0, 21, 0, 25, 0, 21, 1, 25, 0, 22, 1, 21, 0, 23, 0)
+nodes/fragment/connections = PackedInt32Array(23, 0, 22, 0, 3, 0, 0, 0, 24, 0, 21, 0, 25, 0, 21, 1, 25, 0, 22, 1, 21, 0, 23, 0, 22, 0, 3, 0)

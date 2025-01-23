@@ -1,17 +1,16 @@
 [gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://bgjt2c275jsas"]
 
-[ext_resource type="Texture2D" uid="uid://dqmrh1nnpuf51" path="res://Assets/Characters/Meshes/SK_char_male_T_hair_messy_color.png" id="1_34j4u"]
-[ext_resource type="Texture2D" uid="uid://dsjloyusfudnq" path="res://Assets/Characters/Meshes/SK_char_male_T_hair_messy_normal.jpg" id="2_h57hv"]
+[ext_resource type="Texture2D" uid="uid://dqmrh1nnpuf51" path="res://Assets/Characters/Textures/T_hair_messy_color.png" id="1_nuwbr"]
+[ext_resource type="Texture2D" uid="uid://dsjloyusfudnq" path="res://Assets/Characters/Textures/T_hair_messy_normal.jpg" id="2_qejab"]
 
 [resource]
 resource_name = "M_char_male_hair_messy"
-transparency = 4
-cull_mode = 2
+transparency = 1
 vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("1_34j4u")
-roughness = 0.881818
+albedo_texture = ExtResource("1_nuwbr")
+metallic_specular = 0.3
 normal_enabled = true
-normal_texture = ExtResource("2_h57hv")
+normal_texture = ExtResource("2_qejab")
 rim_enabled = true
-rim = 0.5
+rim = 0.26
 texture_filter = 0
