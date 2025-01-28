@@ -72,4 +72,5 @@ Revert={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+global_illumination/gi/use_half_resolution=true
 anti_aliasing/quality/screen_space_aa=1

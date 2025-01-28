@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://f8h2uynd2b7n"]
 
-[ext_resource type="Script" path="res://Scripts/ingameOverlay.gd" id="1_sjbhh"]
+[ext_resource type="Script" path="res://Scripts/ingame_overlay.gd" id="1_sjbhh"]
 [ext_resource type="Texture2D" uid="uid://cm2vewm0ogqjl" path="res://Assets/UI/you_died.png" id="2_76kcf"]
 [ext_resource type="Texture2D" uid="uid://cmsr6ypv1frsi" path="res://Assets/UI/balanceBackground.png" id="2_jsnj5"]
 [ext_resource type="Texture2D" uid="uid://y5g3w80lojem" path="res://Assets/UI/balanceIndicator.png" id="3_vfp08"]
@@ -15,7 +15,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_sjbhh")
 
+[node name="SubViewport" type="SubViewport" parent="."]
+
 [node name="FailView" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(965, 579.562)
 scale = Vector2(3.16674, 3.1061)
 texture = ExtResource("2_76kcf")

@@ -1501,26 +1501,6 @@ reflected_light_source = 2
 
 [node name="Level" type="Node3D"]
 
-[node name="IngameOverlay" parent="." instance=ExtResource("4_hwdxu")]
-
-[node name="DebugView" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_cf44f")]
-visible = false
-player = NodePath("../Character")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.847207, 0, -0.998464, -0.0554032, -3.14877, 6.86759, 18.2562)
-light_color = Color(0.87, 0.71543, 0.6438, 1)
-light_energy = 1.762
-shadow_enabled = true
-shadow_opacity = 0.59
-shadow_blur = 6.306
-
-[node name="Character" parent="." node_paths=PackedStringArray("camera", "cameraPos", "ingameUI") instance=ExtResource("4_d8v8c")]
-transform = Transform3D(0.994854, 0, -0.101317, 0, 1, 0, 0.101317, 0, 0.994854, -2.93907, 2.22471, 0.125948)
-camera = NodePath("../Node3D/Camera3D")
-cameraPos = NodePath("../Node3D")
-ingameUI = NodePath("../IngameOverlay")
-
 [node name="Node3D" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="Node3D"]
@@ -1530,6 +1510,25 @@ fov = 38.0
 size = 8.0
 near = 3.221
 far = 39.42
+
+[node name="IngameOverlay" parent="." instance=ExtResource("4_hwdxu")]
+
+[node name="DebugView" parent="." instance=ExtResource("5_cf44f")]
+visible = false
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.847207, 0, -0.998464, -0.0554032, -3.14877, 6.86759, 18.2562)
+light_color = Color(0.87, 0.71543, 0.6438, 1)
+light_energy = 1.762
+shadow_enabled = true
+shadow_opacity = 0.59
+shadow_blur = 6.306
+
+[node name="Character" parent="." node_paths=PackedStringArray("Camera", "Camera_Pos", "Ingame_Ui") instance=ExtResource("4_d8v8c")]
+transform = Transform3D(0.994854, 0, -0.101317, 0, 1, 0, 0.101317, 0, 0.994854, -2.93907, 2.22471, 0.125948)
+Camera = NodePath("../Node3D/Camera3D")
+Camera_Pos = NodePath("../Node3D")
+Ingame_Ui = NodePath("../IngameOverlay")
 
 [node name="Warehouse" parent="." instance=ExtResource("6_ku4f1")]
 
