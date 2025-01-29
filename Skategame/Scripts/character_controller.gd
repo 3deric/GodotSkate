@@ -410,7 +410,7 @@ func _ground_movement(delta): 	#movement while grounded
 		global_rotate(xform.basis.y, input.x * ROT_KICKTURN * delta)
 	else:
 		global_rotate(xform.basis.y, input.x * ROT * delta)
-	if input.y >= 0 and velocity.length() < MAX_VEL/8:
+	if input.y >= 0 and velocity.length() < MAX_VEL/8 and _forward_velocity().length() > 0.1 or input.y > 0:
 		velocity +=xform.basis.z * ACC * 0.25
 	if((input.z > 0 and velocity.length() <= MAX_VEL and input.y != -1) or (input.z < 0 and velocity.length() >= -MAX_VEL)):
 		velocity += xform.basis.z * input.z * ACC
