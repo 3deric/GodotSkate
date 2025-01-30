@@ -231,7 +231,7 @@ func _player_state():
 
 
 func _surface_check():
-	ray_ground = _raycast(position + xform.basis.y * 0.1 + xform.basis.z * 0.1, xform.basis.y,-0.25)
+	ray_ground = _raycast(position + xform.basis.y * 0.1 , (xform.basis.y + xform.basis.z * 0.25).normalized(),-0.55)
 	ray_forward = _raycast(position + xform.basis.y * 1.0, velocity.normalized(),0.5)
 	#if ray_forward != {}:
 		#print(ray_forward["collider"].is_in_group('floor'))
@@ -290,8 +290,8 @@ func _get_stick_curve(_path: Path3D,_offset: float):
 func _set_up_direction():
 	if ray_ground != {}:	
 		up_direction = (ray_ground["normal"] + last_up_dir) / 2
-	if is_on_floor():
-		up_direction = (get_floor_normal() + last_up_dir) / 2
+	#if is_on_floor():
+		#up_direction = (get_floor_normal() + last_up_dir) / 2
 	else:
 		up_direction = last_up_dir
 		
@@ -531,8 +531,8 @@ func _check_bounce_grind():
 
 func _check_bounce():
 	if ray_forward != {}:
-		print("boucing off")
-		velocity = velocity.reflect(ray_forward["normal"])
+		pass
+		#velocity = velocity.reflect(ray_forward["normal"])
 
 
 func _debug_player_state():
