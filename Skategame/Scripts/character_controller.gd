@@ -231,7 +231,7 @@ func _player_state():
 
 
 func _surface_check():
-	ray_ground = _raycast(position + xform.basis.y * 0.1 , (xform.basis.y + xform.basis.z * 0.25).normalized(),-0.55)
+	ray_ground = _raycast(position + xform.basis.y * 0.1 + xform.basis.z * 0.1, (xform.basis.y + xform.basis.z * 0.25).normalized(),-0.25)
 	ray_forward = _raycast(position + xform.basis.y * 1.0, velocity.normalized(),0.5)
 	#if ray_forward != {}:
 		#print(ray_forward["collider"].is_in_group('floor'))
