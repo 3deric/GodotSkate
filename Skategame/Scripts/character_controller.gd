@@ -8,7 +8,7 @@ const ROT_KICKTURN : float = 4.0
 const ROT_JUMP :float= 7.0
 const MAX_VEL :float = 12.0
 const GRAVITY :float = 15.0
-const BALANCE_MULTI : float= 0.0
+const BALANCE_MULTI : float= 1.0
 const PIPESNAP_OFFSET :float = 0.0
 const UP_ALIGN_SPEED :float = 10.0
 const INTERP_SPEED: float = 15.0
@@ -220,6 +220,8 @@ func _player_state():
 	if ray_ground != {}:
 		var _coll_info = null
 		_coll_info = ray_ground["collider"]
+		if ray_ground["normal"].dot(xform.basis.y) < 0.25:
+			return
 		if _coll_info.is_in_group('pipe'):
 			player_state = PlayerState.PIPE
 			path = null
@@ -231,7 +233,7 @@ func _player_state():
 
 
 func _surface_check():
-	ray_ground = _raycast(position + xform.basis.y * 0.1 + xform.basis.z * 0.1, (xform.basis.y + xform.basis.z * 0.25).normalized(),-0.25)
+	ray_ground = _raycast(position + xform.basis.y * 0.1, xform.basis.y, -0.5)
 	ray_forward = _raycast(position + xform.basis.y * 1.0, velocity.normalized(),0.5)
 	#if ray_forward != {}:
 		#print(ray_forward["collider"].is_in_group('floor'))
