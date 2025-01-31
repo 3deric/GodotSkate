@@ -6,44 +6,114 @@ Textures by https://www.kenney.nl/
 # Function Documentation
 I tried to keep most function self explainatory
 
-## characterBody3D
+## character_controller
 
-### _getStickCurve(path: Path3D,pos: Vector3)
-Used to check if the player is on a curve.
-Input is a path and the current global position of the player.
-Returns true when the player is in a certain range of the baked curve. This range is in world units. The treshold value is .1. 
-True range from .1 to curve length -.1. Otherwise it returns false.
+### _player_state()
+Keeps track of the current player movement state and changes the state based on conditions.
 
-### _getPathDir(tangnet: Vector3)
-Returns the direction along the path based on a certain treshold. Used to check if the player will grind a rail or do lip movement.
-Returns -1, 0 or 1. 0 will trigger lip movement.
+### _surface_check()
+Executes raycasts for the ground and the current movement direction.
 
-### _getPathTangent(path: Path3D, pos: Vector3):
-Returns the current tangent of the path based on the global player position.
-Takes the last physics iteration and the current physics iteration to construct a tangent.
-This is done by sampling to points on the curve based on current and last frame.
+### _get_path_tangent()
+Returns the tangent of a path at a specific point.
 
-### _getClosestCurvePoint(path: Path3D, pos: Vector3)
-Returns the closest point on a curve based on the global position of the player.
+### _get_path_dir()
+Returns the direction along the path.
 
-### _surfaceCheck()
-Sets the isOnFloor and isOnWall boolean variables.
-Im using a combination of is_on_floor() from the kinematicbody3d and a raycast to check if the player is on the floor. Using is_on_floor() only was not reliable enough. It caused jittering on slopes.
+### _get_closest_curve_point()
+Returns the position on a curve based on the current location.
 
-### _killOrthogonalVelocity(xForm : Transform3D, vel: Vector3)
-Removes the orthogonal component from the player velocity. 
+### _get_closest_curve_offset()
+Returns the offset value of the curve. A value between 0 and the curve length.
 
-### _killPipeOrthogonalVelocity(vel: Vector3, tangent: Vector3)
-Modifies the velocity so it follows the curve tangent.
-Keeps the current y velocity but replaces the horizontal velocity based on the tangent.
+### _get_stick_curve()
+Returns true of the player should be attached to a curve, false if the player leaves the curve.
 
-## setupPark
+### _set_up_direction()
+Calculates the upvector.
+
+### _lerp_vis_transform()
+Interpolates the visible player transform to avoid jittery motion because of lowres colliders.
+
+### _fall()
+Falling logic.
+
+### _reset_player()
+Resets the player to the starting location, resets all player values.
+
+### _input_handler()
+Read and map inputs.
+
+### _animation_handler()
+Controls the animtree.
+
+### _kill_orthogonal_velocity()
+Removes orthogonal velocity of the player.
+
+### _kill_pipe_orthogonal_velocity()
+Removes orthogonal velocity on a pipe.
+
+### _align()
+Aligns the player with the groud.
+
+### _limit_velocity()
+Speed limit.
+
+### _revert_motion()
+Turns the player to follow the movement direction.
+
+### _ground_movement()
+Ground movement logic.
+
+### _air_movement()
+Air movement logic.
+
+### _pipe_snap_movement()
+Movement logic while snapped to a pipe.
+
+### _grind_movement()
+Grinding movement logic.
+
+### _lip_movement()
+Lip movement logic.
+
+### _randomize_balance()
+Randomize balance direction.
+
+### _init_player()
+Initialize the player.
+
+### _check_reverse_motion()
+Checkup to execute the revert motion function.
+
+### _check_bounce_grind()
+Checkup if the player bounces off a wall while grinding.
+
+### _check_bounce()
+Checkup if the player bounces off a wall.
+
+###_debug_player_state()
+Prints debug infos.
+
+### _jump_timer()
+Timer function to get the time since the last jump.
+
+### _forward_velocity()
+Returns forward component of velocity.
+
+### _raycast()
+Raycast function.
+
+### _fall_check()
+Checks if the player should fall.
+
+## setup_park
 
 Park setup runs only in the editor. It requires 3d models as packed gltf scenes.
 
 Select a packed gltf-scene in the editor and run the script.
 
-### setupPark requirements
+### setup_park requirements
 ![Park Setup](/img/parksetup.png)
 
 - *assetname*_Col_Pipe -> **Pipe collision**

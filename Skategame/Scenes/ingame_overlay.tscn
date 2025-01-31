@@ -17,12 +17,6 @@ script = ExtResource("1_sjbhh")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 
-[node name="FailView" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(965, 579.562)
-scale = Vector2(3.16674, 3.1061)
-texture = ExtResource("2_76kcf")
-
 [node name="BalanceView" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 7
@@ -67,3 +61,23 @@ grow_vertical = 2
 pivot_offset = Vector2(2, 20)
 texture = ExtResource("3_vfp08")
 expand_mode = 1
+
+[node name="FailView" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="FailView"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -55.0
+offset_bottom = 87.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_76kcf")

@@ -34,7 +34,7 @@ import_script/path=""
 _subresources={
 "animations": {
 "Air": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/Air.res",
 "settings/loop_mode": 0,
@@ -1833,7 +1833,7 @@ _subresources={
 "slices/amount": 0
 },
 "AirLeft": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/AirLeft.res",
 "settings/loop_mode": 0,
@@ -3632,7 +3632,7 @@ _subresources={
 "slices/amount": 0
 },
 "AirRight": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/AirRight.res",
 "settings/loop_mode": 0,
@@ -5431,7 +5431,7 @@ _subresources={
 "slices/amount": 0
 },
 "Grind": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/Grind.res",
 "settings/loop_mode": 0,
@@ -7230,7 +7230,7 @@ _subresources={
 "slices/amount": 0
 },
 "Grind_Left": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/Grind_Left.res",
 "settings/loop_mode": 0,
@@ -9029,7 +9029,7 @@ _subresources={
 "slices/amount": 0
 },
 "Grind_Right": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/Grind_Right.res",
 "settings/loop_mode": 0,
@@ -10828,7 +10828,7 @@ _subresources={
 "slices/amount": 0
 },
 "Ground": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/Ground.res",
 "settings/loop_mode": 0,
@@ -12627,7 +12627,7 @@ _subresources={
 "slices/amount": 0
 },
 "GroundBreak": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/GroundBreak.res",
 "settings/loop_mode": 0,
@@ -14426,7 +14426,7 @@ _subresources={
 "slices/amount": 0
 },
 "GroundLeft": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/GroundLeft.res",
 "settings/loop_mode": 0,
@@ -16225,7 +16225,7 @@ _subresources={
 "slices/amount": 0
 },
 "GroundRight": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/GroundRight.res",
 "settings/loop_mode": 0,
@@ -18024,7 +18024,7 @@ _subresources={
 "slices/amount": 0
 },
 "Idle": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/Idle.res",
 "settings/loop_mode": 0,
@@ -19823,7 +19823,7 @@ _subresources={
 "slices/amount": 0
 },
 "Lip": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/Lip.res",
 "settings/loop_mode": 0,
@@ -21622,7 +21622,7 @@ _subresources={
 "slices/amount": 0
 },
 "Lip_Back": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/Lip_Back.res",
 "settings/loop_mode": 0,
@@ -23421,7 +23421,7 @@ _subresources={
 "slices/amount": 0
 },
 "Lip_Front": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "res://Assets/Characters/Anims/Lip_Front.res",
 "settings/loop_mode": 0,

@@ -8,7 +8,7 @@ const ROT_KICKTURN : float = 4.0
 const ROT_JUMP :float= 7.0
 const MAX_VEL :float = 12.0
 const GRAVITY :float = 15.0
-const BALANCE_MULTI : float= 1.0
+const BALANCE_MULTI : float= 0.5
 const PIPESNAP_OFFSET :float = 0.0
 const UP_ALIGN_SPEED :float = 10.0
 const INTERP_SPEED: float = 15.0
@@ -220,7 +220,8 @@ func _player_state():
 	if ray_ground != {}:
 		var _coll_info = null
 		_coll_info = ray_ground["collider"]
-		if ray_ground["normal"].dot(xform.basis.y) < 0.25:
+		#print(ray_ground["normal"].dot(xform.basis.y))
+		if ray_ground["normal"].dot(xform.basis.y) < 0.5:
 			return
 		if _coll_info.is_in_group('pipe'):
 			player_state = PlayerState.PIPE
@@ -373,7 +374,7 @@ func _animation_handler(delta):
 			Anim.set('parameters/Lip/blend_position', anim_blend)
 
 
-func _killOrthogonalVelocity(_xForm : Transform3D, _vel: Vector3): 	#remove orthogonal component of velocity
+func _kill_orthogonal_velocity(_xForm : Transform3D, _vel: Vector3): 	#remove orthogonal component of velocity
 	var _fwdVel = _xForm.basis.z * _vel.dot(_xForm.basis.z)
 	var _ortVel = _xForm.basis.x * _vel.dot(_xForm.basis.x)
 	var _upVel = _xForm.basis.y  * _vel.dot(_xForm.basis.y)
@@ -381,7 +382,7 @@ func _killOrthogonalVelocity(_xForm : Transform3D, _vel: Vector3): 	#remove orth
 	return _velocity
 
 
-func _killPipeOrthogonalVelocity(_vel: Vector3, _tangent: Vector3):
+func _kill_pipe_orthogonal_velocity(_vel: Vector3, _tangent: Vector3):
 	var _newVel = _vel.dot(_tangent) * _tangent
 	_newVel.y = _vel.y
 	var _velocity = _newVel
@@ -395,12 +396,12 @@ func _align(_xForm, _newUp): 	#align xform to up vector
 	return _xForm
 
 
-func _limitVelocity():
+func _limit_velocity():
 	if velocity.length() > MAX_VEL:
 		velocity = velocity.normalized() * MAX_VEL
 
 
-func _revertMotion():
+func _revert_motion():
 	global_rotate(xform.basis.y, PI)
 
 
@@ -420,7 +421,7 @@ func _ground_movement(delta): 	#movement while grounded
 		velocity += Vector3.UP * JUMP_VEL
 		jump_timer = 1.0
 	velocity.y -= GRAVITY * delta
-	velocity = _killOrthogonalVelocity(xform, velocity)
+	velocity = _kill_orthogonal_velocity(xform, velocity)
 
 
 func _air_movement(delta): 	#movement while in air
@@ -434,13 +435,13 @@ func _pipe_snap_movement(delta): 	#movement while snapped to a pipe
 	curve_snap = path.curve.sample_baked(path_offset, true)
 	path_offset += path_vel * delta
 	curve_tangent = (_get_path_tangent(path, path_offset) * Vector3(1,0,1)).normalized()
-	up_direction = _pipeSnapUpDir(curve_tangent)
+	up_direction = _pipe_snap_up_dir(curve_tangent)
 	position = Vector3(curve_snap.x, position.y, curve_snap.z) + up_direction * PIPESNAP_OFFSET
 	velocity.y -= GRAVITY * delta
-	velocity = _killPipeOrthogonalVelocity(velocity, curve_tangent)
+	velocity = _kill_pipe_orthogonal_velocity(velocity, curve_tangent)
 
 
-func _pipeSnapUpDir(_curveTangent): #calculate upvector while snapped to a pipe
+func _pipe_snap_up_dir(_curveTangent): #calculate upvector while snapped to a pipe
 	var _newUpDir = Vector3.UP.cross(_curveTangent)
 	var _last_up_dir = last_up_dir
 	if pipe_snap_flip:
@@ -519,7 +520,7 @@ func _check_reverse_motion():
 		return
 	var revertCheck = velocity.normalized().dot(xform.basis.z)
 	if revertCheck < 0:
-		_revertMotion()
+		_revert_motion()
 
 
 func _check_bounce_grind():
