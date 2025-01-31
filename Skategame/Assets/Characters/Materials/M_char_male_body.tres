@@ -1,0 +1,22 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dor47y2g3jwc7"]
+
+[ext_resource type="Texture2D" uid="uid://bnajima1bb1ki" path="res://Assets/Characters/Textures/T_male_color.jpg" id="1_lv2qi"]
+[ext_resource type="Texture2D" uid="uid://y058eqmjjye7" path="res://Assets/Characters/Textures/T_male_normal.jpg" id="2_scmax"]
+
+[resource]
+resource_name = "M_char_male_body"
+cull_mode = 2
+albedo_texture = ExtResource("1_lv2qi")
+roughness = 0.9
+normal_enabled = true
+normal_texture = ExtResource("2_scmax")
+rim_enabled = true
+rim = 0.25
+clearcoat_roughness = 1.0
+heightmap_scale = -4.379
+heightmap_deep_parallax = true
+heightmap_min_layers = 8
+heightmap_max_layers = 32
+backlight_enabled = true
+backlight = Color(0.114997, 0.0858625, 0.0653285, 1)
+texture_filter = 0

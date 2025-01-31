@@ -1,0 +1,83 @@
+[gd_scene load_steps=5 format=3 uid="uid://f8h2uynd2b7n"]
+
+[ext_resource type="Script" path="res://Scripts/ingame_overlay.gd" id="1_sjbhh"]
+[ext_resource type="Texture2D" uid="uid://cm2vewm0ogqjl" path="res://Assets/UI/you_died.png" id="2_76kcf"]
+[ext_resource type="Texture2D" uid="uid://cmsr6ypv1frsi" path="res://Assets/UI/balanceBackground.png" id="2_jsnj5"]
+[ext_resource type="Texture2D" uid="uid://y5g3w80lojem" path="res://Assets/UI/balanceIndicator.png" id="3_vfp08"]
+
+[node name="IngameOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sjbhh")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+
+[node name="BalanceView" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="BalanceView"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -20.0
+offset_right = 100.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_jsnj5")
+expand_mode = 1
+
+[node name="BalanceIndicator" type="TextureRect" parent="BalanceView"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -20.0
+offset_right = 2.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(2, 20)
+texture = ExtResource("3_vfp08")
+expand_mode = 1
+
+[node name="FailView" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="FailView"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -55.0
+offset_bottom = 87.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_76kcf")
