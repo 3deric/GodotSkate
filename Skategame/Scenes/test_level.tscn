@@ -1513,8 +1513,9 @@ far = 39.42
 
 [node name="ingame_overlay" parent="." instance=ExtResource("1_pi6uu")]
 
-[node name="debug_view" parent="." instance=ExtResource("2_dd0em")]
+[node name="debug_view" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("2_dd0em")]
 visible = false
+Player = NodePath("../player_character")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.847207, 0, -0.998464, -0.0554032, -3.14877, 6.86759, 18.2562)
