@@ -147,7 +147,7 @@ func _player_state():
 	if(player_state == PlayerState.PIPESNAP):
 		if !_get_stick_curve(path,  path_offset):
 			player_state = PlayerState.PIPESNAPAIR
-			var newUpDir = Vector3.UP.cross(curve_tangent)
+			var newUpDir : Vector3 = Vector3.UP.cross(curve_tangent)
 			if pipe_snap_flip:
 				newUpDir*=-1
 			if(newUpDir != Vector3.ZERO):
@@ -156,15 +156,15 @@ func _player_state():
 				up_direction = last_up_dir
 			return
 	
-	var _closest_path = null
-	var pathDist = 10000
+	var _closest_path : Path3D = null
+	var pathDist : float = 10000.0
 	if (player_state != PlayerState.GRIND and player_state != PlayerState.LIP):
 		for body in Area.get_overlapping_bodies():
 			if(body.is_in_group('rampRail')):
-				var currentPath = body.get_node(body.get_path_node())
-				var currentOffset = _get_closest_curve_offset(currentPath, position)
-				var closestPos = _get_position_on_curve(currentPath, currentOffset)
-				var closestDist = position.distance_to(closestPos)
+				var currentPath : Path3D = body.get_node(body.get_path_node())
+				var currentOffset : float = _get_closest_curve_offset(currentPath, position)
+				var closestPos : Vector3 = _get_position_on_curve(currentPath, currentOffset)
+				var closestDist : float = position.distance_to(closestPos)
 				if(closestDist < pathDist):
 					pathDist = closestDist
 					_closest_path = currentPath
@@ -190,7 +190,7 @@ func _player_state():
 				lip_start_up = up_direction
 				lip_start_vel = velocity
 				curve_tangent = _get_path_tangent(path, path_offset)
-				var dir = curve_tangent.cross(Vector3(0,1,0))
+				var dir : Vector3 = curve_tangent.cross(Vector3(0,1,0))
 				if(xform.basis.y.dot(dir) > 0):
 					dir *= Vector3(-1,-1,-1)
 				lip_start_dir = dir
@@ -205,7 +205,7 @@ func _player_state():
 				path_dir = _get_path_dir(curve_tangent, 0.1)
 				path_vel = velocity.project(curve_tangent * Vector3(1,0,1)).length() * path_dir
 				print(path_vel)
-				var dir = curve_tangent.cross(Vector3(0,1,0))
+				var dir : Vector3 = curve_tangent.cross(Vector3(0,1,0))
 				if(xform.basis.y.dot(dir) > 0):
 					pipe_snap_flip = true
 				else:
@@ -242,15 +242,15 @@ func _surface_check():
 
 
 func _get_path_tangent(_path: Path3D, _offset: float): #returns the curve tangent
-	var _lastOffset = _offset + 0.01
-	var _curvePos = _path.curve.sample_baked(_offset, true)
-	var _lastCurvePos = _path.curve.sample_baked(_lastOffset, true)
-	var _tangent = (_curvePos - _lastCurvePos).normalized()
+	var _lastOffset : float = _offset + 0.01
+	var _curvePos : Vector3 = _path.curve.sample_baked(_offset, true)
+	var _lastCurvePos : Vector3 = _path.curve.sample_baked(_lastOffset, true)
+	var _tangent : Vector3 = (_curvePos - _lastCurvePos).normalized()
 	return _tangent
 	
 
 func _get_path_dir(_tangent: Vector3, _treshold): #direction along curve based on start pos
-	var _pathDir = _tangent.dot(velocity.normalized())
+	var _pathDir : float = _tangent.dot(velocity.normalized())
 	if(_pathDir > _treshold):
 		return  -1
 	if(_pathDir < -_treshold):
@@ -375,17 +375,17 @@ func _animation_handler(delta):
 
 
 func _kill_orthogonal_velocity(_xForm : Transform3D, _vel: Vector3): 	#remove orthogonal component of velocity
-	var _fwdVel = _xForm.basis.z * _vel.dot(_xForm.basis.z)
-	var _ortVel = _xForm.basis.x * _vel.dot(_xForm.basis.x)
-	var _upVel = _xForm.basis.y  * _vel.dot(_xForm.basis.y)
-	var _velocity = _fwdVel + _ortVel * 0.1 + _upVel
+	var _fwdVel : Vector3 = _xForm.basis.z * _vel.dot(_xForm.basis.z)
+	var _ortVel : Vector3 = _xForm.basis.x * _vel.dot(_xForm.basis.x)
+	var _upVel : Vector3 = _xForm.basis.y  * _vel.dot(_xForm.basis.y)
+	var _velocity :Vector3 = _fwdVel + _ortVel * 0.1 + _upVel
 	return _velocity
 
 
 func _kill_pipe_orthogonal_velocity(_vel: Vector3, _tangent: Vector3):
-	var _newVel = _vel.dot(_tangent) * _tangent
+	var _newVel : Vector3 = _vel.dot(_tangent) * _tangent
 	_newVel.y = _vel.y
-	var _velocity = _newVel
+	var _velocity : Vector3 = _newVel
 	return _velocity
 
 
@@ -442,8 +442,8 @@ func _pipe_snap_movement(delta): 	#movement while snapped to a pipe
 
 
 func _pipe_snap_up_dir(_curveTangent): #calculate upvector while snapped to a pipe
-	var _newUpDir = Vector3.UP.cross(_curveTangent)
-	var _last_up_dir = last_up_dir
+	var _newUpDir : Vector3 = Vector3.UP.cross(_curveTangent)
+	var _last_up_dir : Vector3 = last_up_dir
 	if pipe_snap_flip:
 		_newUpDir *= -1
 	if(_newUpDir != Vector3.ZERO):
@@ -503,8 +503,8 @@ func _lip_movement(delta):
 func _randomize_balance():
 	balance_time = 1.0
 	balance_angle = 0.0
-	var rand = randf()
-	if (rand >= 0.5):
+	var _rand : float  = randf()
+	if (_rand >= 0.5):
 		balance_dir = 1
 	else:
 		balance_dir = -1
@@ -518,7 +518,7 @@ func _init_player():
 func _check_reverse_motion():
 	if _forward_velocity().length() < 1.0:
 		return
-	var revertCheck = velocity.normalized().dot(xform.basis.z)
+	var revertCheck : float = velocity.normalized().dot(xform.basis.z)
 	if revertCheck < 0:
 		_revert_motion()
 
@@ -555,8 +555,8 @@ func _forward_velocity():
 	
 
 func _raycast(_from: Vector3, _dir: Vector3, _len: float):
-	var _spaceState = get_world_3d().direct_space_state
-	var _query = PhysicsRayQueryParameters3D.create(_from, _from + _dir * _len)
+	var _spaceState : PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var _query : PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(_from, _from + _dir * _len)
 	_query.exclude = [self]
 	var _col = _spaceState.intersect_ray(_query)
 	return _col
