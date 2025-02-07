@@ -1,16 +1,14 @@
-[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://bir44wjxvcs1h"]
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://y3h168m6edo"]
 
-[ext_resource type="Texture2D" uid="uid://cunlykwgnkh8w" path="res://Assets/Characters/Textures/T_sneaker_diffuse.jpg" id="1_2dm4n"]
+[ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/M_colorable.tres" id="1_c7ct3"]
+[ext_resource type="Texture2D" uid="uid://bisy5bqwnq31x" path="res://Assets/Characters/Textures/T_sneaker_mask.png" id="2_e24ub"]
 [ext_resource type="Texture2D" uid="uid://bqv0blspuipl1" path="res://Assets/Characters/Textures/T_sneaker_normal.jpg" id="2_he5q1"]
 
 [resource]
-resource_name = "M_shoe_sneakers"
-cull_mode = 2
-vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("1_2dm4n")
-roughness = 0.5
-normal_enabled = true
-normal_texture = ExtResource("2_he5q1")
-rim_enabled = true
-rim = 0.25
-texture_filter = 0
+render_priority = 0
+shader = ExtResource("1_c7ct3")
+shader_parameter/base_color = Color(0.24898, 0.258176, 0.255931, 1)
+shader_parameter/accent_color = Color(0.208746, 0.238907, 0.224842, 1)
+shader_parameter/detail_color = Color(0.590232, 0.646461, 0.735239, 1)
+shader_parameter/mask = ExtResource("2_e24ub")
+shader_parameter/normal = ExtResource("2_he5q1")

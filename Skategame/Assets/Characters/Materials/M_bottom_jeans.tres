@@ -1,16 +1,16 @@
-[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://xk5hv6vt6r1l"]
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bglopq75lqird"]
 
-[ext_resource type="Texture2D" uid="uid://dpc6ksr5x1bmd" path="res://Assets/Characters/Textures/T_jeans_color.jpg" id="1_msdtt"]
+[ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/M_colorable.tres" id="1_wltfj"]
 [ext_resource type="Texture2D" uid="uid://1hnvdhanfnxf" path="res://Assets/Characters/Textures/T_jeans_normal.jpg" id="2_6hr7c"]
+[ext_resource type="Texture2D" uid="uid://dakw67e5op6em" path="res://Assets/Characters/Textures/T_jeans_mask.png" id="2_yhr5k"]
+[ext_resource type="Texture2D" uid="uid://bvkjigvu23tgw" path="res://Assets/Characters/Textures/T_jeans_orm.png" id="4_lbi6g"]
 
 [resource]
-resource_name = "M_bottom_jeans"
-cull_mode = 2
-vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("1_msdtt")
-roughness = 0.93
-normal_enabled = true
-normal_texture = ExtResource("2_6hr7c")
-rim_enabled = true
-rim = 0.25
-texture_filter = 0
+render_priority = 0
+shader = ExtResource("1_wltfj")
+shader_parameter/base_color = Color(0.59, 0.59, 0.59, 1)
+shader_parameter/accent_color = Color(1, 1, 1, 1)
+shader_parameter/detail_color = Color(0, 0, 1, 1)
+shader_parameter/mask = ExtResource("2_yhr5k")
+shader_parameter/orm = ExtResource("4_lbi6g")
+shader_parameter/normal = ExtResource("2_6hr7c")

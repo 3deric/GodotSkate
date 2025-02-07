@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://c872jujh02yoa" path="res://Assets/Characters/Textures/T_skateboard_color.png" id="1_a5bk4"]
 [ext_resource type="Texture2D" uid="uid://bxkiqhxt4swar" path="res://Assets/Characters/Textures/T_skateboard_metal.jpg" id="2_3tqs7"]
-[ext_resource type="Texture2D" uid="uid://d1moyi0126ioj" path="res://Assets/Characters/Textures/T_Skateboard_Normal.jpg" id="3_7erii"]
+[ext_resource type="Texture2D" uid="uid://d1moyi0126ioj" path="res://Assets/Characters/Textures/T_Skateboard_normal.jpg" id="3_7erii"]
 
 [resource]
 resource_name = "M_skateboard"

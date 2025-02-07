@@ -1,16 +1,16 @@
-[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://d1nbjosj462ay"]
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://mddnxeq6hgdi"]
 
-[ext_resource type="Texture2D" uid="uid://h8y71a0mdctc" path="res://Assets/Characters/Textures/T_hoodie_color.jpg" id="1_hd1sa"]
+[ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/M_colorable.tres" id="1_886ys"]
+[ext_resource type="Texture2D" uid="uid://bv0plg18wfd78" path="res://Assets/Characters/Textures/T_hoodie_mask.png" id="2_51pwq"]
 [ext_resource type="Texture2D" uid="uid://c2i2gpr2mgra8" path="res://Assets/Characters/Textures/T_hoodie_normal.jpg" id="2_o4a62"]
+[ext_resource type="Texture2D" uid="uid://cdjwgfnoiooy2" path="res://Assets/Characters/Textures/T_hoodie_orm.png" id="4_hos3l"]
 
 [resource]
-resource_name = "M_top_hoodie"
-cull_mode = 2
-vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("1_hd1sa")
-roughness = 0.825514
-normal_enabled = true
-normal_texture = ExtResource("2_o4a62")
-rim_enabled = true
-rim = 0.25
-texture_filter = 0
+render_priority = 0
+shader = ExtResource("1_886ys")
+shader_parameter/base_color = Color(0.1298, 0.30621, 0.59, 1)
+shader_parameter/accent_color = Color(0.129412, 0.305882, 0.588235, 1)
+shader_parameter/detail_color = Color(0.902614, 0.899322, 0.978432, 1)
+shader_parameter/mask = ExtResource("2_51pwq")
+shader_parameter/orm = ExtResource("4_hos3l")
+shader_parameter/normal = ExtResource("2_o4a62")
