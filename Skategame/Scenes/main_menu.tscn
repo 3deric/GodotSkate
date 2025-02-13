@@ -1,0 +1,143 @@
+[gd_scene load_steps=7 format=3 uid="uid://5a5g27f1gxaf"]
+
+[ext_resource type="Theme" uid="uid://d1fstk41sttfx" path="res://Assets/UI/main_theme.tres" id="1_2521k"]
+[ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_id4b8"]
+[ext_resource type="Texture2D" uid="uid://dcs8asua33q55" path="res://Assets/UI/button1.png" id="2_ek6qp"]
+[ext_resource type="Texture2D" uid="uid://vbs8lnvtr61x" path="res://Assets/UI/button2.png" id="4_ububm"]
+[ext_resource type="Texture2D" uid="uid://3j4q2bybp527" path="res://Assets/UI/button3.png" id="5_6upub"]
+[ext_resource type="Texture2D" uid="uid://5f62gku2qjgt" path="res://Assets/UI/buttonA.png" id="6_igmhg"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme = ExtResource("1_2521k")
+script = ExtResource("1_id4b8")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_2521k")
+
+[node name="BoxContainer" type="BoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_2521k")
+
+[node name="TabContainer" type="TabContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_2521k")
+tab_alignment = 1
+current_tab = 2
+
+[node name="Body" type="TabBar" parent="HBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("1_2521k")
+metadata/_tab_index = 0
+
+[node name="Hair" type="TabBar" parent="HBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("1_2521k")
+metadata/_tab_index = 1
+
+[node name="Top" type="TabBar" parent="HBoxContainer/TabContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+metadata/_tab_index = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/TabContainer/Top"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_2521k")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/TabContainer/Top/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+
+[node name="LabelPrimary" type="Label" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_2521k")
+text = "Primary"
+
+[node name="ColorPickerButtonPrimary" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_2521k")
+text = "Primary"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/TabContainer/Top/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+
+[node name="LabelSecondary" type="Label" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_2521k")
+text = "Secondary"
+
+[node name="ColorPickerButtonSecondary" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_2521k")
+text = "Accent"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/TabContainer/Top/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+
+[node name="LabelSecondary" type="Label" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_2521k")
+text = "Image"
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "Deck 1"
+popup/item_0/icon = ExtResource("2_ek6qp")
+popup/item_1/text = "Deck 2"
+popup/item_1/icon = ExtResource("4_ububm")
+popup/item_1/id = 1
+popup/item_2/text = "Deck 3"
+popup/item_2/icon = ExtResource("5_6upub")
+popup/item_2/id = 2
+popup/item_3/text = "Deck 4"
+popup/item_3/icon = ExtResource("6_igmhg")
+popup/item_3/id = 3
+
+[node name="Pants" type="TabBar" parent="HBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("1_2521k")
+metadata/_tab_index = 3
+
+[node name="Shoes" type="TabBar" parent="HBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("1_2521k")
+metadata/_tab_index = 4
+
+[node name="Board" type="TabBar" parent="HBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("1_2521k")
+metadata/_tab_index = 5
