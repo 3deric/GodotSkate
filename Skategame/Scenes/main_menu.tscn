@@ -1,11 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://5a5g27f1gxaf"]
+[gd_scene load_steps=3 format=3 uid="uid://5a5g27f1gxaf"]
 
 [ext_resource type="Theme" uid="uid://d1fstk41sttfx" path="res://Assets/UI/main_theme.tres" id="1_2521k"]
 [ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_id4b8"]
-[ext_resource type="Texture2D" uid="uid://dcs8asua33q55" path="res://Assets/UI/button1.png" id="2_ek6qp"]
-[ext_resource type="Texture2D" uid="uid://vbs8lnvtr61x" path="res://Assets/UI/button2.png" id="4_ububm"]
-[ext_resource type="Texture2D" uid="uid://3j4q2bybp527" path="res://Assets/UI/button3.png" id="5_6upub"]
-[ext_resource type="Texture2D" uid="uid://5f62gku2qjgt" path="res://Assets/UI/buttonA.png" id="6_igmhg"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -38,106 +34,238 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_2521k")
 tab_alignment = 1
-current_tab = 2
+current_tab = 1
 
-[node name="Body" type="TabBar" parent="HBoxContainer/TabContainer"]
+[node name="Character" type="TabBar" parent="HBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
 theme = ExtResource("1_2521k")
 metadata/_tab_index = 0
 
-[node name="Hair" type="TabBar" parent="HBoxContainer/TabContainer"]
-visible = false
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/TabContainer/Character"]
+layout_mode = 2
+offset_right = 478.0
+offset_bottom = 509.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_2521k")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/TabContainer/Character/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_2521k")
+
+[node name="Label_Basic" type="Label" parent="HBoxContainer/TabContainer/Character/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Body"
+
+[node name="Check_Type" type="CheckButton" parent="HBoxContainer/TabContainer/Character/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Character Type"
+
+[node name="ColorPickerButton_Skin" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Character/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Skin Colour"
+
+[node name="Label_Hair" type="Label" parent="HBoxContainer/TabContainer/Character/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Hair"
+
+[node name="OptionButton_Hair" type="OptionButton" parent="HBoxContainer/TabContainer/Character/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+selected = 0
+item_count = 3
+popup/item_0/text = "Style 1"
+popup/item_1/text = "Style 2"
+popup/item_1/id = 1
+popup/item_2/text = "Style 3"
+popup/item_2/id = 2
+
+[node name="ColorPickerButton_Hair" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Character/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Hair Colour"
+
+[node name="Clothes" type="TabBar" parent="HBoxContainer/TabContainer"]
 layout_mode = 2
 theme = ExtResource("1_2521k")
 metadata/_tab_index = 1
 
-[node name="Top" type="TabBar" parent="HBoxContainer/TabContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer/TabContainer/Clothes"]
 layout_mode = 2
-theme = ExtResource("1_2521k")
-metadata/_tab_index = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/TabContainer/Top"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 478.0
+offset_bottom = 509.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource("1_2521k")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/TabContainer/Top/VBoxContainer"]
-layout_mode = 2
-theme = ExtResource("1_2521k")
-
-[node name="LabelPrimary" type="Label" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_2521k")
-text = "Primary"
-
-[node name="ColorPickerButtonPrimary" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_2521k")
-text = "Primary"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/TabContainer/Top/VBoxContainer"]
-layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_2521k")
 
-[node name="LabelSecondary" type="Label" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_2521k")
-text = "Secondary"
-
-[node name="ColorPickerButtonSecondary" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_2521k")
-text = "Accent"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/TabContainer/Top/VBoxContainer"]
+[node name="Label_Headwear" type="Label" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+visible = false
 layout_mode = 2
 theme = ExtResource("1_2521k")
+text = "Headwear"
 
-[node name="LabelSecondary" type="Label" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer3"]
+[node name="OptionButton_Hair" type="OptionButton" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+visible = false
 layout_mode = 2
-size_flags_horizontal = 3
 theme = ExtResource("1_2521k")
-text = "Image"
-
-[node name="OptionButton" type="OptionButton" parent="HBoxContainer/TabContainer/Top/VBoxContainer/HBoxContainer3"]
-layout_mode = 2
 selected = 0
-item_count = 4
-popup/item_0/text = "Deck 1"
-popup/item_0/icon = ExtResource("2_ek6qp")
-popup/item_1/text = "Deck 2"
-popup/item_1/icon = ExtResource("4_ububm")
+item_count = 3
+popup/item_0/text = "Nothing"
+popup/item_1/text = "Style 1"
 popup/item_1/id = 1
-popup/item_2/text = "Deck 3"
-popup/item_2/icon = ExtResource("5_6upub")
+popup/item_2/text = "Style 2"
 popup/item_2/id = 2
-popup/item_3/text = "Deck 4"
-popup/item_3/icon = ExtResource("6_igmhg")
-popup/item_3/id = 3
 
-[node name="Pants" type="TabBar" parent="HBoxContainer/TabContainer"]
+[node name="ColorPickerButton_Headwear" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
 visible = false
 layout_mode = 2
 theme = ExtResource("1_2521k")
-metadata/_tab_index = 3
+text = "Headwear Colour"
 
-[node name="Shoes" type="TabBar" parent="HBoxContainer/TabContainer"]
-visible = false
+[node name="Label_Top" type="Label" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_2521k")
-metadata/_tab_index = 4
+text = "Top"
+
+[node name="OptionButton_Top" type="OptionButton" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+selected = 0
+item_count = 3
+popup/item_0/text = "Top 1"
+popup/item_1/text = "Top 2"
+popup/item_1/id = 1
+popup/item_2/text = "Top 3"
+popup/item_2/id = 2
+
+[node name="ColorPickerButton_TopBase" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Hair Colour"
+
+[node name="ColorPickerButton_TopAccent" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Hair Colour"
+
+[node name="OptionButton_Top2" type="OptionButton" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+selected = 0
+item_count = 3
+popup/item_0/text = "No Decal"
+popup/item_1/text = "Decal 1"
+popup/item_1/id = 1
+popup/item_2/text = "Decal 2"
+popup/item_2/id = 2
+
+[node name="Label_Bottom" type="Label" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Bottom"
+
+[node name="OptionButton_Top3" type="OptionButton" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+selected = 0
+item_count = 3
+popup/item_0/text = "Bottom 1"
+popup/item_1/text = "Bottom 2"
+popup/item_1/id = 1
+popup/item_2/text = "Bottom 3"
+popup/item_2/id = 2
+
+[node name="ColorPickerButton_BottomBase" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Hair Colour"
+
+[node name="Label_Shoes" type="Label" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Shoes"
+
+[node name="OptionButton_Shoes" type="OptionButton" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+selected = 0
+item_count = 3
+popup/item_0/text = "Shoes 1"
+popup/item_1/text = "Shoes 2"
+popup/item_1/id = 1
+popup/item_2/text = "Shoes 3"
+popup/item_2/id = 2
+
+[node name="ColorPickerButton_ShoesBase" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Shoes Base"
+
+[node name="ColorPickerButton_ShoesAccent" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Clothes/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Shoes Accent"
 
 [node name="Board" type="TabBar" parent="HBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
 theme = ExtResource("1_2521k")
-metadata/_tab_index = 5
+metadata/_tab_index = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer/TabContainer/Board"]
+layout_mode = 2
+offset_right = 478.0
+offset_bottom = 509.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_2521k")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/TabContainer/Board/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_2521k")
+
+[node name="Label_Deck" type="Label" parent="HBoxContainer/TabContainer/Board/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Deck"
+
+[node name="OptionButton_Hair" type="OptionButton" parent="HBoxContainer/TabContainer/Board/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+selected = 0
+item_count = 3
+popup/item_0/text = "Basic"
+popup/item_0/id = 2
+popup/item_1/text = "Style 1"
+popup/item_2/text = "Style 2"
+popup/item_2/id = 1
+
+[node name="Label_Wheels" type="Label" parent="HBoxContainer/TabContainer/Board/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Colours"
+
+[node name="ColorPickerButton_Wheels" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Board/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Wheels Colour"
+
+[node name="ColorPickerButton_Plastic" type="ColorPickerButton" parent="HBoxContainer/TabContainer/Board/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2521k")
+text = "Plastic Colour"
