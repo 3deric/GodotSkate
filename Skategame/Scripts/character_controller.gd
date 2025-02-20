@@ -29,7 +29,7 @@ var ray_forward = {}
 var ray_ground = {}
 
 #global object references
-@onready var Char : Node3D = get_node('godot_rig')
+@onready var Char : Node3D = get_node('Char')
 @onready var Anim : AnimationTree = get_node('AnimationTree')
 @onready var Area: Area3D = get_node('Area3D')
 @onready var Collision: CollisionShape3D = get_node('CollisionShape3D')
@@ -71,7 +71,7 @@ var curve_tangent = Vector3.ZERO
 func _ready():
 	_init_player()
 	_reset_player(Vector3(-3.149,6.868,18.256) + Vector3.UP * 5.0)
-
+	
 
 func _process(delta):
 	_input_handler()
