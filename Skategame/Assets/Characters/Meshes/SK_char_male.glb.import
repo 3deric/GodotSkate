@@ -25222,27 +25222,27 @@ _subresources={
 },
 "materials": {
 "M_bottom_jeans": {
-"use_external/enabled": false,
+"use_external/enabled": true,
 "use_external/path": "res://Assets/Characters/Materials/M_bottom_jeans.tres"
 },
 "M_char_male_body": {
-"use_external/enabled": false,
+"use_external/enabled": true,
 "use_external/path": "res://Assets/Characters/Materials/M_char_male_body.tres"
 },
 "M_char_male_hair_messy": {
-"use_external/enabled": false,
-"use_external/path": "res://Assets/Characters/Materials/M_char_male_hair_messy.tres"
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Characters/Materials/M_hair_messy.tres"
 },
 "M_shoe_sneakers": {
-"use_external/enabled": false,
+"use_external/enabled": true,
 "use_external/path": "res://Assets/Characters/Materials/M_shoe_sneakers.tres"
 },
 "M_skateboard": {
-"use_external/enabled": false,
+"use_external/enabled": true,
 "use_external/path": "res://Assets/Characters/Materials/M_skateboard.tres"
 },
 "M_top_hoodie": {
-"use_external/enabled": false,
+"use_external/enabled": true,
 "use_external/path": "res://Assets/Characters/Materials/M_top_hoodie.tres"
 }
 }

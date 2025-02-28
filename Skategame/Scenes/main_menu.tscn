@@ -1,0 +1,355 @@
+[gd_scene load_steps=2 format=3 uid="uid://ydofbmuhla2w"]
+
+[ext_resource type="Script" path="res://Scripts/customization_menu.gd" id="1_i13cm"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i13cm")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 2
+
+[node name="Body" type="TabBar" parent="MarginContainer/HBoxContainer/Panel/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Clothes" type="TabBar" parent="MarginContainer/HBoxContainer/Panel/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer"]
+layout_mode = 2
+
+[node name="Label_Top" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Top"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Base Colour"
+
+[node name="ColorPickerButton_Top_Base" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Accent Colour"
+
+[node name="ColorPickerButton_Top_Accent" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Detail Colour"
+
+[node name="ColorPickerButton_Top_Detail" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[node name="Label_Pants" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Pants"
+
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Base Colour"
+
+[node name="ColorPickerButton_Bottom_Base" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[node name="MarginContainer5" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer5"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Accent Colour"
+
+[node name="ColorPickerButton_Bottom_Accent" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[node name="MarginContainer6" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer6"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Detail Colour"
+
+[node name="ColorPickerButton_Bottom_Detail" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[node name="Label_Shoes" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Shoes"
+
+[node name="MarginContainer7" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer7"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Base Colour"
+
+[node name="ColorPickerButton_Shoes_Base" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[node name="MarginContainer8" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer8"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Accent Colour"
+
+[node name="ColorPickerButton_Shoes_Accent" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[node name="MarginContainer9" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer9"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Detail Colour"
+
+[node name="ColorPickerButton_Shoes_Detail" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[node name="Board" type="TabBar" parent="MarginContainer/HBoxContainer/Panel/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer"]
+layout_mode = 2
+
+[node name="Label_Deck" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Deck"
+
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Deck Style"
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 1
+popup/item_0/text = "Default"
+
+[node name="Label_Colours" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Colours"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Wheel Colour"
+
+[node name="ColorPickerButton_Wheels" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Details Colour"
+
+[node name="ColorPickerButton_Details" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Metal Colour"
+
+[node name="ColorPickerButton_Metal" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colour"
+
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Top_Base" to="." method="_on_color_picker_button_top_base_color_changed"]
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Top_Accent" to="." method="_on_color_picker_button_top_accent_color_changed"]
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Top_Detail" to="." method="_on_color_picker_button_top_detail_color_changed"]
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/ColorPickerButton_Bottom_Base" to="." method="_on_color_picker_button_bottom_base_color_changed"]
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer/ColorPickerButton_Bottom_Accent" to="." method="_on_color_picker_button_bottom_accent_color_changed"]
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer/ColorPickerButton_Bottom_Detail" to="." method="_on_color_picker_button_bottom_detail_color_changed"]
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer/ColorPickerButton_Shoes_Base" to="." method="_on_color_picker_button_shoes_base_color_changed"]
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer/ColorPickerButton_Shoes_Accent" to="." method="_on_color_picker_button_shoes_accent_color_changed"]
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer/ColorPickerButton_Shoes_Detail" to="." method="_on_color_picker_button_shoes_detail_color_changed"]
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Wheels" to="." method="_on_color_picker_button_wheels_color_changed"]
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Details" to="." method="_on_color_picker_button_details_color_changed"]
+[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Metal" to="." method="_on_color_picker_button_metal_color_changed"]

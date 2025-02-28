@@ -1,16 +1,21 @@
-[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://mddnxeq6hgdi"]
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://mddnxeq6hgdi"]
 
-[ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/M_colorable.tres" id="1_886ys"]
-[ext_resource type="Texture2D" uid="uid://bv0plg18wfd78" path="res://Assets/Characters/Textures/T_hoodie_mask.png" id="2_51pwq"]
-[ext_resource type="Texture2D" uid="uid://c2i2gpr2mgra8" path="res://Assets/Characters/Textures/T_hoodie_normal.jpg" id="2_o4a62"]
-[ext_resource type="Texture2D" uid="uid://cdjwgfnoiooy2" path="res://Assets/Characters/Textures/T_hoodie_orm.png" id="4_hos3l"]
+[ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_ww255"]
+[ext_resource type="Texture2D" uid="uid://5edyhf7cbq0v" path="res://Assets/Characters/Textures/T_hoodie_normal.png" id="2_21h0y"]
+[ext_resource type="Texture2D" uid="uid://dbqup1dh3n4cu" path="res://Assets/Characters/Textures/T_hoodie_mask.png" id="2_51pwq"]
+[ext_resource type="Texture2D" uid="uid://kt8rknx0tae5" path="res://Assets/Characters/Textures/T_decal_captain_bavaria.png" id="2_i4qyd"]
+[ext_resource type="Texture2D" uid="uid://4ytfvpt1xkeu" path="res://Assets/Characters/Textures/T_hoodie_orm.png" id="4_hos3l"]
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_886ys")
-shader_parameter/base_color = Color(0.1298, 0.30621, 0.59, 1)
-shader_parameter/accent_color = Color(0.129412, 0.305882, 0.588235, 1)
-shader_parameter/detail_color = Color(0.902614, 0.899322, 0.978432, 1)
+shader = ExtResource("1_ww255")
+shader_parameter/base_color = Color(0.198988, 0.322279, 0.533544, 1)
+shader_parameter/accent_color = Color(0.2, 0.321569, 0.533333, 1)
+shader_parameter/detail_color = Color(0.806717, 0.774369, 0.782551, 1)
+shader_parameter/Roughness_Power = 1.0
+shader_parameter/Rim = 0.25
+shader_parameter/Rim_Tint = 0.25
 shader_parameter/mask = ExtResource("2_51pwq")
+shader_parameter/decal = ExtResource("2_i4qyd")
 shader_parameter/orm = ExtResource("4_hos3l")
-shader_parameter/normal = ExtResource("2_o4a62")
+shader_parameter/normal = ExtResource("2_21h0y")

@@ -1,18 +1,21 @@
-[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://bl3j2l4pu4k6v"]
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://j71olv18wya8"]
 
-[ext_resource type="Texture2D" uid="uid://c872jujh02yoa" path="res://Assets/Characters/Textures/T_skateboard_color.png" id="1_a5bk4"]
-[ext_resource type="Texture2D" uid="uid://bxkiqhxt4swar" path="res://Assets/Characters/Textures/T_skateboard_metal.jpg" id="2_3tqs7"]
-[ext_resource type="Texture2D" uid="uid://d1moyi0126ioj" path="res://Assets/Characters/Textures/T_Skateboard_normal.jpg" id="3_7erii"]
+[ext_resource type="Shader" uid="uid://cts04l1g8hx1b" path="res://Assets/Characters/Materials/Master/M_board_colorable.tres" id="1_g3po0"]
+[ext_resource type="Texture2D" uid="uid://qai6gpj541qk" path="res://Assets/Characters/Textures/T_skateboard_deck.png" id="2_gjjlk"]
+[ext_resource type="Texture2D" uid="uid://ck6yc18lquv0l" path="res://Assets/Characters/Textures/T_skateboard_mask.png" id="3_kmsrh"]
+[ext_resource type="Texture2D" uid="uid://cdruf38q7ictm" path="res://Assets/Characters/Textures/T_skateboard_orm.png" id="4_55a4h"]
+[ext_resource type="Texture2D" uid="uid://1bpclabfybj0" path="res://Assets/Characters/Textures/T_skateboard_normal.png" id="5_o31pt"]
 
 [resource]
-resource_name = "M_skateboard"
-cull_mode = 2
-albedo_texture = ExtResource("1_a5bk4")
-metallic = 1.0
-metallic_texture = ExtResource("2_3tqs7")
-metallic_texture_channel = 2
-roughness_texture_channel = 1
-normal_enabled = true
-normal_texture = ExtResource("3_7erii")
-rim = 0.25
-texture_filter = 0
+render_priority = 0
+shader = ExtResource("1_g3po0")
+shader_parameter/plastic_color = Color(0.815585, 0.415245, 0.139985, 1)
+shader_parameter/wheel_color = Color(0.754683, 0.644494, 0.48216, 1)
+shader_parameter/metal_color = Color(0.699653, 0.699653, 0.699653, 1)
+shader_parameter/Roughness_Power = 1.0
+shader_parameter/Rim = 0.75
+shader_parameter/Rim_Tint = 0.5
+shader_parameter/mask = ExtResource("3_kmsrh")
+shader_parameter/orm = ExtResource("4_55a4h")
+shader_parameter/decal = ExtResource("2_gjjlk")
+shader_parameter/normal = ExtResource("5_o31pt")
