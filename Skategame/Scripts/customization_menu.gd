@@ -12,6 +12,8 @@ extends Control
 @onready var color_picker_button_wheels: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Wheels
 @onready var color_picker_button_details: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Details
 @onready var color_picker_button_metal: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Metal
+@onready var option_button_deck: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/OptionButton_Deck
+@onready var option_button_top_decal: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer/OptionButton_Top_Decal
 
 
 
@@ -22,6 +24,14 @@ func _ready() -> void:
 
 func _setup_options() -> void:
 	var data = CustomizationManager.character_data
+	option_button_deck.clear()
+	option_button_deck.add_item("Wood", CharacterData.BoardDecal.Bare)
+	option_button_deck.add_item("Style 1", CharacterData.BoardDecal.Style1)
+	option_button_deck.add_item("Style 2", CharacterData.BoardDecal.Style2)
+	option_button_top_decal.clear()
+	option_button_top_decal.add_item("Empty", CharacterData.TopDecal.Bare)
+	option_button_top_decal.add_item("Style 1", CharacterData.TopDecal.Style1)
+	option_button_top_decal.add_item("Style 2", CharacterData.TopDecal.Style2)
 	color_picker_button_top_base.color = data.top_base_color
 	color_picker_button_top_accent.color = data.top_accent_color
 	color_picker_button_top_detail.color = data.top_detail_color
@@ -34,7 +44,8 @@ func _setup_options() -> void:
 	color_picker_button_wheels.color = data.board_wheels_color
 	color_picker_button_details.color = data.board_accent_color
 	color_picker_button_metal.color = data.board_metal_color
-	
+	option_button_deck.selected = data.board_decal
+	option_button_top_decal.selected = data.top_decal
 	
 func _update_ui_from_data() -> void:
 	var data = CustomizationManager.character_data
@@ -50,7 +61,9 @@ func _update_ui_from_data() -> void:
 	color_picker_button_wheels.color = data.board_wheels_color
 	color_picker_button_details.color = data.board_accent_color
 	color_picker_button_metal.color = data.board_metal_color
-	
+	option_button_deck.selected = data.board_decal
+	option_button_top_decal.selected = data.top_decal
+		
 
 func _on_color_picker_button_top_base_color_changed(color: Color) -> void:
 	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'base', color)
@@ -99,3 +112,11 @@ func _on_color_picker_button_details_color_changed(color: Color) -> void:
 
 func _on_color_picker_button_metal_color_changed(color: Color) -> void:
 	CustomizationManager.update_color(CharacterData.CharacterPart.Board, 'metal', color)
+
+
+func _on_option_button_deck_item_selected(index: int) -> void:
+	CustomizationManager.update_decal(CharacterData.CharacterPart.Board, index)
+
+
+func _on_option_button_top_decal_item_selected(index: int) -> void:
+	CustomizationManager.update_decal(CharacterData.CharacterPart.Top, index)

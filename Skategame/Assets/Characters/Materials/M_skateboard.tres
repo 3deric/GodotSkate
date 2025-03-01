@@ -9,8 +9,8 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_g3po0")
-shader_parameter/plastic_color = Color(0.815585, 0.415245, 0.139985, 1)
-shader_parameter/wheel_color = Color(0.754683, 0.644494, 0.48216, 1)
+shader_parameter/accent_color = Color(0.354153, 0.974068, 0.449947, 1)
+shader_parameter/wheels_color = Color(0.758093, 0.720679, 0.470692, 1)
 shader_parameter/metal_color = Color(0.699653, 0.699653, 0.699653, 1)
 shader_parameter/Roughness_Power = 1.0
 shader_parameter/Rim = 0.75

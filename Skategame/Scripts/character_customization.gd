@@ -20,6 +20,8 @@ func _init() -> void:
 func _connect_signals() -> void:
 	if not CustomizationManager.color_updated.is_connected(_on_color_updated):
 		CustomizationManager.color_updated.connect(_on_color_updated)
+	if not CustomizationManager.decal_updated.is_connected(_on_decal_updated):
+		CustomizationManager.decal_updated.connect(_on_decal_updated)
 	if not CustomizationManager.customization_updated.is_connected(_on_customization_updated):
 		CustomizationManager.customization_updated.connect(_on_customization_updated)
 	
@@ -59,6 +61,11 @@ func _on_color_updated(part: CharacterData.CharacterPart, sub: String, color :Co
 				'metal':
 					_update_board_metal_color(color)
 
+
+func _on_decal_updated(part: CharacterData.CharacterPart, index :int) -> void:
+	pass
+
+
 func _on_customization_updated() ->void:
 	_update_from_data()
 
@@ -77,8 +84,9 @@ func _update_from_data() -> void:
 	_update_board_wheels_color(data.board_wheels_color)
 	_update_board_accent_color(data.board_accent_color)
 	_update_board_metal_color(data.board_metal_color)
+	_update_board_decal(data.board_decal)
+	_update_top_decal(data.top_decal)
 	
-
 #Top
 
 func _update_top_base_color(color: Color) -> void:
@@ -130,3 +138,9 @@ func _update_board_accent_color(color: Color) -> void:
 
 func _update_board_metal_color(color: Color) -> void:
 	board_mesh.get_active_material(0).set_shader_parameter('metal_color', color)
+
+func _update_board_decal(index: int) -> void:
+	board_mesh.get_active_material(0).set_shader_parameter('decal', CustomizationManager.board_decals[index])
+
+func _update_top_decal(index: int) -> void:
+	top_mesh.get_active_material(0).set_shader_parameter('decal', CustomizationManager.top_decals[index])

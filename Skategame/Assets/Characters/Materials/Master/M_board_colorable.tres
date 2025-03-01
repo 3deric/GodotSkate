@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=32 format=3 uid="uid://cts04l1g8hx1b"]
+[gd_resource type="VisualShader" load_steps=34 format=3 uid="uid://cts04l1g8hx1b"]
 
 [ext_resource type="Texture2D" uid="uid://jnqaktc20tx" path="res://Assets/Characters/Textures/T_skateboard_color.png" id="1_p570h"]
 
@@ -98,6 +98,11 @@ parameter_name = "Roughness_Power"
 default_value_enabled = true
 default_value = 1.0
 
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_8qsou"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeReroute" id="VisualShaderNodeReroute_wpay4"]
+
 [sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_77vdh"]
 parameter_name = "base_color"
 default_value_enabled = true
@@ -195,10 +200,19 @@ void fragment() {
 	vec4 n_out27p0;
 // Texture2D:27
 	n_out27p0 = texture(decal, n_out26p0);
+	float n_out27p4 = n_out27p0.a;
+
+
+// Reroute:36
+	float n_out36p0 = n_out5p0;
+
+
+// FloatOp:35
+	float n_out35p0 = n_out27p4 * n_out36p0;
 
 
 // Mix:29
-	vec3 n_out29p0 = mix(n_out31p0, vec3(n_out27p0.xyz), vec3(n_out5p0));
+	vec3 n_out29p0 = mix(n_out31p0, vec3(n_out27p0.xyz), vec3(n_out35p0));
 
 
 // Reroute:24
@@ -254,7 +268,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-261.607, -158.232)
+graph_offset = Vector2(685.908, -377.774)
 nodes/fragment/0/position = Vector2(2540, 80)
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_hxjkc")
 nodes/fragment/2/position = Vector2(140, 440)
@@ -271,7 +285,7 @@ nodes/fragment/7/position = Vector2(460, 40)
 nodes/fragment/8/node = SubResource("VisualShaderNodeMix_rwhkj")
 nodes/fragment/8/position = Vector2(460, -140)
 nodes/fragment/10/node = SubResource("VisualShaderNodeMix_6v1c0")
-nodes/fragment/10/position = Vector2(940, 60)
+nodes/fragment/10/position = Vector2(1000, 80)
 nodes/fragment/14/node = SubResource("VisualShaderNodeTexture_k6g6a")
 nodes/fragment/14/position = Vector2(1380, 520)
 nodes/fragment/15/node = SubResource("VisualShaderNodeTexture2DParameter_facsu")
@@ -314,4 +328,8 @@ nodes/fragment/33/node = SubResource("VisualShaderNodeFloatOp_rvypp")
 nodes/fragment/33/position = Vector2(2280, 160)
 nodes/fragment/34/node = SubResource("VisualShaderNodeFloatParameter_kipxj")
 nodes/fragment/34/position = Vector2(1980, -180)
-nodes/fragment/connections = PackedInt32Array(3, 0, 5, 0, 5, 1, 8, 2, 6, 0, 8, 1, 8, 0, 10, 0, 7, 0, 10, 1, 15, 0, 3, 2, 16, 0, 2, 2, 17, 0, 14, 2, 2, 0, 18, 0, 18, 0, 21, 0, 18, 1, 22, 0, 18, 2, 23, 0, 14, 0, 25, 0, 25, 0, 0, 9, 20, 0, 27, 2, 26, 0, 27, 0, 28, 0, 0, 12, 29, 0, 24, 0, 27, 0, 29, 1, 5, 0, 29, 2, 30, 0, 8, 0, 19, 0, 0, 11, 18, 2, 31, 2, 32, 0, 31, 1, 10, 0, 31, 0, 5, 2, 10, 2, 21, 0, 0, 6, 31, 0, 29, 0, 24, 0, 0, 0, 23, 0, 0, 2, 34, 0, 33, 1, 22, 0, 33, 0, 33, 0, 0, 3)
+nodes/fragment/35/node = SubResource("VisualShaderNodeFloatOp_8qsou")
+nodes/fragment/35/position = Vector2(1255.11, -294.566)
+nodes/fragment/36/node = SubResource("VisualShaderNodeReroute_wpay4")
+nodes/fragment/36/position = Vector2(902, 79)
+nodes/fragment/connections = PackedInt32Array(3, 0, 5, 0, 5, 1, 8, 2, 6, 0, 8, 1, 8, 0, 10, 0, 7, 0, 10, 1, 15, 0, 3, 2, 16, 0, 2, 2, 17, 0, 14, 2, 2, 0, 18, 0, 18, 0, 21, 0, 18, 1, 22, 0, 18, 2, 23, 0, 14, 0, 25, 0, 25, 0, 0, 9, 20, 0, 27, 2, 26, 0, 27, 0, 28, 0, 0, 12, 29, 0, 24, 0, 27, 0, 29, 1, 30, 0, 8, 0, 19, 0, 0, 11, 18, 2, 31, 2, 32, 0, 31, 1, 10, 0, 31, 0, 5, 2, 10, 2, 21, 0, 0, 6, 31, 0, 29, 0, 24, 0, 0, 0, 23, 0, 0, 2, 34, 0, 33, 1, 22, 0, 33, 0, 33, 0, 0, 3, 27, 4, 35, 0, 5, 0, 36, 0, 36, 0, 35, 1, 35, 0, 29, 2)
