@@ -1,13 +1,9 @@
-[gd_resource type="VisualShader" load_steps=14 format=3 uid="uid://crmwft6kjtx3g"]
-
-[ext_resource type="Texture2D" uid="uid://bp00i6b15xdte" path="res://Assets/Debug/Textures/T_Skateboard_Base_Color.png" id="1_m3ar7"]
-[ext_resource type="Texture2D" uid="uid://ee3782brnq8e" path="res://Assets/Debug/Textures/T_Skateboard_Deck.png" id="1_yoflx"]
+[gd_resource type="VisualShader" load_steps=12 format=3 uid="uid://crmwft6kjtx3g"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_m0066"]
 input_name = "uv"
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_skde6"]
-texture = ExtResource("1_m3ar7")
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_iqvs4"]
 input_name = "color"
@@ -17,7 +13,6 @@ output_port_for_preview = 0
 constant = Color(0.431373, 0.423529, 1, 1)
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_s4m3i"]
-texture = ExtResource("1_yoflx")
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hqj7p"]
 
