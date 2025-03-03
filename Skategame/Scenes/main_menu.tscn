@@ -39,7 +39,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 2
+current_tab = 1
 
 [node name="Body" type="TabBar" parent="MarginContainer/HBoxContainer/Panel/TabContainer"]
 visible = false
@@ -47,7 +47,6 @@ layout_mode = 2
 metadata/_tab_index = 0
 
 [node name="Clothes" type="TabBar" parent="MarginContainer/HBoxContainer/Panel/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -69,6 +68,28 @@ layout_mode = 2
 [node name="Label_Top" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Top"
+
+[node name="MarginContainer10" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer10"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Top Decal"
+
+[node name="OptionButton_Top_Decal" type="OptionButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "Bare"
+popup/item_1/text = "Style 1"
+popup/item_1/id = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -241,6 +262,7 @@ size_flags_horizontal = 10
 text = "Colour"
 
 [node name="Board" type="TabBar" parent="MarginContainer/HBoxContainer/Panel/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
@@ -276,12 +298,14 @@ layout_mode = 2
 size_flags_horizontal = 2
 text = "Deck Style"
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+[node name="OptionButton_Deck" type="OptionButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
-item_count = 1
-popup/item_0/text = "Default"
+item_count = 2
+popup/item_0/text = "Bare"
+popup/item_1/text = "Style 1"
+popup/item_1/id = 1
 
 [node name="Label_Colours" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -341,6 +365,7 @@ layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer/OptionButton_Top_Decal" to="." method="_on_option_button_top_decal_item_selected"]
 [connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Top_Base" to="." method="_on_color_picker_button_top_base_color_changed"]
 [connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Top_Accent" to="." method="_on_color_picker_button_top_accent_color_changed"]
 [connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Top_Detail" to="." method="_on_color_picker_button_top_detail_color_changed"]
@@ -350,6 +375,7 @@ text = "Colour"
 [connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer/ColorPickerButton_Shoes_Base" to="." method="_on_color_picker_button_shoes_base_color_changed"]
 [connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer/ColorPickerButton_Shoes_Accent" to="." method="_on_color_picker_button_shoes_accent_color_changed"]
 [connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer/ColorPickerButton_Shoes_Detail" to="." method="_on_color_picker_button_shoes_detail_color_changed"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/OptionButton_Deck" to="." method="_on_option_button_deck_item_selected"]
 [connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Wheels" to="." method="_on_color_picker_button_wheels_color_changed"]
 [connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Details" to="." method="_on_color_picker_button_details_color_changed"]
 [connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Metal" to="." method="_on_color_picker_button_metal_color_changed"]

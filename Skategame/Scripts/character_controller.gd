@@ -29,6 +29,7 @@ var ray_forward = {}
 var ray_ground = {}
 
 #global object references
+@export var playing : bool = false
 @onready var Char : Node3D = get_node('Char')
 @onready var Anim : AnimationTree = get_node('AnimationTree')
 @onready var Area: Area3D = get_node('Area3D')
@@ -69,11 +70,16 @@ var curve_snap = Vector3.ZERO
 var curve_tangent = Vector3.ZERO
 
 func _ready():
+	if !playing:
+		Anim.set('parameters/conditions/is_setup', true)
+		return
 	_init_player()
 	_reset_player(Vector3(-3.149,6.868,18.256) + Vector3.UP * 5.0)
 	
 
 func _process(delta):
+	if !playing:
+		return
 	_input_handler()
 	_animation_handler(delta)
 	if(player_state != PlayerState.FALL):
@@ -88,6 +94,8 @@ func _process(delta):
 
 
 func _physics_process(delta):
+	if !playing:
+		return
 	xform = global_transform
 	_debug_player_state()
 	_surface_check()
