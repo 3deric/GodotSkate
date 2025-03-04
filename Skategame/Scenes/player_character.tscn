@@ -1,8 +1,9 @@
-[gd_scene load_steps=55 format=3 uid="uid://d2nejhxrsjjgk"]
+[gd_scene load_steps=56 format=3 uid="uid://d2nejhxrsjjgk"]
 
 [ext_resource type="Script" path="res://Scripts/character_controller.gd" id="1_5mxk1"]
 [ext_resource type="PackedScene" uid="uid://dn0qnb0q164ex" path="res://Assets/Characters/Meshes/SK_char_male.glb" id="2_et04f"]
 [ext_resource type="Script" path="res://Scripts/character_customization.gd" id="3_wydvi"]
+[ext_resource type="Script" path="res://Scripts/character_animation.gd" id="4_y7t1c"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3a2dr"]
 radius = 0.386058
@@ -279,9 +280,9 @@ bones/4/scale = Vector3(1, 1, 1)
 bones/5/rotation = Quaternion(-0.0739263, 4.58644e-08, -3.18266e-08, 0.997264)
 bones/5/scale = Vector3(1, 1, 1)
 bones/6/rotation = Quaternion(0.359914, 1.1122e-07, 1.28715e-07, 0.932985)
-bones/7/rotation = Quaternion(-0.041524, 0.112651, -0.00471186, 0.992756)
+bones/7/rotation = Quaternion(-0.0415237, 0.112651, -0.00471195, 0.992755)
 bones/7/scale = Vector3(1, 1, 1)
-bones/8/rotation = Quaternion(-0.180523, 0.107016, -0.0800003, 0.974453)
+bones/8/rotation = Quaternion(-0.180523, 0.107016, -0.0800002, 0.974453)
 bones/8/scale = Vector3(1, 0.999999, 1)
 bones/9/rotation = Quaternion(-0.529546, -0.309927, -0.416542, 0.670834)
 bones/9/scale = Vector3(1, 1, 1)
@@ -294,7 +295,7 @@ bones/12/scale = Vector3(0.998982, 1.00205, 0.99897)
 bones/13/rotation = Quaternion(-0.529546, 0.309927, 0.416542, 0.670834)
 bones/14/rotation = Quaternion(-0.35833, -0.659803, 0.451257, 0.482314)
 bones/14/scale = Vector3(0.999124, 1.00175, 0.999124)
-bones/15/rotation = Quaternion(0.280163, -0.0458849, 0.013419, 0.958761)
+bones/15/rotation = Quaternion(0.280163, -0.0458848, 0.013419, 0.958761)
 bones/15/scale = Vector3(1.00004, 1.00069, 0.999275)
 bones/16/rotation = Quaternion(0.216287, -0.224198, 0.179184, 0.933193)
 bones/16/scale = Vector3(1.0007, 0.999053, 1.00025)
@@ -320,6 +321,9 @@ bones/30/rotation = Quaternion(-0.707107, 5.3385e-08, 1.18854e-06, 0.707107)
 
 [node name="character_customization" type="Node3D" parent="Char"]
 script = ExtResource("3_wydvi")
+
+[node name="character_animation" type="Node3D" parent="Char"]
+script = ExtResource("4_y7t1c")
 
 [node name="Area3D" type="Area3D" parent="."]
 collision_layer = 8

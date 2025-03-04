@@ -25227,7 +25227,7 @@ _subresources={
 },
 "M_char_male_body": {
 "use_external/enabled": true,
-"use_external/path": "res://Assets/Characters/Materials/M_char_male_body.tres"
+"use_external/path": "res://Assets/Characters/Materials/M_char_male_body_colorable..tres"
 },
 "M_char_male_hair_messy": {
 "use_external/enabled": true,
@@ -25244,6 +25244,53 @@ _subresources={
 "M_top_hoodie": {
 "use_external/enabled": true,
 "use_external/path": "res://Assets/Characters/Materials/M_top_hoodie.tres"
+}
+},
+"meshes": {
+"SK_char_male_Hair_S_Messy_HelmetLOD5_002": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Characters/Meshes/SK_male_hair_short.res"
+},
+"SK_char_male_m_med_nrw_body_LOD3_001": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Characters/Meshes/SK_male_body.res"
+},
+"SK_char_male_m_med_nrw_btm_jeans_nrm_LOD3_001": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Characters/Meshes/SK_male_jeans.res"
+},
+"SK_char_male_m_med_nrw_shs_casualsneakers_LOD3_001": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Characters/Meshes/SK_male_sneakers.res"
+},
+"SK_char_male_m_med_nrw_top_hoodie_nrm_LOD3_008": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Characters/Meshes/SK_male_hoodie.res"
 }
 }
 }

@@ -8,12 +8,13 @@
 [resource]
 resource_name = "M_char_male_body"
 cull_mode = 2
+albedo_color = Color(0.9, 0.9, 0.9, 1)
 albedo_texture = ExtResource("1_05o4k")
 roughness = 0.62
 normal_enabled = true
 normal_texture = ExtResource("4_fgut7")
 rim_enabled = true
-rim = 0.91
+rim = 0.5
 rim_tint = 0.31
 clearcoat_roughness = 1.0
 heightmap_scale = 0.0

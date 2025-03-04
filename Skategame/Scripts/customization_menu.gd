@@ -1,5 +1,7 @@
 extends Control
 
+@onready var h_slider_skin_color: HSlider = $MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HSlider_Skin_Color
+@onready var color_picker_button_eye_color: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Eye_Color
 @onready var color_picker_button_top_base: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Top_Base
 @onready var color_picker_button_top_accent: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Top_Accent
 @onready var color_picker_button_top_detail: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Top_Detail
@@ -14,6 +16,11 @@ extends Control
 @onready var color_picker_button_metal: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Metal
 @onready var option_button_deck: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/OptionButton_Deck
 @onready var option_button_top_decal: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer/OptionButton_Top_Decal
+@onready var color_picker_button_hair_color: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Hair_Color
+@onready var option_button_hair: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer/OptionButton_Hair
+@onready var option_button_top_style: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle/HBoxContainer/OptionButton_Top_Style
+@onready var option_button_bottom_style: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer/OptionButton_Bottom_Style
+@onready var option_button_shoes_style: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer/OptionButton_Shoes_Style
 
 
 
@@ -32,6 +39,9 @@ func _setup_options() -> void:
 	option_button_top_decal.add_item("Empty", CharacterData.TopDecal.Bare)
 	option_button_top_decal.add_item("Style 1", CharacterData.TopDecal.Style1)
 	option_button_top_decal.add_item("Style 2", CharacterData.TopDecal.Style2)
+	option_button_hair.clear()
+	option_button_hair.add_item("Bald", CharacterData.HairMesh.Bald)
+	option_button_hair.add_item("Style1", CharacterData.HairMesh.Style1)
 	color_picker_button_top_base.color = data.top_base_color
 	color_picker_button_top_accent.color = data.top_accent_color
 	color_picker_button_top_detail.color = data.top_detail_color
@@ -46,6 +56,13 @@ func _setup_options() -> void:
 	color_picker_button_metal.color = data.board_metal_color
 	option_button_deck.selected = data.board_decal
 	option_button_top_decal.selected = data.top_decal
+	color_picker_button_eye_color.color = data.eye_color
+	h_slider_skin_color.value = data.skin_color.r
+	color_picker_button_hair_color.color = data.hair_color
+	option_button_hair.selected = data.hair_mesh
+	option_button_top_style.selected = data.top_mesh
+	option_button_bottom_style.selected = data.bottom_mesh
+	option_button_shoes_style.selected = data.shoes_mesh
 	
 func _update_ui_from_data() -> void:
 	var data = CustomizationManager.character_data
@@ -63,6 +80,13 @@ func _update_ui_from_data() -> void:
 	color_picker_button_metal.color = data.board_metal_color
 	option_button_deck.selected = data.board_decal
 	option_button_top_decal.selected = data.top_decal
+	color_picker_button_eye_color.color = data.eye_color
+	h_slider_skin_color.value = data.skin_color.r
+	color_picker_button_hair_color.color = data.hair_color
+	option_button_hair.selected = data.hair_mesh
+	option_button_top_style.selected = data.top_mesh
+	option_button_bottom_style.selected = data.bottom_mesh
+	option_button_shoes_style.selected = data.shoes_mesh
 		
 
 func _on_color_picker_button_top_base_color_changed(color: Color) -> void:
@@ -101,7 +125,6 @@ func _on_color_picker_button_shoes_detail_color_changed(color: Color) -> void:
 	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'detail', color)
 
 
-
 func _on_color_picker_button_wheels_color_changed(color: Color) -> void:
 	CustomizationManager.update_color(CharacterData.CharacterPart.Board, 'wheels', color)
 
@@ -120,3 +143,31 @@ func _on_option_button_deck_item_selected(index: int) -> void:
 
 func _on_option_button_top_decal_item_selected(index: int) -> void:
 	CustomizationManager.update_decal(CharacterData.CharacterPart.Top, index)
+
+
+func _on_h_slider_skin_color_value_changed(value: float) -> void:
+	CustomizationManager.update_color(CharacterData.CharacterPart.Body, 'skin', Color(value, 0.0, 0.0, 1.0))
+
+
+func _on_color_picker_button_eye_color_color_changed(color: Color) -> void:
+	CustomizationManager.update_color(CharacterData.CharacterPart.Body, 'eyes', color)
+
+
+func _on_color_picker_button_hair_color_color_changed(color: Color) -> void:
+	CustomizationManager.update_color(CharacterData.CharacterPart.Hair, 'color', color)
+
+
+func _on_option_button_hair_item_selected(index: int) -> void:
+	CustomizationManager.update_mesh(CharacterData.CharacterPart.Hair, index)
+
+
+func _on_option_button_top_style_item_selected(index: int) -> void:
+	CustomizationManager.update_mesh(CharacterData.CharacterPart.Top, index)
+
+
+func _on_option_button_bottom_style_item_selected(index: int) -> void:
+	CustomizationManager.update_mesh(CharacterData.CharacterPart.Bottom, index)
+
+
+func _on_option_button_shoes_style_item_selected(index: int) -> void:
+	CustomizationManager.update_mesh(CharacterData.CharacterPart.Shoes, index)

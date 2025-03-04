@@ -9,7 +9,7 @@
 render_priority = 0
 shader = ExtResource("1_wltfj")
 shader_parameter/base_color = Color(0.281187, 0.281187, 0.281187, 1)
-shader_parameter/accent_color = Color(0.509286, 0.509286, 0.509286, 1)
+shader_parameter/accent_color = Color(0.716296, 0.716296, 0.716296, 1)
 shader_parameter/detail_color = Color(0.67562, 0.42158, 0.201014, 1)
 shader_parameter/Roughness_Power = 0.75
 shader_parameter/Rim = 0.5

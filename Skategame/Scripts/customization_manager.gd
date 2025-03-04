@@ -2,6 +2,7 @@ extends Node3D
 
 signal color_updated(part: CharacterData.CharacterPart, color: Color)
 signal decal_updated(part: CharacterData.CharacterPart, index: int)
+signal mesh_updated(part: CharacterData.CharacterPart, index: int)
 signal customization_updated
 
 var character_data : CharacterData
@@ -18,12 +19,38 @@ var top_decals = [
 	preload ("res://Assets/Characters/Textures/T_decal_test.png")
 ]
 
+var hair_meshes_male = [
+	preload ("res://Assets/Characters/Meshes/SK_male_hair_short.res")
+]
+
+var top_meshes_male = [
+	preload ("res://Assets/Characters/Meshes/SK_male_hoodie.res")
+]
+
+var bottom_meshes_male = [
+	preload("res://Assets/Characters/Meshes/SK_male_jeans.res")
+]
+
+var shoe_meshes_male = [
+	preload("res://Assets/Characters/Meshes/SK_male_sneakers.res")
+]
+
 func _ready() -> void:
 	character_data = CharacterData.new()
 
 
 func update_color(part: CharacterData.CharacterPart,sub: String, color: Color ) -> void:
 	match part:
+		CharacterData.CharacterPart.Body:
+			match sub: 
+				'eyes':
+					character_data.eye_color = color
+				'skin':
+					character_data.skin_color = color
+		CharacterData.CharacterPart.Hair:
+			match sub:
+				'color':
+					character_data.hair_color = color
 		CharacterData.CharacterPart.Top:
 			match sub:
 				'base':
@@ -66,14 +93,19 @@ func reset_character() -> void:
 	customization_updated.emit()
 
 
-func update_part(part: CharacterData.CharacterPart, index: int) -> void:
-	#match part:
-	#	CharacterData.CharacterPart.Top:
-	#		character_data.selected_top = index
-	#customization_updated.emit()
-	#change meshes of the character
-	pass
-
+func update_mesh(part: CharacterData.CharacterPart, index: int) -> void:
+	match part:
+		CharacterData.CharacterPart.Hair:
+			character_data.hair_mesh = index
+		CharacterData.CharacterPart.Top:
+			character_data.top_mesh = index
+		CharacterData.CharacterPart.Bottom:
+			character_data.bottom_mesh = index
+		CharacterData.CharacterPart.Shoes:
+			character_data.shoes_mesh = index
+	mesh_updated.emit(part, index)
+	customization_updated.emit()
+	
 
 func update_decal(part: CharacterData.CharacterPart, index: int) -> void:
 	match part:

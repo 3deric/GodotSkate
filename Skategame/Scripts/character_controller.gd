@@ -29,7 +29,7 @@ var ray_forward = {}
 var ray_ground = {}
 
 #global object references
-@export var playing : bool = false
+@export var is_playing : bool = false
 @onready var Char : Node3D = get_node('Char')
 @onready var Anim : AnimationTree = get_node('AnimationTree')
 @onready var Area: Area3D = get_node('Area3D')
@@ -70,7 +70,7 @@ var curve_snap = Vector3.ZERO
 var curve_tangent = Vector3.ZERO
 
 func _ready():
-	if !playing:
+	if !is_playing:
 		Anim.set('parameters/conditions/is_setup', true)
 		return
 	_init_player()
@@ -78,7 +78,7 @@ func _ready():
 	
 
 func _process(delta):
-	if !playing:
+	if !is_playing:
 		return
 	_input_handler()
 	_animation_handler(delta)
@@ -94,7 +94,7 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	if !playing:
+	if !is_playing:
 		return
 	xform = global_transform
 	_debug_player_state()
@@ -316,7 +316,7 @@ func _lerp_vis_transform(delta, _speed):
 func _fall(_fall_reason, _fall_value):
 	print(_fall_reason + ": " + str(_fall_value))
 	player_state = PlayerState.FALL
-	Ingame_Ui.set_fail_view(true)
+	Ingame_Ui.set_a_view(true)
 	fall_timer = 2.0
 	
 
