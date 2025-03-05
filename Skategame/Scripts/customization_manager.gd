@@ -25,15 +25,18 @@ var hair_meshes_male = [
 ]
 
 var top_meshes_male = [
-	preload ("res://Assets/Characters/Meshes/SK_male_hoodie.res")
+	preload ("res://Assets/Characters/Meshes/SK_male_hoodie.res"),
+	preload ("res://Assets/Characters/Meshes/SK_male_shirt.res")
 ]
 
 var bottom_meshes_male = [
-	preload("res://Assets/Characters/Meshes/SK_male_jeans.res")
+	preload("res://Assets/Characters/Meshes/SK_male_jeans.res"),
+	preload ("res://Assets/Characters/Meshes/SK_male_shorts.res")
 ]
 
 var shoe_meshes_male = [
-	preload("res://Assets/Characters/Meshes/SK_male_sneakers.res")
+	preload("res://Assets/Characters/Meshes/SK_male_sneakers.res"),
+	preload ("res://Assets/Characters/Meshes/SK_male_shoes_flat.res")
 ]
 
 func _ready() -> void:

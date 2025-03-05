@@ -43,6 +43,18 @@ func _setup_options() -> void:
 	option_button_hair.clear()
 	option_button_hair.add_item("Bald", CharacterData.HairMesh.Bald)
 	option_button_hair.add_item("Style1", CharacterData.HairMesh.Style1)
+	option_button_top_style.clear()
+	option_button_top_style.add_item("Bare", CharacterData.TopMesh.Nothing)
+	option_button_top_style.add_item("Hoodie", CharacterData.TopMesh.Hoodie)
+	option_button_top_style.add_item("Shirt", CharacterData.TopMesh.Shirt)
+	option_button_bottom_style.clear()
+	option_button_bottom_style.add_item("Bare", CharacterData.BottomMesh.Nothing)
+	option_button_bottom_style.add_item("Jeans", CharacterData.BottomMesh.Jeans)
+	option_button_bottom_style.add_item("Shorts", CharacterData.BottomMesh.Shorts)
+	option_button_shoes_style.clear()
+	option_button_shoes_style.add_item("Bare", CharacterData.ShoesMesh.Nothing)
+	option_button_shoes_style.add_item("Sneakers", CharacterData.ShoesMesh.Sneakers)
+	option_button_shoes_style.add_item("Shoes Flat", CharacterData.ShoesMesh.FlatShoes)
 	color_picker_button_top_base.color = data.top_base_color
 	color_picker_button_top_accent.color = data.top_accent_color
 	color_picker_button_top_detail.color = data.top_detail_color

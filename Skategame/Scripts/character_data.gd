@@ -6,7 +6,7 @@ enum TopDecal {Bare = 0, Style1 = 1, Style2 = 2}
 enum HairMesh {Bald = 0, Style1 = 1}
 enum TopMesh {Nothing = 0, Shirt = 1, Hoodie = 2}
 enum BottomMesh {Nothing = 0, Shorts = 1, Jeans = 2}
-enum ShoeMesh {Nothing = 0, FlatSneakers = 1, Sneakers = 2}
+enum ShoesMesh {Nothing = 0, Sneakers = 1, FlatShoes = 2}
 
 @export var top_base_color: Color = Color(0.199,0.322,0.534,1.0)
 @export var top_accent_color: Color = Color(0.199,0.322,0.534,1.0)
