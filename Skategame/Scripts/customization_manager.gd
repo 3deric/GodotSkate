@@ -1,9 +1,10 @@
 extends Node3D
 
-signal color_updated(part: CharacterData.CharacterPart, color: Color)
+signal color_updated(part: CharacterData.CharacterPart, sub: String, color: Color)
 signal decal_updated(part: CharacterData.CharacterPart, index: int)
 signal mesh_updated(part: CharacterData.CharacterPart, index: int)
-signal customization_updated
+signal float_updated(part: CharacterData.CharacterPart, sub: String, value: float)
+signal customization_updated()
 
 var character_data : CharacterData
 
@@ -39,14 +40,17 @@ func _ready() -> void:
 	character_data = CharacterData.new()
 
 
+func reset_character() -> void:
+	character_data = CharacterData.new()
+	customization_updated.emit()
+
+
 func update_color(part: CharacterData.CharacterPart,sub: String, color: Color ) -> void:
 	match part:
 		CharacterData.CharacterPart.Body:
 			match sub: 
 				'eyes':
 					character_data.eye_color = color
-				'skin':
-					character_data.skin_color = color
 		CharacterData.CharacterPart.Hair:
 			match sub:
 				'color':
@@ -85,13 +89,8 @@ func update_color(part: CharacterData.CharacterPart,sub: String, color: Color ) 
 					character_data.board_metal_color= color
 
 	color_updated.emit(part, sub, color)
-	customization_updated.emit()
-
-
-func reset_character() -> void:
-	character_data = CharacterData.new()
-	customization_updated.emit()
-
+	#customization_updated.emit()
+	
 
 func update_mesh(part: CharacterData.CharacterPart, index: int) -> void:
 	match part:
@@ -104,7 +103,7 @@ func update_mesh(part: CharacterData.CharacterPart, index: int) -> void:
 		CharacterData.CharacterPart.Shoes:
 			character_data.shoes_mesh = index
 	mesh_updated.emit(part, index)
-	customization_updated.emit()
+	#customization_updated.emit()
 	
 
 func update_decal(part: CharacterData.CharacterPart, index: int) -> void:
@@ -114,4 +113,17 @@ func update_decal(part: CharacterData.CharacterPart, index: int) -> void:
 		CharacterData.CharacterPart.Board:
 			character_data.board_decal = index
 	decal_updated.emit(part, index)
-	customization_updated.emit()
+	#customization_updated.emit()
+
+
+func update_float(part: CharacterData.CharacterPart, sub : String ,value: float) -> void:
+	match part:
+		CharacterData.CharacterPart.Body:
+			match sub:
+				'size':
+					character_data.size = value
+				'skin_color':
+					character_data.skin_color = value
+	float_updated.emit(part, sub, value)
+	#customization_updated.emit()
+		

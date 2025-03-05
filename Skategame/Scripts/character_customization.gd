@@ -6,6 +6,7 @@ extends Node3D
 @onready var shoes_mesh : MeshInstance3D = get_node('../SK_char_male/Skeleton3D/char_male_shoes')
 @onready var board_mesh : MeshInstance3D = get_node('../SK_char_male/Skeleton3D/char_skateboard')
 @onready var hair_mesh : MeshInstance3D = get_node('../SK_char_male/Skeleton3D/char_male_hair')
+@onready var char : Node3D = get_node('..')
 
 
 func _ready() -> void:
@@ -25,8 +26,11 @@ func _connect_signals() -> void:
 		CustomizationManager.decal_updated.connect(_on_decal_updated)
 	if not CustomizationManager.customization_updated.is_connected(_on_customization_updated):
 		CustomizationManager.customization_updated.connect(_on_customization_updated)
+	if not CustomizationManager.float_updated.is_connected(_on_float_updated):
+		CustomizationManager.float_updated.connect(_on_float_updated)
 	if not CustomizationManager.mesh_updated.is_connected(_on_mesh_updated):
 		CustomizationManager.mesh_updated.connect(_on_mesh_updated)
+
 
 func _on_color_updated(part: CharacterData.CharacterPart, sub: String, color :Color) -> void:
 	match part:
@@ -34,8 +38,6 @@ func _on_color_updated(part: CharacterData.CharacterPart, sub: String, color :Co
 			match sub:
 				'eyes':
 					_update_body_eyes_color(color)
-				'skin':
-					_update_body_skin_color(color)
 		CharacterData.CharacterPart.Hair:
 			match sub:
 				'color':
@@ -92,6 +94,16 @@ func _on_decal_updated(part: CharacterData.CharacterPart, index :int) -> void:
 			_update_top_decal(index)
 		CharacterData.CharacterPart.Board:
 			_update_board_decal(index)
+
+
+func _on_float_updated(part: CharacterData.CharacterPart, sub: String, value: float) -> void:
+	match part:
+		CharacterData.CharacterPart.Body:
+			match sub:
+				'skin_color':
+					_update_body_skin_color(value)
+				'size':
+					char.scale = Vector3(value, value, value)
 
 
 func _on_customization_updated() ->void:
@@ -187,8 +199,8 @@ func _update_body_eyes_color(color: Color) -> void:
 	body_mesh.get_active_material(0).set_shader_parameter('eyes_color', color)
 
 
-func _update_body_skin_color(color: Color) -> void:
-	body_mesh.get_active_material(0).set_shader_parameter('skin_color', color.r)
+func _update_body_skin_color(value: float) -> void:
+	body_mesh.get_active_material(0).set_shader_parameter('skin_color', value)
 
 
 func _update_hair_color(color: Color) -> void:

@@ -21,6 +21,7 @@ extends Control
 @onready var option_button_top_style: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle/HBoxContainer/OptionButton_Top_Style
 @onready var option_button_bottom_style: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer/OptionButton_Bottom_Style
 @onready var option_button_shoes_style: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer/OptionButton_Shoes_Style
+@onready var h_slider_size: HSlider = $MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/HSlider_Size
 
 
 
@@ -57,12 +58,13 @@ func _setup_options() -> void:
 	option_button_deck.selected = data.board_decal
 	option_button_top_decal.selected = data.top_decal
 	color_picker_button_eye_color.color = data.eye_color
-	h_slider_skin_color.value = data.skin_color.r
+	h_slider_skin_color.value = data.skin_color
 	color_picker_button_hair_color.color = data.hair_color
 	option_button_hair.selected = data.hair_mesh
 	option_button_top_style.selected = data.top_mesh
 	option_button_bottom_style.selected = data.bottom_mesh
 	option_button_shoes_style.selected = data.shoes_mesh
+	h_slider_size.value = data.size
 	
 func _update_ui_from_data() -> void:
 	var data = CustomizationManager.character_data
@@ -81,12 +83,13 @@ func _update_ui_from_data() -> void:
 	option_button_deck.selected = data.board_decal
 	option_button_top_decal.selected = data.top_decal
 	color_picker_button_eye_color.color = data.eye_color
-	h_slider_skin_color.value = data.skin_color.r
+	h_slider_skin_color.value = data.skin_color
 	color_picker_button_hair_color.color = data.hair_color
 	option_button_hair.selected = data.hair_mesh
 	option_button_top_style.selected = data.top_mesh
 	option_button_bottom_style.selected = data.bottom_mesh
 	option_button_shoes_style.selected = data.shoes_mesh
+	h_slider_size.value = data.size
 		
 
 func _on_color_picker_button_top_base_color_changed(color: Color) -> void:
@@ -146,7 +149,7 @@ func _on_option_button_top_decal_item_selected(index: int) -> void:
 
 
 func _on_h_slider_skin_color_value_changed(value: float) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Body, 'skin', Color(value, 0.0, 0.0, 1.0))
+	CustomizationManager.update_float(CharacterData.CharacterPart.Body, 'skin_color', value)
 
 
 func _on_color_picker_button_eye_color_color_changed(color: Color) -> void:
@@ -171,3 +174,7 @@ func _on_option_button_bottom_style_item_selected(index: int) -> void:
 
 func _on_option_button_shoes_style_item_selected(index: int) -> void:
 	CustomizationManager.update_mesh(CharacterData.CharacterPart.Shoes, index)
+
+
+func _on_h_slider_size_value_changed(value: float) -> void:
+	CustomizationManager.update_float(CharacterData.CharacterPart.Body, 'size', value)
