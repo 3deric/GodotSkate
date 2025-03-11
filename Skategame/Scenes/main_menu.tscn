@@ -39,10 +39,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 1
+current_tab = 0
 
 [node name="Body" type="TabBar" parent="MarginContainer/HBoxContainer/Panel/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -80,6 +79,27 @@ text = "Gender"
 
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
 layout_mode = 2
+
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Size"
+
+[node name="HSlider_Size" type="HSlider" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+min_value = 0.95
+max_value = 1.05
+step = 0.01
+value = 1.0
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -161,6 +181,7 @@ size_flags_horizontal = 10
 text = "Colour"
 
 [node name="Clothes" type="TabBar" parent="MarginContainer/HBoxContainer/Panel/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -545,6 +566,7 @@ layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
+[connection signal="value_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/HSlider_Size" to="." method="_on_h_slider_size_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HSlider_Skin_Color" to="." method="_on_h_slider_skin_color_value_changed"]
 [connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Eye_Color" to="." method="_on_color_picker_button_eye_color_color_changed"]
 [connection signal="item_selected" from="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer/OptionButton_Hair" to="." method="_on_option_button_hair_item_selected"]

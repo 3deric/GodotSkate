@@ -1,9 +1,8 @@
-[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://mddnxeq6hgdi"]
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://mddnxeq6hgdi"]
 
 [ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_ww255"]
 [ext_resource type="Texture2D" uid="uid://5edyhf7cbq0v" path="res://Assets/Characters/Textures/T_hoodie_normal.png" id="2_21h0y"]
 [ext_resource type="Texture2D" uid="uid://dbqup1dh3n4cu" path="res://Assets/Characters/Textures/T_hoodie_mask.png" id="2_51pwq"]
-[ext_resource type="Texture2D" uid="uid://kt8rknx0tae5" path="res://Assets/Characters/Textures/T_decal_captain_bavaria.png" id="2_i4qyd"]
 [ext_resource type="Texture2D" uid="uid://4ytfvpt1xkeu" path="res://Assets/Characters/Textures/T_hoodie_orm.png" id="4_hos3l"]
 
 [resource]
@@ -16,6 +15,5 @@ shader_parameter/Roughness_Power = 1.0
 shader_parameter/Rim = 0.5
 shader_parameter/Rim_Tint = 0.25
 shader_parameter/mask = ExtResource("2_51pwq")
-shader_parameter/decal = ExtResource("2_i4qyd")
 shader_parameter/orm = ExtResource("4_hos3l")
 shader_parameter/normal = ExtResource("2_21h0y")

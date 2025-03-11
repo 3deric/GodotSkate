@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bisy5bqwnq31x"
-path.s3tc="res://.godot/imported/T_sneaker_mask.png-347d37b6efd195fd508a60c210068cb1.s3tc.ctex"
+uid="uid://b7riqxpu5r3it"
+path="res://.godot/imported/T_sneaker_mask.png-347d37b6efd195fd508a60c210068cb1.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Assets/Characters/Textures/T_sneaker_mask.png"
-dest_files=["res://.godot/imported/T_sneaker_mask.png-347d37b6efd195fd508a60c210068cb1.s3tc.ctex"]
+dest_files=["res://.godot/imported/T_sneaker_mask.png-347d37b6efd195fd508a60c210068cb1.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=4
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

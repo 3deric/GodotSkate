@@ -24,7 +24,6 @@ extends Control
 @onready var h_slider_size: HSlider = $MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/HSlider_Size
 
 
-
 func _ready() -> void:
 	_setup_options()
 	CustomizationManager.customization_updated.connect(_update_ui_from_data)
@@ -77,6 +76,7 @@ func _setup_options() -> void:
 	option_button_bottom_style.selected = data.bottom_mesh
 	option_button_shoes_style.selected = data.shoes_mesh
 	h_slider_size.value = data.size
+	
 	
 func _update_ui_from_data() -> void:
 	var data = CustomizationManager.character_data
@@ -174,18 +174,29 @@ func _on_color_picker_button_hair_color_color_changed(color: Color) -> void:
 
 func _on_option_button_hair_item_selected(index: int) -> void:
 	CustomizationManager.update_mesh(CharacterData.CharacterPart.Hair, index)
+	CustomizationManager.update_color(CharacterData.CharacterPart.Hair, 'color', color_picker_button_hair_color.color)
 
 
 func _on_option_button_top_style_item_selected(index: int) -> void:
 	CustomizationManager.update_mesh(CharacterData.CharacterPart.Top, index)
+	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'base', color_picker_button_top_base.color)
+	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'accent', color_picker_button_top_accent.color)
+	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'detail', color_picker_button_top_detail.color)
+	CustomizationManager.update_decal(CharacterData.CharacterPart.Top, option_button_top_decal.selected)
 
 
 func _on_option_button_bottom_style_item_selected(index: int) -> void:
 	CustomizationManager.update_mesh(CharacterData.CharacterPart.Bottom, index)
+	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'base', color_picker_button_bottom_base.color)
+	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'accent', color_picker_button_bottom_accent.color)
+	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'detail', color_picker_button_bottom_detail.color)
 
 
 func _on_option_button_shoes_style_item_selected(index: int) -> void:
 	CustomizationManager.update_mesh(CharacterData.CharacterPart.Shoes, index)
+	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'base', color_picker_button_shoes_base.color)
+	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'accent', color_picker_button_shoes_accent.color)
+	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'detail', color_picker_button_shoes_detail.color)
 
 
 func _on_h_slider_size_value_changed(value: float) -> void:

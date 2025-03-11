@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dakw67e5op6em"
-path.s3tc="res://.godot/imported/T_jeans_mask.png-9c79f790efccbc0acae113e6d5615881.s3tc.ctex"
+uid="uid://clintx1cvau4r"
+path="res://.godot/imported/T_jeans_mask.png-9c79f790efccbc0acae113e6d5615881.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Assets/Characters/Textures/T_jeans_mask.png"
-dest_files=["res://.godot/imported/T_jeans_mask.png-9c79f790efccbc0acae113e6d5615881.s3tc.ctex"]
+dest_files=["res://.godot/imported/T_jeans_mask.png-9c79f790efccbc0acae113e6d5615881.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=4
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

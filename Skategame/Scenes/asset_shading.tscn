@@ -19,13 +19,13 @@ roughness = 0.07
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_glvfd"]
 panorama = ExtResource("2_tmwgv")
 
-[sub_resource type="Sky" id="Sky_33a2s"]
+[sub_resource type="Sky" id="Sky_3o7iy"]
 sky_material = SubResource("PanoramaSkyMaterial_glvfd")
 
 [sub_resource type="Environment" id="Environment_ufrkh"]
 background_mode = 2
 background_energy_multiplier = 0.75
-sky = SubResource("Sky_33a2s")
+sky = SubResource("Sky_3o7iy")
 tonemap_mode = 3
 glow_enabled = true
 glow_bloom = 0.15

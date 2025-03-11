@@ -32,6 +32,36 @@ animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
 _subresources={
+"materials": {
+"M_bottom_jeans": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Characters/Materials/M_bottom_jeans.tres"
+},
+"M_btm_shorts": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Characters/Materials/M_bottom_shorts.tres"
+},
+"M_char_male_hair_messy": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Characters/Materials/M_hair_messy.tres"
+},
+"M_shoe_flat": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Characters/Materials/M_shoe_flat.tres"
+},
+"M_shoe_sneakers": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Characters/Materials/M_shoe_sneakers.tres"
+},
+"M_top_hoodie": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Characters/Materials/M_top_hoodie.tres"
+},
+"M_top_shirt": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Characters/Materials/M_top_shirt.tres"
+}
+},
 "meshes": {
 "SK_char_male_clothes_char_male_hair_short": {
 "generate/lightmap_uv": 0,

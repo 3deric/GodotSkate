@@ -11,7 +11,7 @@ const GRAVITY :float = 15.0
 const BALANCE_MULTI : float= 0.5
 const PIPESNAP_OFFSET :float = 0.0
 const UP_ALIGN_SPEED :float = 10.0
-const INTERP_SPEED: float = 15.0
+const INTERP_SPEED: float = 10.0
 
 #global movement variables
 var xform = null
@@ -23,10 +23,12 @@ var jump_timer : float = 0.0
 var path_offset : float = 0.0
 var path_vel : float = 0.0
 var last_vel : Vector3 = Vector3.ZERO
-var revert_grind : bool = false
+var revert_path : bool = false
+var bounce_check : bool = false
 var anim_blend : Vector3 = Vector3.ZERO
 var ray_forward = {}
 var ray_ground = {}
+var ray_path = {}
 
 #global object references
 @export var is_playing : bool = false
@@ -105,18 +107,20 @@ func _physics_process(delta):
 		PlayerState.FALL:
 			return
 		PlayerState.GROUND, PlayerState.PIPE:
-			_check_bounce()
+			#_check_bounce()
 			_check_reverse_motion()
 			_ground_movement(delta)
 		PlayerState.AIR:
-			_check_bounce()
+			#_check_bounce()
 			_air_movement(delta)
 		PlayerState.PIPESNAP:
+			_check_bounce_path(true)
 			_pipe_snap_movement(delta)
 		PlayerState.PIPESNAPAIR:
+			#_check_bounce()
 			_pipe_snap_air_movement(delta)
 		PlayerState.GRIND:
-			_check_bounce_grind()
+			_check_bounce_path(false)
 			_grind_movement(delta)
 		PlayerState.LIP:
 			_lip_movement(delta)
@@ -243,10 +247,11 @@ func _player_state():
 
 func _surface_check():
 	ray_ground = _raycast(position + xform.basis.y * 0.1, xform.basis.y, -0.5)
-	ray_forward = _raycast(position + xform.basis.y * 1.0, velocity.normalized(),0.5)
-	#if ray_forward != {}:
-		#print(ray_forward["collider"].is_in_group('floor'))
-		#print(ray_forward["normal"])
+	ray_forward = _raycast(position + xform.basis.y * 1.0, velocity.normalized(),2.5)
+	ray_path = _raycast(position + xform.basis.y * 1.0, curve_tangent * path_dir, -0.5)
+	#if ray_path != {}:
+	#	print(ray_path["collider"].is_in_group('floor'))
+	#	print(ray_path["normal"])
 
 
 func _get_path_tangent(_path: Path3D, _offset: float): #returns the curve tangent
@@ -308,6 +313,7 @@ func _set_up_direction():
 		
 	
 func _lerp_vis_transform(delta, _speed):
+	pass
 	Char.global_transform = Char.global_transform.interpolate_with(global_transform, delta * _speed)
 	if player_state != PlayerState.GRIND: #interpolate position to remove jitter on rails
 		Char.global_position = global_position
@@ -316,7 +322,7 @@ func _lerp_vis_transform(delta, _speed):
 func _fall(_fall_reason, _fall_value):
 	print(_fall_reason + ": " + str(_fall_value))
 	player_state = PlayerState.FALL
-	Ingame_Ui.set_a_view(true)
+	Ingame_Ui.set_fail_view(true)
 	fall_timer = 2.0
 	
 
@@ -465,20 +471,21 @@ func _pipe_snap_air_movement(delta):	#movement when snapped pipe is left in air
 	velocity.y -= GRAVITY * delta
 
 
-func _grind_movement(delta): 	#movement logic while grinding a rail
+func _grind_movement(delta) -> void: 	#movement logic while grinding a rail
 	curve_snap = path.curve.sample_baked(path_offset, true)
 	path_offset += path_vel * delta
 	curve_tangent = _get_path_tangent(path, path_offset)
 	position = curve_snap
 	up_direction = path.curve.sample_baked_up_vector(path_offset)
-	if revert_grind:
-		look_at(global_position + curve_tangent * -path_dir, up_direction)
-	else:
-		look_at(global_position + curve_tangent * path_dir, up_direction)
+	#if revert_path:
+	#	look_at(global_position + curve_tangent * -path_dir, up_direction)
+	#else:
+	look_at(global_position + curve_tangent * path_dir, up_direction)
 	velocity = xform.basis.z * path_vel * path_dir
 	if input_tricks.z:
 		velocity = xform.basis.z * abs(path_vel)
 		velocity += Vector3.UP * input_tricks.z * JUMP_VEL
+		velocity += xform.basis.x * balance_dir
 		path = null
 		return
 	#balance logic
@@ -489,7 +496,7 @@ func _grind_movement(delta): 	#movement logic while grinding a rail
 	Ingame_Ui.set_balance_value(-balance_angle)
 
 
-func _lip_movement(delta):
+func _lip_movement(delta) -> void:
 	#Collision.disabled = true
 	position = path.curve.sample_baked(path_offset)
 	up_direction = path.curve.sample_baked_up_vector(path_offset)
@@ -497,10 +504,11 @@ func _lip_movement(delta):
 	if(input_tricks.z):
 		velocity = velocity.normalized() * -1
 		player_state = PlayerState.AIR
-		position += lip_start_up + Vector3.UP -lip_start_dir * Vector3(1,0,1) * 0.1
+		#position += lip_start_up + Vector3.UP - lip_start_dir * Vector3(1,0,1) * 0.1
+		position -= lip_start_dir * balance_dir * 0.5
 		velocity = lip_start_vel.normalized() * -1
 		up_direction = Vector3.UP
-		rotation.y = atan2(-lip_start_dir.x,-lip_start_dir.z)
+		rotation.y = atan2(lip_start_dir.x * -balance_dir,lip_start_dir.z * -balance_dir)
 	balance_time += 0.05 * delta
 	balance_angle += BALANCE_MULTI * delta * balance_dir * balance_time
 	if(input.y != 0):
@@ -508,7 +516,7 @@ func _lip_movement(delta):
 	Ingame_Ui.set_balance_value(-balance_angle)
 
 
-func _randomize_balance():
+func _randomize_balance() -> void:
 	balance_time = 1.0
 	balance_angle = 0.0
 	var _rand : float  = randf()
@@ -523,7 +531,7 @@ func _init_player():
 	pass
 
 
-func _check_reverse_motion():
+func _check_reverse_motion() -> void:
 	if _forward_velocity().length() < 1.0:
 		return
 	var revertCheck : float = velocity.normalized().dot(xform.basis.z)
@@ -531,36 +539,50 @@ func _check_reverse_motion():
 		_revert_motion()
 
 
-func _check_bounce_grind():
-	if ray_forward != {} and !revert_grind:
-		path_vel *= -1
+func _check_bounce_path(air : bool) -> void:
+	if ray_path != {} and !revert_path:
+		if air:
+			path_vel *= -0.1
+			#add look at logic for air movement
+		else: 
+			path_vel *= -1.0
+			look_at(global_position + curve_tangent * -path_dir, up_direction)
 		path_dir *= -1
-		revert_grind = true
-	if ray_forward == {}:
-		revert_grind = false
+		revert_path = true
+	if ray_path == {}:
+		revert_path = false
 
 
-func _check_bounce():
-	if ray_forward != {}:
-		pass
-		#velocity = velocity.reflect(ray_forward["normal"])
+func _check_bounce() -> void:
+	if ray_forward != {} and !bounce_check:
+		bounce_check = true
+		print(ray_forward["normal"])
+		var _prev_velocity = velocity.length()
+		look_at(global_position + velocity.reflect(ray_forward["normal"]), up_direction)
+		velocity = xform.basis.z * _prev_velocity
+	if ray_forward == {} and bounce_check:
+		bounce_check = false
 
 
-func _debug_player_state():
+func _debug_player_state() -> void:
 	#debug logic to print the player state only on change
 	if(player_state != last_player_state):
 		print(PlayerState.find_key(player_state))
 	last_player_state = player_state
 
 
-func _jump_timer(delta):
+func _jump_timer(delta) -> void:
 	if jump_timer > 0:
 		jump_timer -= delta
 
 
-func _forward_velocity():
+func _forward_velocity() -> Vector3:
 	return velocity.slide(up_direction)
 	
+
+func _horizontal_velocity() -> Vector3:
+	return velocity.slide(Vector3.UP)
+
 
 func _raycast(_from: Vector3, _dir: Vector3, _len: float):
 	var _spaceState : PhysicsDirectSpaceState3D = get_world_3d().direct_space_state

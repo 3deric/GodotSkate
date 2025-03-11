@@ -2,26 +2,25 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdjwgfnoiooy2"
-path.s3tc="res://.godot/imported/T_hoodie_orm.png-cef8da84b83947ea5614307f1d99b0fe.s3tc.ctex"
+uid="uid://4ytfvpt1xkeu"
+path="res://.godot/imported/T_hoodie_orm.png-cef8da84b83947ea5614307f1d99b0fe.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Assets/Characters/Textures/T_hoodie_orm.png"
-dest_files=["res://.godot/imported/T_hoodie_orm.png-cef8da84b83947ea5614307f1d99b0fe.s3tc.ctex"]
+dest_files=["res://.godot/imported/T_hoodie_orm.png-cef8da84b83947ea5614307f1d99b0fe.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=4
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
-compress/channel_pack=0
+compress/channel_pack=1
 mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0

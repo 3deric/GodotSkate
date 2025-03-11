@@ -2,14 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqmrh1nnpuf51"
+uid="uid://67w08r6g5bds"
 path.s3tc="res://.godot/imported/T_hair_messy_color.png-25a8310b4ce018906546683b58f80004.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
-}
-generator_parameters={
-"md5": "d6f9d29f3e254c55e61389dd92e2250d"
 }
 
 [deps]
@@ -34,5 +31,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=256
+process/size_limit=0
 detect_3d/compress_to=0

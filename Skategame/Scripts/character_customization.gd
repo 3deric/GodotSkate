@@ -206,6 +206,7 @@ func _update_body_skin_color(value: float) -> void:
 func _update_hair_color(color: Color) -> void:
 	hair_mesh.get_active_material(0).set_shader_parameter('hair_color', color)
 	
+	
 func _update_hair_mesh(index :int) -> void:
 	if index == 0:
 		hair_mesh.hide()
@@ -213,12 +214,14 @@ func _update_hair_mesh(index :int) -> void:
 		hair_mesh.show()
 		hair_mesh.mesh = CustomizationManager.hair_meshes_male[index -1]
 		
+		
 func _update_top_mesh(index :int) -> void:
 	if index == 0:
 		top_mesh.hide()
 	else:
 		top_mesh.show()
 		top_mesh.mesh = CustomizationManager.top_meshes_male[index -1]
+	
 		
 func _update_bottom_mesh(index :int) -> void:
 	if index == 0:
@@ -226,6 +229,7 @@ func _update_bottom_mesh(index :int) -> void:
 	else:
 		bottom_mesh.show()
 		bottom_mesh.mesh = CustomizationManager.bottom_meshes_male[index -1]
+	
 		
 func _update_shoes_mesh(index :int) -> void:
 	if index == 0:

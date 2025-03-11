@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvkjigvu23tgw"
-path.s3tc="res://.godot/imported/T_jeans_orm.png-3475560c3e26622fe5f9a8d7dff6f361.s3tc.ctex"
+uid="uid://ba7moakripgrn"
+path="res://.godot/imported/T_jeans_orm.png-3475560c3e26622fe5f9a8d7dff6f361.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Assets/Characters/Textures/T_jeans_orm.png"
-dest_files=["res://.godot/imported/T_jeans_orm.png-3475560c3e26622fe5f9a8d7dff6f361.s3tc.ctex"]
+dest_files=["res://.godot/imported/T_jeans_orm.png-3475560c3e26622fe5f9a8d7dff6f361.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=4
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
