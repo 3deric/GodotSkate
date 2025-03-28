@@ -81,15 +81,6 @@ _subresources={
 "save_to_file/enabled": true,
 "save_to_file/path": "res://Assets/Characters/Meshes/SK_male_hoodie.res"
 },
-"SK_char_male_clothes_char_male_jeans": {
-"generate/lightmap_uv": 0,
-"generate/lods": 0,
-"generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 60.0,
-"lods/normal_split_angle": 25.0,
-"save_to_file/enabled": true,
-"save_to_file/path": "res://Assets/Characters/Meshes/SK_male_jeans.res"
-},
 "SK_char_male_clothes_char_male_shirt": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,

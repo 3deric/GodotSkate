@@ -1510,7 +1510,7 @@ glow_bloom = 0.15
 [node name="Node3D" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="Node3D"]
-transform = Transform3D(0.851626, 0.39375, -0.345967, 0, 0.660054, 0.751218, 0.524149, -0.639757, 0.562119, -2.89251, 6.3104, 4.81848)
+transform = Transform3D(0.851626, 0.39375, -0.345967, 0, 0.660054, 0.751218, 0.524149, -0.639757, 0.562119, -2.11664, 5.29459, 3.55786)
 current = true
 fov = 38.0
 size = 8.0

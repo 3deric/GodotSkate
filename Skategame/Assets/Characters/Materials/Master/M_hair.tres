@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=14 format=3 uid="uid://f38jfhnj8mjb"]
+[gd_resource type="VisualShader" load_steps=16 format=3 uid="uid://f38jfhnj8mjb"]
 
 [sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_facsu"]
 parameter_name = "color"
@@ -50,6 +50,14 @@ default_input_values = [1, 0.0, 2, 1.0, 3, 0.5, 4, 0.8]
 parameter_name = "anisotrophy"
 default_value_enabled = true
 default_value = 0.5
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_udxh3"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_5spho"]
+parameter_name = "roughness"
+default_value_enabled = true
+default_value = 0.75
 
 [sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_mrnlg"]
 parameter_name = "hair_color"
@@ -169,4 +177,8 @@ nodes/fragment/36/node = SubResource("VisualShaderNodeRemap_d8isl")
 nodes/fragment/36/position = Vector2(1438.59, 346.951)
 nodes/fragment/37/node = SubResource("VisualShaderNodeFloatParameter_a7r34")
 nodes/fragment/37/position = Vector2(2120, 740)
-nodes/fragment/connections = PackedInt32Array(15, 0, 3, 2, 19, 0, 0, 11, 28, 0, 0, 12, 3, 4, 0, 1, 7, 0, 29, 0, 29, 0, 0, 0, 3, 1, 29, 1, 17, 0, 32, 2, 32, 0, 0, 9, 33, 0, 0, 10, 34, 0, 35, 2, 35, 2, 36, 0, 36, 0, 0, 3, 37, 0, 0, 15)
+nodes/fragment/38/node = SubResource("VisualShaderNodeFloatOp_udxh3")
+nodes/fragment/38/position = Vector2(2080, 220)
+nodes/fragment/39/node = SubResource("VisualShaderNodeFloatParameter_5spho")
+nodes/fragment/39/position = Vector2(1760, 300)
+nodes/fragment/connections = PackedInt32Array(15, 0, 3, 2, 19, 0, 0, 11, 28, 0, 0, 12, 3, 4, 0, 1, 7, 0, 29, 0, 29, 0, 0, 0, 3, 1, 29, 1, 17, 0, 32, 2, 32, 0, 0, 9, 33, 0, 0, 10, 34, 0, 35, 2, 35, 2, 36, 0, 37, 0, 0, 15, 36, 0, 38, 0, 38, 0, 0, 3, 39, 0, 38, 1, 36, 0, 0, 3)

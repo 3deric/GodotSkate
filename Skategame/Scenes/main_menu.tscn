@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ydofbmuhla2w"]
+[gd_scene load_steps=3 format=3 uid="uid://ydofbmuhla2w"]
 
 [ext_resource type="Script" path="res://Scripts/customization_menu.gd" id="1_i13cm"]
+[ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_rm2hb"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -9,7 +10,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_i13cm")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -23,29 +23,78 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer"]
+[node name="Container" type="Control" parent="MarginContainer"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="TabContainer" type="TabContainer" parent="MarginContainer/HBoxContainer/Panel"]
+[node name="PanelMain" type="Panel" parent="MarginContainer/Container"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Container/PanelMain"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Container/PanelMain/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="ButtonStart" type="Button" parent="MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Start"
+
+[node name="ButtonOptions" type="Button" parent="MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Options"
+
+[node name="ButtonCustomization" type="Button" parent="MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Customization"
+
+[node name="PanelCustomization" type="Panel" parent="MarginContainer/Container"]
+visible = false
+layout_mode = 2
+offset_right = 500.0
+offset_bottom = 670.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Container/PanelCustomization"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ButtonBackCustomization" type="Button" parent="MarginContainer/Container/PanelCustomization/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Back"
+
+[node name="TabContainerCustomization" type="TabContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 current_tab = 0
 
-[node name="Body" type="TabBar" parent="MarginContainer/HBoxContainer/Panel/TabContainer"]
+[node name="Body" type="TabBar" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -57,43 +106,43 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer"]
 layout_mode = 2
 
-[node name="Label_Body" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer"]
+[node name="Label_Body" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Body"
 
-[node name="MarginContainer10" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer"]
+[node name="MarginContainer10" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer10"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer10"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Gender"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
 layout_mode = 2
 
-[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer"]
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer4"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer4"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Size"
 
-[node name="HSlider_Size" type="HSlider" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+[node name="HSlider_Size" type="HSlider" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 min_value = 0.95
@@ -101,91 +150,91 @@ max_value = 1.05
 step = 0.01
 value = 1.0
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Skin Colour"
 
-[node name="HSlider_Skin_Color" type="HSlider" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="HSlider_Skin_Color" type="HSlider" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 max_value = 1.0
 step = 0.01
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer2"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Eye Colour"
 
-[node name="ColorPickerButton_Eye_Color" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="ColorPickerButton_Eye_Color" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="Label_Hair" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer"]
+[node name="Label_Hair" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Hair"
 
-[node name="MarginContainer5" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer"]
+[node name="MarginContainer5" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="MarginContainer6" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer"]
+[node name="MarginContainer6" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer6"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer6"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Hair Style"
 
-[node name="OptionButton_Hair" type="OptionButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
+[node name="OptionButton_Hair" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
 layout_mode = 2
 
-[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer3"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer3"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Hair Colour"
 
-[node name="ColorPickerButton_Hair_Color" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+[node name="ColorPickerButton_Hair_Color" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="Clothes" type="TabBar" parent="MarginContainer/HBoxContainer/Panel/TabContainer"]
+[node name="Clothes" type="TabBar" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -197,27 +246,27 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer"]
 layout_mode = 2
 
-[node name="Label_Top" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="Label_Top" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Top"
 
-[node name="MarginContainerTopStyle" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainerTopStyle" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Top "
 
-[node name="OptionButton_Top_Style" type="OptionButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle/HBoxContainer"]
+[node name="OptionButton_Top_Style" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
@@ -226,20 +275,20 @@ popup/item_0/text = "Bare"
 popup/item_1/text = "Style 1"
 popup/item_1/id = 1
 
-[node name="MarginContainer10" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainer10" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer10"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer10"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Top Decal"
 
-[node name="OptionButton_Top_Decal" type="OptionButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
+[node name="OptionButton_Top_Decal" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
@@ -248,78 +297,78 @@ popup/item_0/text = "Bare"
 popup/item_1/text = "Style 1"
 popup/item_1/id = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Base Colour"
 
-[node name="ColorPickerButton_Top_Base" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="ColorPickerButton_Top_Base" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer2"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Accent Colour"
 
-[node name="ColorPickerButton_Top_Accent" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="ColorPickerButton_Top_Accent" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer3"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer3"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Detail Colour"
 
-[node name="ColorPickerButton_Top_Detail" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+[node name="ColorPickerButton_Top_Detail" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="Label_Pants" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="Label_Pants" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Pants"
 
-[node name="MarginContainerPantsStyle" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainerPantsStyle" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Pants"
 
-[node name="OptionButton_Bottom_Style" type="OptionButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer"]
+[node name="OptionButton_Bottom_Style" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
@@ -328,78 +377,78 @@ popup/item_0/text = "Bare"
 popup/item_1/text = "Style 1"
 popup/item_1/id = 1
 
-[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer4"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer4"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Base Colour"
 
-[node name="ColorPickerButton_Bottom_Base" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+[node name="ColorPickerButton_Bottom_Base" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="MarginContainer5" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainer5" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer5"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer5"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Accent Colour"
 
-[node name="ColorPickerButton_Bottom_Accent" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer"]
+[node name="ColorPickerButton_Bottom_Accent" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="MarginContainer6" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainer6" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer6"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer6"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Detail Colour"
 
-[node name="ColorPickerButton_Bottom_Detail" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
+[node name="ColorPickerButton_Bottom_Detail" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="Label_Shoes" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="Label_Shoes" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Shoes"
 
-[node name="MarginContainerShoesStyle" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainerShoesStyle" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Shoes"
 
-[node name="OptionButton_Shoes_Style" type="OptionButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer"]
+[node name="OptionButton_Shoes_Style" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
@@ -408,66 +457,66 @@ popup/item_0/text = "Bare"
 popup/item_1/text = "Style 1"
 popup/item_1/id = 1
 
-[node name="MarginContainer7" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainer7" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer7"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer7"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Base Colour"
 
-[node name="ColorPickerButton_Shoes_Base" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer"]
+[node name="ColorPickerButton_Shoes_Base" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="MarginContainer8" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainer8" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer8"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer8"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Accent Colour"
 
-[node name="ColorPickerButton_Shoes_Accent" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer"]
+[node name="ColorPickerButton_Shoes_Accent" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="MarginContainer9" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainer9" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer9"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer9"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Detail Colour"
 
-[node name="ColorPickerButton_Shoes_Detail" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer"]
+[node name="ColorPickerButton_Shoes_Detail" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="Board" type="TabBar" parent="MarginContainer/HBoxContainer/Panel/TabContainer"]
+[node name="Board" type="TabBar" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -479,27 +528,27 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer"]
 layout_mode = 2
 
-[node name="Label_Deck" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+[node name="Label_Deck" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Deck"
 
-[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer4"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Deck Style"
 
-[node name="OptionButton_Deck" type="OptionButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+[node name="OptionButton_Deck" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
@@ -508,83 +557,147 @@ popup/item_0/text = "Bare"
 popup/item_1/text = "Style 1"
 popup/item_1/id = 1
 
-[node name="Label_Colours" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+[node name="Label_Colours" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Colours"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Wheel Colour"
 
-[node name="ColorPickerButton_Wheels" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="ColorPickerButton_Wheels" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer2"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Details Colour"
 
-[node name="ColorPickerButton_Details" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="ColorPickerButton_Details" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer3"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Metal Colour"
 
-[node name="ColorPickerButton_Metal" type="ColorPickerButton" parent="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+[node name="ColorPickerButton_Metal" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
-[connection signal="value_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/HSlider_Size" to="." method="_on_h_slider_size_value_changed"]
-[connection signal="value_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HSlider_Skin_Color" to="." method="_on_h_slider_skin_color_value_changed"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Eye_Color" to="." method="_on_color_picker_button_eye_color_color_changed"]
-[connection signal="item_selected" from="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer/OptionButton_Hair" to="." method="_on_option_button_hair_item_selected"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Hair_Color" to="." method="_on_color_picker_button_hair_color_color_changed"]
-[connection signal="item_selected" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle/HBoxContainer/OptionButton_Top_Style" to="." method="_on_option_button_top_style_item_selected"]
-[connection signal="item_selected" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer/OptionButton_Top_Decal" to="." method="_on_option_button_top_decal_item_selected"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Top_Base" to="." method="_on_color_picker_button_top_base_color_changed"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Top_Accent" to="." method="_on_color_picker_button_top_accent_color_changed"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Top_Detail" to="." method="_on_color_picker_button_top_detail_color_changed"]
-[connection signal="item_selected" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer/OptionButton_Bottom_Style" to="." method="_on_option_button_bottom_style_item_selected"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/ColorPickerButton_Bottom_Base" to="." method="_on_color_picker_button_bottom_base_color_changed"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer/ColorPickerButton_Bottom_Accent" to="." method="_on_color_picker_button_bottom_accent_color_changed"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer/ColorPickerButton_Bottom_Detail" to="." method="_on_color_picker_button_bottom_detail_color_changed"]
-[connection signal="item_selected" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer/OptionButton_Shoes_Style" to="." method="_on_option_button_shoes_style_item_selected"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer/ColorPickerButton_Shoes_Base" to="." method="_on_color_picker_button_shoes_base_color_changed"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer/ColorPickerButton_Shoes_Accent" to="." method="_on_color_picker_button_shoes_accent_color_changed"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer/ColorPickerButton_Shoes_Detail" to="." method="_on_color_picker_button_shoes_detail_color_changed"]
-[connection signal="item_selected" from="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/OptionButton_Deck" to="." method="_on_option_button_deck_item_selected"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Wheels" to="." method="_on_color_picker_button_wheels_color_changed"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Details" to="." method="_on_color_picker_button_details_color_changed"]
-[connection signal="color_changed" from="MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Metal" to="." method="_on_color_picker_button_metal_color_changed"]
+[node name="PanelOptions" type="Panel" parent="MarginContainer/Container"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Container/PanelOptions"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ButtonBackOptions" type="Button" parent="MarginContainer/Container/PanelOptions/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Back"
+
+[node name="TabContainerOpions" type="TabContainer" parent="MarginContainer/Container/PanelOptions/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="Graphics" type="TabBar" parent="MarginContainer/Container/PanelOptions/VBoxContainer/TabContainerOpions"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Audio" type="TabBar" parent="MarginContainer/Container/PanelOptions/VBoxContainer/TabContainerOpions"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Gameplay" type="TabBar" parent="MarginContainer/Container/PanelOptions/VBoxContainer/TabContainerOpions"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="MainMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_rm2hb")
+
+[node name="OptionsMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CustomizationMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_i13cm")
+
+[connection signal="pressed" from="MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer/ButtonStart" to="MainMenu" method="_on_button_start_pressed"]
+[connection signal="pressed" from="MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer/ButtonOptions" to="MainMenu" method="_on_button_options_pressed"]
+[connection signal="pressed" from="MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer/ButtonCustomization" to="MainMenu" method="_on_button_customization_pressed"]
+[connection signal="pressed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/ButtonBackCustomization" to="MainMenu" method="_on_button_back_customization_pressed"]
+[connection signal="value_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/HSlider_Size" to="CustomizationMenu" method="_on_h_slider_size_value_changed"]
+[connection signal="value_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HSlider_Skin_Color" to="CustomizationMenu" method="_on_h_slider_skin_color_value_changed"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Eye_Color" to="CustomizationMenu" method="_on_color_picker_button_eye_color_color_changed"]
+[connection signal="item_selected" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer/OptionButton_Hair" to="CustomizationMenu" method="_on_option_button_hair_item_selected"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Hair_Color" to="CustomizationMenu" method="_on_color_picker_button_hair_color_color_changed"]
+[connection signal="item_selected" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle/HBoxContainer/OptionButton_Top_Style" to="CustomizationMenu" method="_on_option_button_top_style_item_selected"]
+[connection signal="item_selected" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer/OptionButton_Top_Decal" to="CustomizationMenu" method="_on_option_button_top_decal_item_selected"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Top_Base" to="CustomizationMenu" method="_on_color_picker_button_top_base_color_changed"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Top_Accent" to="CustomizationMenu" method="_on_color_picker_button_top_accent_color_changed"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Top_Detail" to="CustomizationMenu" method="_on_color_picker_button_top_detail_color_changed"]
+[connection signal="item_selected" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer/OptionButton_Bottom_Style" to="CustomizationMenu" method="_on_option_button_bottom_style_item_selected"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/ColorPickerButton_Bottom_Base" to="CustomizationMenu" method="_on_color_picker_button_bottom_base_color_changed"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer/ColorPickerButton_Bottom_Accent" to="CustomizationMenu" method="_on_color_picker_button_bottom_accent_color_changed"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer/ColorPickerButton_Bottom_Detail" to="CustomizationMenu" method="_on_color_picker_button_bottom_detail_color_changed"]
+[connection signal="item_selected" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer/OptionButton_Shoes_Style" to="CustomizationMenu" method="_on_option_button_shoes_style_item_selected"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer/ColorPickerButton_Shoes_Base" to="CustomizationMenu" method="_on_color_picker_button_shoes_base_color_changed"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer/ColorPickerButton_Shoes_Accent" to="CustomizationMenu" method="_on_color_picker_button_shoes_accent_color_changed"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer/ColorPickerButton_Shoes_Detail" to="CustomizationMenu" method="_on_color_picker_button_shoes_detail_color_changed"]
+[connection signal="item_selected" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/OptionButton_Deck" to="CustomizationMenu" method="_on_option_button_deck_item_selected"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Wheels" to="CustomizationMenu" method="_on_color_picker_button_wheels_color_changed"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Details" to="CustomizationMenu" method="_on_color_picker_button_details_color_changed"]
+[connection signal="color_changed" from="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Metal" to="CustomizationMenu" method="_on_color_picker_button_metal_color_changed"]
+[connection signal="pressed" from="MarginContainer/Container/PanelOptions/VBoxContainer/ButtonBackOptions" to="MainMenu" method="_on_button_back_options_pressed"]

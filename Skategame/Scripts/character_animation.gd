@@ -1,8 +1,8 @@
 extends Node3D
 
 #controls the animtree of the character
-@onready var anim_tree: AnimationTree = $"../../AnimationTree"
-@onready var character: CharacterBody3D = $"../.."
+@onready var animation_tree: AnimationTree = $"../AnimationTree"
+@onready var character: CharacterBody3D = $".."
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

@@ -8,7 +8,7 @@ const ROT_KICKTURN : float = 4.0
 const ROT_JUMP :float= 7.0
 const MAX_VEL :float = 12.0
 const GRAVITY :float = 15.0
-const BALANCE_MULTI : float= 0.5
+const BALANCE_MULTI : float= 1.5
 const PIPESNAP_OFFSET :float = 0.0
 const UP_ALIGN_SPEED :float = 10.0
 const INTERP_SPEED: float = 10.0
@@ -39,6 +39,7 @@ var ray_path = {}
 @export var Camera: Camera3D = null
 @export var Camera_Pos: Node3D = null
 @export var Ingame_Ui: Control = null
+@onready var character_ragdoll: Node3D = $character_ragdoll
 
 #Enums for player state and Collision detection
 enum PlayerState {
@@ -191,14 +192,14 @@ func _player_state():
 				return
 			_randomize_balance()
 			if(path_dir != 0):
-				print(path_offset)
+				#print(path_offset)
 				path_vel = velocity.project(curve_tangent).length() * path_dir
 				player_state = PlayerState.GRIND
 				return
 			if(path_dir == 0 and player_state != PlayerState.PIPESNAP):
 				player_state = PlayerState.LIP
 				path_offset = path.curve.get_closest_offset(position * path.global_transform)
-				print(path_offset)
+				#print(path_offset)
 				lip_start_up = up_direction
 				lip_start_vel = velocity
 				curve_tangent = _get_path_tangent(path, path_offset)
@@ -212,11 +213,11 @@ func _player_state():
 			if path != null:
 				print(path)
 				path_offset = path.curve.get_closest_offset(position * path.global_transform)
-				print(path_offset)
+				#print(path_offset)
 				curve_tangent = _get_path_tangent(path, path_offset)
 				path_dir = _get_path_dir(curve_tangent, 0.1)
 				path_vel = velocity.project(curve_tangent * Vector3(1,0,1)).length() * path_dir
-				print(path_vel)
+				#print(path_vel)
 				var dir : Vector3 = curve_tangent.cross(Vector3(0,1,0))
 				if(xform.basis.y.dot(dir) > 0):
 					pipe_snap_flip = true
@@ -321,6 +322,7 @@ func _lerp_vis_transform(delta, _speed):
 
 func _fall(_fall_reason, _fall_value):
 	print(_fall_reason + ": " + str(_fall_value))
+	character_ragdoll.set_start_simulation()
 	player_state = PlayerState.FALL
 	Ingame_Ui.set_fail_view(true)
 	fall_timer = 2.0
@@ -328,6 +330,7 @@ func _fall(_fall_reason, _fall_value):
 
 func _reset_player(_pos):
 	Ingame_Ui.set_fail_view(false)
+	character_ragdoll.set_end_simulation()
 	up_direction = Vector3.UP
 	velocity = Vector3.ZERO
 	global_position = _pos

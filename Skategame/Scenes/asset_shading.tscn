@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://4dexi0qui2ct"]
+[gd_scene load_steps=13 format=3 uid="uid://4dexi0qui2ct"]
 
 [ext_resource type="PackedScene" uid="uid://ydofbmuhla2w" path="res://Scenes/main_menu.tscn" id="1_p8ut7"]
 [ext_resource type="Texture2D" uid="uid://bec75ysydn6i4" path="res://Assets/Environment/Textures/PT_buikslotermeerplein.exr" id="2_tmwgv"]
@@ -30,17 +30,19 @@ tonemap_mode = 3
 glow_enabled = true
 glow_bloom = 0.15
 
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lui4q"]
+
 [node name="AssetShading" type="Node3D"]
 
 [node name="MainMenu" parent="." instance=ExtResource("1_p8ut7")]
 
 [node name="sphere_matte" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.682724, 1.20687, -0.915922)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.682724, 1.20687, -0.256)
 material_override = SubResource("StandardMaterial3D_vndfe")
 mesh = SubResource("SphereMesh_alvip")
 
 [node name="sphere_metal" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.683, 0.491227, -0.916346)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.683, 0.491227, -0.256)
 material_override = SubResource("StandardMaterial3D_7w680")
 mesh = SubResource("SphereMesh_alvip")
 
@@ -53,16 +55,21 @@ light_energy = 0.5
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4.85994, 0.837032, -0.757665)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5.59955, 0.837032, -0.173991)
 fov = 25.0
 
 [node name="Character" parent="." instance=ExtResource("3_3wad2")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.285, 0, 0.105)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.155, 0, 0.62)
 
 [node name="SM_Cyclorama" parent="." instance=ExtResource("5_s73hg")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.647921, 0, 0)
 
 [node name="Plane" parent="SM_Cyclorama" index="0"]
 material_override = ExtResource("6_hadjq")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="SM_Cyclorama"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SM_Cyclorama/StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_lui4q")
 
 [editable path="SM_Cyclorama"]

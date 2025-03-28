@@ -1,27 +1,27 @@
 extends Control
 
-@onready var h_slider_skin_color: HSlider = $MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HSlider_Skin_Color
-@onready var color_picker_button_eye_color: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Eye_Color
-@onready var color_picker_button_top_base: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Top_Base
-@onready var color_picker_button_top_accent: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Top_Accent
-@onready var color_picker_button_top_detail: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Top_Detail
-@onready var color_picker_button_bottom_base: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/ColorPickerButton_Bottom_Base
-@onready var color_picker_button_bottom_accent: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer/ColorPickerButton_Bottom_Accent
-@onready var color_picker_button_bottom_detail: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer/ColorPickerButton_Bottom_Detail
-@onready var color_picker_button_shoes_base: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer/ColorPickerButton_Shoes_Base
-@onready var color_picker_button_shoes_accent: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer/ColorPickerButton_Shoes_Accent
-@onready var color_picker_button_shoes_detail: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer/ColorPickerButton_Shoes_Detail
-@onready var color_picker_button_wheels: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Wheels
-@onready var color_picker_button_details: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Details
-@onready var color_picker_button_metal: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Metal
-@onready var option_button_deck: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/OptionButton_Deck
-@onready var option_button_top_decal: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer/OptionButton_Top_Decal
-@onready var color_picker_button_hair_color: ColorPickerButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Hair_Color
-@onready var option_button_hair: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer/OptionButton_Hair
-@onready var option_button_top_style: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle/HBoxContainer/OptionButton_Top_Style
-@onready var option_button_bottom_style: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer/OptionButton_Bottom_Style
-@onready var option_button_shoes_style: OptionButton = $MarginContainer/HBoxContainer/Panel/TabContainer/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer/OptionButton_Shoes_Style
-@onready var h_slider_size: HSlider = $MarginContainer/HBoxContainer/Panel/TabContainer/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/HSlider_Size
+@onready var h_slider_skin_color: HSlider = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HSlider_Skin_Color"
+@onready var color_picker_button_eye_color: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Eye_Color"
+@onready var color_picker_button_top_base: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Top_Base"
+@onready var color_picker_button_top_accent: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Top_Accent"
+@onready var color_picker_button_top_detail: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Top_Detail"
+@onready var color_picker_button_bottom_base: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/ColorPickerButton_Bottom_Base"
+@onready var color_picker_button_bottom_accent: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer/ColorPickerButton_Bottom_Accent"
+@onready var color_picker_button_bottom_detail: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer/ColorPickerButton_Bottom_Detail"
+@onready var color_picker_button_shoes_base: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer/ColorPickerButton_Shoes_Base"
+@onready var color_picker_button_shoes_accent: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer/ColorPickerButton_Shoes_Accent"
+@onready var color_picker_button_shoes_detail: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer/ColorPickerButton_Shoes_Detail"
+@onready var color_picker_button_wheels: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton_Wheels"
+@onready var color_picker_button_details: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/ColorPickerButton_Details"
+@onready var color_picker_button_metal: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Metal"
+@onready var option_button_deck: OptionButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/OptionButton_Deck"
+@onready var option_button_top_decal: OptionButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer/OptionButton_Top_Decal"
+@onready var color_picker_button_hair_color: ColorPickerButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/ColorPickerButton_Hair_Color"
+@onready var option_button_hair: OptionButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer/OptionButton_Hair"
+@onready var option_button_top_style: OptionButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle/HBoxContainer/OptionButton_Top_Style"
+@onready var option_button_bottom_style: OptionButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer/OptionButton_Bottom_Style"
+@onready var option_button_shoes_style: OptionButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer/OptionButton_Shoes_Style"
+@onready var h_slider_size: HSlider = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/HSlider_Size"
 
 
 func _ready() -> void:

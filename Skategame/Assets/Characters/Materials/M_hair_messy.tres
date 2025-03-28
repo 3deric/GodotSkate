@@ -8,9 +8,9 @@
 render_priority = 0
 shader = ExtResource("1_snk6o")
 shader_parameter/hair_color = Color(0.363087, 0.258013, 0.294619, 1)
-shader_parameter/normal_intensity = 0.3
+shader_parameter/normal_intensity = 0.5
 shader_parameter/Rim = 0.5
-shader_parameter/Rim_Tint = 1.0
-shader_parameter/anisotrophy = 0.5
+shader_parameter/Rim_Tint = 0.5
+shader_parameter/anisotrophy = 0.75
 shader_parameter/color = ExtResource("2_qtjne")
 shader_parameter/normal = ExtResource("3_bp33q")
