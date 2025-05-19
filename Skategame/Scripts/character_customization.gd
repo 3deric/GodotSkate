@@ -1,12 +1,12 @@
 extends Node3D
 
-@onready var body_mesh : MeshInstance3D = $"../Char/SK_char_male/Skeleton3D/char_male_body"
-@onready var top_mesh : MeshInstance3D = $"../Char/SK_char_male/Skeleton3D/char_male_top"
-@onready var bottom_mesh : MeshInstance3D = $"../Char/SK_char_male/Skeleton3D/char_male_bottom"
-@onready var shoes_mesh : MeshInstance3D = $"../Char/SK_char_male/Skeleton3D/char_male_shoes"
-@onready var board_mesh : MeshInstance3D = $"../Char/SK_char_male/Skeleton3D/char_skateboard"
-@onready var hair_mesh : MeshInstance3D = $"../Char/SK_char_male/Skeleton3D/char_male_hair"
-@onready var char: Node3D = $"../Char"
+@onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_male_body"
+@onready var top_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_male_top"
+@onready var bottom_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_male_bottom"
+@onready var shoes_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_male_shoes"
+@onready var board_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_skateboard"
+@onready var hair_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_male_hair"
+@onready var char: Node3D = $"../Char/Char_Skeleton"
 
 
 func _ready() -> void:

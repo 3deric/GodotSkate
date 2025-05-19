@@ -498,33 +498,11 @@ func _check_bounce_path(air : bool) -> void:
 
 func _check_bounce() -> void:
 	if is_on_wall() and !bounce_check:
-		print("hit a wall")
 		bounce_check = true
 		print(get_wall_normal())
-		print(last_vel.slide(xform.basis.y))
-		print(last_vel.slide(xform.basis.y).reflect(get_wall_normal()))
 		#velocity = last_vel.slide(xform.basis.y).reflect(get_wall_normal())
 	if !is_on_wall():
 		bounce_check = false
-	#if ray_forward != {}:
-	#	bounce_check = true
-	#	#print("colliding!")
-		#print(ray_forward["normal"])
-	#	var _prev_velocity = velocity.length()
-	#	print(velocity)
-	#	print(velocity.bounce(ray_forward["normal"]))
-		#velocity = velocity.bounce(ray_forward["normal"])
-		#velocity = -xform.basis.z * _prev_velocity
-	
-	#if ray_forward != {} and !bounce_check:
-	#	bounce_check = true
-	#	print("colliding!")
-	#	print(ray_forward["normal"])
-		#var _prev_velocity = velocity.length()
-		#look_at(global_position + velocity.reflect(ray_forward["normal"]), up_direction)
-		#velocity = xform.basis.z * _prev_velocity
-	#if ray_forward == {} and bounce_check:
-	#	bounce_check = false
 
 
 func _debug_player_state() -> void:
@@ -560,16 +538,5 @@ func _fall_check():
 		if (balance_angle > PI /4 or balance_angle < -PI /4):
 			_fall("balance issues", balance_angle)
 			return
-	if is_on_wall() and up_direction.dot(Vector3.UP) < 0.5:
+	if is_on_wall() and up_direction.dot(get_floor_normal()) < 0.5:
 		_fall("Wall", last_vel.length())
-	#if velocity.length() > 3.0:
-		#if ray_forward != {}:
-			#_fall("hit the wall", velocity.length())
-	#	var _check = abs(_forward_velocity().normalized().dot(xform.basis.z))
-	#	if _check < 0.25 and _check != 0 and abs(_forward_velocity().length()) > 1:
-	#		_fall("Ground", _check)
-	#		return
-		#if last_vel.length() > 10:
-	#		_fall("Wall", last_vel.length())
-	#		return
-	
