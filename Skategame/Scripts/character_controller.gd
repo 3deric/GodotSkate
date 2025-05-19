@@ -8,10 +8,9 @@ const ROT_KICKTURN : float = 4.0
 const ROT_JUMP :float= 7.0
 const MAX_VEL :float = 12.0
 const GRAVITY :float = 15.0
-const BALANCE_MULTI : float= 1.5
+const BALANCE_MULTI : float= 0.75
 const PIPESNAP_OFFSET :float = 0.0
 const UP_ALIGN_SPEED :float = 10.0
-const INTERP_SPEED: float = 10.0
 
 #global movement variables
 var xform = null
@@ -32,8 +31,6 @@ var ray_path = {}
 
 #global object references
 @export var is_playing : bool = false
-@onready var Char : Node3D = get_node('Char')
-@onready var Anim : AnimationTree = get_node('AnimationTree')
 @onready var Area: Area3D = get_node('Area3D')
 @onready var Collision: CollisionShape3D = get_node('CollisionShape3D')
 @export var Camera: Camera3D = null
@@ -73,26 +70,17 @@ var curve_snap = Vector3.ZERO
 var curve_tangent = Vector3.ZERO
 
 func _ready():
-	if !is_playing:
-		Anim.set('parameters/conditions/is_setup', true)
-		return
-	_init_player()
-	_reset_player(Vector3(-3.149,6.868,18.256) + Vector3.UP * 5.0)
+	if is_playing:
+		_init_player()
+		_reset_player(Vector3(-3.149,6.868,18.256) + Vector3.UP * 5.0)
 	
 
 func _process(delta):
 	if !is_playing:
 		return
 	_input_handler()
-	_animation_handler(delta)
-	if(player_state != PlayerState.FALL):
-		_lerp_vis_transform(delta, INTERP_SPEED)
-	else:
+	if(player_state == PlayerState.FALL):
 		fall_timer -= delta
-	if(player_state == PlayerState.GRIND):
-		Char.rotation.z = -balance_angle
-	if(player_state == PlayerState.LIP):
-		Char.rotation.x = -balance_angle
 	Camera_Pos.position = Camera_Pos.position.lerp(global_position, delta * 10)
 
 
@@ -108,17 +96,17 @@ func _physics_process(delta):
 		PlayerState.FALL:
 			return
 		PlayerState.GROUND, PlayerState.PIPE:
-			#_check_bounce()
+			_check_bounce()
 			_check_reverse_motion()
 			_ground_movement(delta)
 		PlayerState.AIR:
-			#_check_bounce()
+			_check_bounce()
 			_air_movement(delta)
 		PlayerState.PIPESNAP:
 			_check_bounce_path(true)
 			_pipe_snap_movement(delta)
 		PlayerState.PIPESNAPAIR:
-			#_check_bounce()
+			_check_bounce()
 			_pipe_snap_air_movement(delta)
 		PlayerState.GRIND:
 			_check_bounce_path(false)
@@ -248,11 +236,8 @@ func _player_state():
 
 func _surface_check():
 	ray_ground = _raycast(position + xform.basis.y * 0.1, xform.basis.y, -0.5)
-	ray_forward = _raycast(position + xform.basis.y * 1.0, velocity.normalized(),2.5)
+	ray_forward = _raycast(position + xform.basis.y, velocity.normalized().slide(xform.basis.y),0.5)
 	ray_path = _raycast(position + xform.basis.y * 1.0, curve_tangent * path_dir, -0.5)
-	#if ray_path != {}:
-	#	print(ray_path["collider"].is_in_group('floor'))
-	#	print(ray_path["normal"])
 
 
 func _get_path_tangent(_path: Path3D, _offset: float): #returns the curve tangent
@@ -295,6 +280,7 @@ func _get_position_on_curve(_path: Path3D, _offset):
 	var _curve: Curve3D = _path.curve
 	var _curvePos: Vector3 = _curve.sample_baked(_offset, true)
 	return _curvePos
+
 	
 func _get_stick_curve(_path: Path3D,_offset: float):
 	var _curve: Curve3D = _path.curve
@@ -310,14 +296,7 @@ func _set_up_direction():
 	#if is_on_floor():
 		#up_direction = (get_floor_normal() + last_up_dir) / 2
 	else:
-		up_direction = last_up_dir
-		
-	
-func _lerp_vis_transform(delta, _speed):
-	pass
-	Char.global_transform = Char.global_transform.interpolate_with(global_transform, delta * _speed)
-	if player_state != PlayerState.GRIND: #interpolate position to remove jitter on rails
-		Char.global_position = global_position
+		up_direction = last_up_dir	
 
 
 func _fall(_fall_reason, _fall_value):
@@ -351,46 +330,6 @@ func _input_handler(): 	#handles player inputs
 		_reset_player(last_ground_pos + Vector3.UP * 5.0)
 
 
-func _animation_handler(delta):
-	anim_blend = anim_blend.lerp(input, delta * INTERP_SPEED)
-	match player_state:
-		PlayerState.FALL:
-			return
-		PlayerState.GROUND, PlayerState.PIPE:	
-			Anim.set('parameters/conditions/is_stopped', true)
-			Anim.set('parameters/conditions/is_air',false)
-			Anim.set('parameters/conditions/is_grind', false)
-			Anim.set('parameters/conditions/is_lip', false)
-			if velocity.length() > 0.25:
-				Anim.set('parameters/conditions/is_riding', true)
-				Anim.set('parameters/conditions/is_stopped', false)
-			else:
-				Anim.set('parameters/conditions/is_riding', false)
-				Anim.set('parameters/conditions/is_stopped', true)
-			Anim.set('parameters/Ground/blend_position', anim_blend)
-		PlayerState.AIR, PlayerState.PIPESNAP, PlayerState.PIPESNAPAIR:
-			Anim.set('parameters/conditions/is_riding', false)
-			Anim.set('parameters/conditions/is_stopped', false)
-			Anim.set('parameters/conditions/is_air', true)
-			Anim.set('parameters/conditions/is_grind', false)
-			Anim.set('parameters/conditions/is_lip', false)
-			Anim.set('parameters/Air/blend_position', anim_blend)
-		PlayerState.GRIND:
-			Anim.set('parameters/conditions/is_riding', false)
-			Anim.set('parameters/conditions/is_stopped', false)
-			Anim.set('parameters/conditions/is_air', false)
-			Anim.set('parameters/conditions/is_grind', true)
-			Anim.set('parameters/conditions/is_lip', false)
-			Anim.set('parameters/Grind/blend_position', anim_blend)
-		PlayerState.LIP:
-			Anim.set('parameters/conditions/is_riding', false)
-			Anim.set('parameters/conditions/is_stopped', false)
-			Anim.set('parameters/conditions/is_air', false)
-			Anim.set('parameters/conditions/is_grind', false)
-			Anim.set('parameters/conditions/is_lip', true)
-			Anim.set('parameters/Lip/blend_position', anim_blend)
-
-
 func _kill_orthogonal_velocity(_xForm : Transform3D, _vel: Vector3): 	#remove orthogonal component of velocity
 	var _fwdVel : Vector3 = _xForm.basis.z * _vel.dot(_xForm.basis.z)
 	var _ortVel : Vector3 = _xForm.basis.x * _vel.dot(_xForm.basis.x)
@@ -419,7 +358,8 @@ func _limit_velocity():
 
 
 func _revert_motion():
-	global_rotate(xform.basis.y, PI)
+	pass
+	#global_rotate(xform.basis.y, PI)
 
 
 func _ground_movement(delta): 	#movement while grounded
@@ -557,14 +497,34 @@ func _check_bounce_path(air : bool) -> void:
 
 
 func _check_bounce() -> void:
-	if ray_forward != {} and !bounce_check:
+	if is_on_wall() and !bounce_check:
+		print("hit a wall")
 		bounce_check = true
-		print(ray_forward["normal"])
-		var _prev_velocity = velocity.length()
-		look_at(global_position + velocity.reflect(ray_forward["normal"]), up_direction)
-		velocity = xform.basis.z * _prev_velocity
-	if ray_forward == {} and bounce_check:
+		print(get_wall_normal())
+		print(last_vel.slide(xform.basis.y))
+		print(last_vel.slide(xform.basis.y).reflect(get_wall_normal()))
+		#velocity = last_vel.slide(xform.basis.y).reflect(get_wall_normal())
+	if !is_on_wall():
 		bounce_check = false
+	#if ray_forward != {}:
+	#	bounce_check = true
+	#	#print("colliding!")
+		#print(ray_forward["normal"])
+	#	var _prev_velocity = velocity.length()
+	#	print(velocity)
+	#	print(velocity.bounce(ray_forward["normal"]))
+		#velocity = velocity.bounce(ray_forward["normal"])
+		#velocity = -xform.basis.z * _prev_velocity
+	
+	#if ray_forward != {} and !bounce_check:
+	#	bounce_check = true
+	#	print("colliding!")
+	#	print(ray_forward["normal"])
+		#var _prev_velocity = velocity.length()
+		#look_at(global_position + velocity.reflect(ray_forward["normal"]), up_direction)
+		#velocity = xform.basis.z * _prev_velocity
+	#if ray_forward == {} and bounce_check:
+	#	bounce_check = false
 
 
 func _debug_player_state() -> void:
@@ -600,13 +560,16 @@ func _fall_check():
 		if (balance_angle > PI /4 or balance_angle < -PI /4):
 			_fall("balance issues", balance_angle)
 			return
-	#if is_on_floor():
+	if is_on_wall() and up_direction.dot(Vector3.UP) < 0.5:
+		_fall("Wall", last_vel.length())
+	#if velocity.length() > 3.0:
+		#if ray_forward != {}:
+			#_fall("hit the wall", velocity.length())
 	#	var _check = abs(_forward_velocity().normalized().dot(xform.basis.z))
 	#	if _check < 0.25 and _check != 0 and abs(_forward_velocity().length()) > 1:
 	#		_fall("Ground", _check)
 	#		return
-	#if is_on_wall():
-	#	if last_vel.length() > 10:
+		#if last_vel.length() > 10:
 	#		_fall("Wall", last_vel.length())
 	#		return
 	
