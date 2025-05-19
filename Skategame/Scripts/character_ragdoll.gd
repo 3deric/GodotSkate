@@ -4,12 +4,16 @@ extends Node3D
 var active : bool = false
 
 #func _process(delta: float) -> void:
-#	if Input.is_action_just_pressed("ui_accept") and !active:
-#		active = true
-#		set_start_simulation()
-#	if Input.is_action_just_released("ui_accept") and active:
-#		active = false
-#		set_end_simulation()
+	#_debug_ragdoll()
+		
+		
+func _debug_ragdoll() -> void:
+	if Input.is_action_just_pressed("ui_accept") and !active:
+		active = true
+		set_start_simulation()
+	if Input.is_action_just_released("ui_accept") and active:
+		active = false
+		set_end_simulation()
 	
 
 func set_start_simulation() -> void:
