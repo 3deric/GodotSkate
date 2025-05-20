@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://4dexi0qui2ct"]
+[gd_scene load_steps=14 format=3 uid="uid://4dexi0qui2ct"]
 
 [ext_resource type="PackedScene" uid="uid://ydofbmuhla2w" path="res://Scenes/main_menu.tscn" id="1_p8ut7"]
 [ext_resource type="Texture2D" uid="uid://bec75ysydn6i4" path="res://Assets/Environment/Textures/PT_buikslotermeerplein.exr" id="2_tmwgv"]
 [ext_resource type="PackedScene" uid="uid://d2nejhxrsjjgk" path="res://Scenes/player_character.tscn" id="3_3wad2"]
 [ext_resource type="PackedScene" uid="uid://dvi8ijm8ik3gr" path="res://Assets/Environment/SM_Cyclorama.glb" id="5_s73hg"]
+[ext_resource type="Script" path="res://Scripts/character_turntable.gd" id="6_2sac2"]
 [ext_resource type="Material" uid="uid://dshu268utf6sb" path="res://Assets/Materials/M_default_grey.tres" id="6_hadjq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vndfe"]
@@ -38,11 +39,13 @@ glow_bloom = 0.15
 
 [node name="sphere_matte" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.682724, 1.20687, -0.256)
+visible = false
 material_override = SubResource("StandardMaterial3D_vndfe")
 mesh = SubResource("SphereMesh_alvip")
 
 [node name="sphere_metal" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.683, 0.491227, -0.256)
+visible = false
 material_override = SubResource("StandardMaterial3D_7w680")
 mesh = SubResource("SphereMesh_alvip")
 
@@ -55,8 +58,8 @@ light_energy = 0.5
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5.59955, 0.837032, -0.173991)
-fov = 25.0
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.07, 0.872, -0.084)
+fov = 20.0
 
 [node name="Character" parent="." instance=ExtResource("3_3wad2")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.155, 0, 0.62)
@@ -71,5 +74,8 @@ material_override = ExtResource("6_hadjq")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SM_Cyclorama/StaticBody3D"]
 shape = SubResource("WorldBoundaryShape3D_lui4q")
+
+[node name="Character_Turntable" type="Node3D" parent="."]
+script = ExtResource("6_2sac2")
 
 [editable path="SM_Cyclorama"]

@@ -4,7 +4,7 @@ extends Node3D
 var active : bool = false
 
 #func _process(delta: float) -> void:
-	#_debug_ragdoll()
+#	_debug_ragdoll()
 		
 		
 func _debug_ragdoll() -> void:

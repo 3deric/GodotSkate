@@ -1,16 +1,18 @@
-[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://c30kou2tte4x3"]
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://c30kou2tte4x3"]
 
 [ext_resource type="Shader" uid="uid://f38jfhnj8mjb" path="res://Assets/Characters/Materials/Master/M_hair.tres" id="1_snk6o"]
 [ext_resource type="Texture2D" uid="uid://67w08r6g5bds" path="res://Assets/Characters/Textures/T_hair_messy_color.png" id="2_qtjne"]
 [ext_resource type="Texture2D" uid="uid://bl7k4dwimspjl" path="res://Assets/Characters/Textures/T_hair_messy_normal.png" id="3_bp33q"]
+[ext_resource type="Texture2D" uid="uid://dxe6tcf0i4o83" path="res://Assets/Characters/Textures/T_hair_messy_orm.png" id="4_x31jq"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_snk6o")
-shader_parameter/hair_color = Color(0.363087, 0.258013, 0.294619, 1)
-shader_parameter/normal_intensity = 0.5
-shader_parameter/Rim = 0.5
+shader_parameter/hair_color = Color(0.23, 0.168667, 0.1564, 1)
+shader_parameter/normal_intensity = 0.2
+shader_parameter/Rim = 2.0
 shader_parameter/Rim_Tint = 0.5
-shader_parameter/anisotrophy = 0.75
+shader_parameter/anisotrophy = 0.5
 shader_parameter/color = ExtResource("2_qtjne")
+shader_parameter/orm = ExtResource("4_x31jq")
 shader_parameter/normal = ExtResource("3_bp33q")
