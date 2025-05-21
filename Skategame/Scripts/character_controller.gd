@@ -22,6 +22,8 @@ var jump_timer : float = 0.0
 var path_offset : float = 0.0
 var path_vel : float = 0.0
 var last_vel : Vector3 = Vector3.ZERO
+var hor_vel : float = 0.0
+var fall_check : float = 0.0
 var revert_path : bool = false
 var bounce_check : bool = false
 var anim_blend : Vector3 = Vector3.ZERO
@@ -81,17 +83,22 @@ func _process(delta):
 	_input_handler()
 	if(player_state == PlayerState.FALL):
 		fall_timer -= delta
-	Camera_Pos.position = Camera_Pos.position.lerp(global_position, delta * 10)
 
 
 func _physics_process(delta):
 	if !is_playing:
 		return
+	Camera_Pos.position = Camera_Pos.position.lerp(global_position, delta * 10)
+	_input_handler()
+	if(player_state == PlayerState.FALL):
+		fall_timer -= delta
+	Camera_Pos.position = Camera_Pos.position.lerp(global_position, delta * 10)
 	xform = global_transform
 	_debug_player_state()
 	_surface_check()
 	_jump_timer(delta)
 	_player_state()
+	_fall_check()
 	match player_state:
 		PlayerState.FALL:
 			return
@@ -118,7 +125,6 @@ func _physics_process(delta):
 	last_vel = velocity
 	_set_up_direction()
 	move_and_slide()
-	_fall_check()
 	#if jump_timer < 0.1 and ray_ground != {}:
 	if jump_timer < 0.1 and player_state == PlayerState.GROUND:
 		apply_floor_snap() #todo, only snap to floor objects, not walls, wrap in function
@@ -300,8 +306,8 @@ func _set_up_direction():
 
 
 func _fall(_fall_reason, _fall_value):
-	print(_fall_reason + ": " + str(_fall_value))
-	character_ragdoll.set_start_simulation()
+	print(_fall_reason + ": " + str(_fall_value)+ "last velocity: " + str(last_vel.length()))
+	character_ragdoll.set_start_simulation(last_vel)
 	player_state = PlayerState.FALL
 	Ingame_Ui.set_fail_view(true)
 	fall_timer = 2.0
@@ -312,6 +318,7 @@ func _reset_player(_pos):
 	character_ragdoll.set_end_simulation()
 	up_direction = Vector3.UP
 	velocity = Vector3.ZERO
+	last_vel = Vector3.ZERO
 	global_position = _pos
 	global_rotation =  Vector3(0,3.14/2,0)
 	player_state = PlayerState.RESET
@@ -534,9 +541,15 @@ func _raycast(_from: Vector3, _dir: Vector3, _len: float):
 	
 
 func _fall_check():
+	if player_state == PlayerState.FALL:
+		return
 	if player_state == PlayerState.GRIND or player_state == PlayerState.LIP:
 		if (balance_angle > PI /4 or balance_angle < -PI /4):
 			_fall("balance issues", balance_angle)
 			return
-	if is_on_wall() and up_direction.dot(get_floor_normal()) < 0.5:
-		_fall("Wall", last_vel.length())
+	if (is_on_wall_only() or is_on_ceiling()) and up_direction.dot(Vector3.UP) < 0.5 and player_state != PlayerState.PIPESNAP:	
+		_fall("Wall", up_direction.dot(Vector3.UP))		
+	hor_vel = abs(last_vel.slide(xform.basis.y).length())
+	fall_check = abs(xform.basis.z.dot(last_vel.slide(xform.basis.y).normalized()))
+	if (player_state == PlayerState.GROUND or player_state == PlayerState.PIPE) and fall_check < 0.5 and hor_vel > 0.5:
+		_fall("Floor", fall_check)
