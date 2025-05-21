@@ -334,7 +334,7 @@ func _input_handler(): 	#handles player inputs
 	input_tricks.y = int(Input.is_action_pressed('Revert'))
 	input_tricks.z = int(Input.is_action_just_released('Jump'))
 	if(input.y and player_state == PlayerState.FALL and fall_timer < 0.1):
-		_reset_player(last_ground_pos + Vector3.UP * 5.0)
+		_reset_player(last_ground_pos + Vector3.UP * 0.1)
 
 
 func _kill_orthogonal_velocity(_xForm : Transform3D, _vel: Vector3): 	#remove orthogonal component of velocity
