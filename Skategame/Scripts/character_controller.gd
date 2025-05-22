@@ -30,6 +30,7 @@ var anim_blend : Vector3 = Vector3.ZERO
 var ray_forward = {}
 var ray_ground = {}
 var ray_path = {}
+var ray_down = {}
 
 #global object references
 @export var is_playing : bool = false
@@ -244,6 +245,7 @@ func _surface_check():
 	ray_ground = _raycast(position + xform.basis.y * 0.1, xform.basis.y, -0.5)
 	ray_forward = _raycast(position + xform.basis.y, velocity.normalized().slide(xform.basis.y),0.5)
 	ray_path = _raycast(position + xform.basis.y * 1.0, curve_tangent * path_dir, -0.5)
+	ray_down = _raycast(position, Vector3.DOWN, 1.0)
 
 
 func _get_path_tangent(_path: Path3D, _offset: float): #returns the curve tangent
@@ -388,10 +390,13 @@ func _ground_movement(delta): 	#movement while grounded
 	velocity = _kill_orthogonal_velocity(xform, velocity)
 
 
-func _air_movement(delta): 	#movement while in air
-	global_rotate(xform.basis.y, input.x * ROT_JUMP * delta)
-	velocity.y -= GRAVITY * delta
-	up_direction = lerp(up_direction,Vector3.UP, delta * UP_ALIGN_SPEED)
+func _air_movement(_delta): 	#movement while in air
+	global_rotate(xform.basis.y, input.x * ROT_JUMP * _delta)
+	velocity.y -= GRAVITY * _delta
+	if ray_down != {}:
+		up_direction = lerp(up_direction, ray_down.normal, _delta * UP_ALIGN_SPEED)
+	else:
+		up_direction = lerp(up_direction,Vector3.UP, _delta * UP_ALIGN_SPEED)
 	
 
 func _pipe_snap_movement(delta): 	#movement while snapped to a pipe
@@ -549,6 +554,7 @@ func _fall_check():
 			return
 	if (is_on_wall_only() or is_on_ceiling()) and up_direction.dot(Vector3.UP) < 0.5 and player_state != PlayerState.PIPESNAP:	
 		_fall("Wall", up_direction.dot(Vector3.UP))		
+		return
 	hor_vel = abs(last_vel.slide(xform.basis.y).length())
 	fall_check = abs(xform.basis.z.dot(last_vel.slide(xform.basis.y).normalized()))
 	if (player_state == PlayerState.GROUND or player_state == PlayerState.PIPE) and fall_check < 0.5 and hor_vel > 0.5:
