@@ -1,4 +1,4 @@
-[gd_scene load_steps=142 format=4 uid="uid://duaw5sk1sesed"]
+[gd_scene load_steps=144 format=4 uid="uid://duaw5sk1sesed"]
 
 [ext_resource type="PackedScene" uid="uid://f8h2uynd2b7n" path="res://Scenes/ingame_overlay.tscn" id="1_pi6uu"]
 [ext_resource type="PackedScene" uid="uid://cctt1un35hyco" path="res://Scenes/debug_view.tscn" id="2_dd0em"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://1up2mjm8l6ew" path="res://Assets/Debug/Warehouse.glb" id="4_6c36q"]
 [ext_resource type="Material" uid="uid://bq024sjps0gm4" path="res://Assets/Materials/M_path.tres" id="5_onqqn"]
 [ext_resource type="Script" path="res://Scripts/Editor/rail_init.gd" id="6_ci0fc"]
+[ext_resource type="Texture2D" uid="uid://bec75ysydn6i4" path="res://Assets/Environment/Textures/PT_buikslotermeerplein.exr" id="7_ftd8s"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cwdxo"]
 resource_name = "M_Col"
@@ -1490,21 +1491,26 @@ _data = {
 }
 point_count = 4
 
-[sub_resource type="Environment" id="Environment_jc8xf"]
-background_mode = 1
-background_color = Color(0.273873, 0.273873, 0.273873, 1)
-ambient_light_source = 3
-ambient_light_color = Color(0.270821, 0.350402, 0.391988, 1)
-reflected_light_source = 2
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_agarl"]
+panorama = ExtResource("7_ftd8s")
 
-[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_tlley"]
+[sub_resource type="Sky" id="Sky_33a2s"]
+sky_material = SubResource("PanoramaSkyMaterial_agarl")
+
+[sub_resource type="Environment" id="Environment_t5anl"]
+background_mode = 2
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_33a2s")
+tonemap_mode = 3
+glow_enabled = true
+glow_bloom = 0.15
 
 [node name="Level" type="Node3D"]
 
 [node name="Node3D" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="Node3D"]
-transform = Transform3D(0.851626, 0.39375, -0.345967, 0, 0.660054, 0.751218, 0.524149, -0.639757, 0.562119, -2.89251, 6.3104, 4.81848)
+transform = Transform3D(0.851626, 0.39375, -0.345967, 0, 0.660054, 0.751218, 0.524149, -0.639757, 0.562119, -2.11664, 5.29459, 3.55786)
 current = true
 fov = 38.0
 size = 8.0
@@ -1513,8 +1519,8 @@ far = 39.42
 
 [node name="ingame_overlay" parent="." instance=ExtResource("1_pi6uu")]
 
-[node name="debug_view" parent="." instance=ExtResource("2_dd0em")]
-visible = false
+[node name="debug_view" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("2_dd0em")]
+Player = NodePath("../player_character")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.847207, 0, -0.998464, -0.0554032, -3.14877, 6.86759, 18.2562)
@@ -1526,6 +1532,7 @@ shadow_blur = 6.306
 
 [node name="player_character" parent="." node_paths=PackedStringArray("Camera", "Camera_Pos", "Ingame_Ui") instance=ExtResource("3_4bqnf")]
 transform = Transform3D(0.994854, 0, -0.101317, 0, 1, 0, 0.101317, 0, 0.994854, -2.93907, 2.22471, 0.125948)
+is_playing = true
 Camera = NodePath("../Node3D/Camera3D")
 Camera_Pos = NodePath("../Node3D")
 Ingame_Ui = NodePath("../ingame_overlay")
@@ -2307,5 +2314,9 @@ material = ExtResource("5_onqqn")
 script = ExtResource("6_ci0fc")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_jc8xf")
-camera_attributes = SubResource("CameraAttributesPhysical_tlley")
+environment = SubResource("Environment_t5anl")
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.722135, 0.138408, 0.677764, 0.58475, 0.645598, 0.491193, -0.369577, 0.75103, -0.547143, -0.281779, 0.959275, -0.209071)
+light_energy = 0.5
+shadow_enabled = true

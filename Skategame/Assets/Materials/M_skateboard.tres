@@ -1,7 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://k4s6kpjks8ec"]
-
-[ext_resource type="Shader" uid="uid://crmwft6kjtx3g" path="res://Assets/Materials/M_skateboard_Shader.tres" id="1_6dlwq"]
-
-[resource]
-render_priority = 0
-shader = ExtResource("1_6dlwq")

@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://b85tjjbupm2v4"]
+
+[ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_ptwjq"]
+[ext_resource type="Texture2D" uid="uid://co0qelf8a46jq" path="res://Assets/Characters/Textures/T_shorts_mask.png" id="2_drdu1"]
+[ext_resource type="Texture2D" uid="uid://wcg5vcdywsnx" path="res://Assets/Characters/Textures/T_shorts_normal.png" id="3_hy767"]
+[ext_resource type="Texture2D" uid="uid://2rmpiiq5c3ub" path="res://Assets/Characters/Textures/T_shorts_orm.png" id="4_7dwi8"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ptwjq")
+shader_parameter/base_color = Color(0.281187, 0.281187, 0.281187, 1)
+shader_parameter/accent_color = Color(0.716296, 0.716296, 0.716296, 1)
+shader_parameter/detail_color = Color(0.67562, 0.42158, 0.201014, 1)
+shader_parameter/Roughness_Power = 0.75
+shader_parameter/Rim = 0.5
+shader_parameter/Rim_Tint = 0.1
+shader_parameter/mask = ExtResource("2_drdu1")
+shader_parameter/orm = ExtResource("4_7dwi8")
+shader_parameter/normal = ExtResource("3_hy767")

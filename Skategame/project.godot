@@ -11,15 +11,23 @@ config_version=5
 [application]
 
 config/name="Skategame"
-run/main_scene="res://Scenes/test_level.tscn"
+run/main_scene="res://Scenes/asset_shading.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 run/max_fps=60
 config/icon="res://icon.svg"
 
+[autoload]
+
+CustomizationManager="*res://Scripts/customization_manager.gd"
+
+[debug]
+
+gdscript/warnings/inferred_declaration=1
+
 [display]
 
-window/size/viewport_width=960
-window/size/viewport_height=540
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/stretch/mode="viewport"
 
 [dotnet]
@@ -70,7 +78,6 @@ Revert={
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method="mobile"
 global_illumination/gi/use_half_resolution=true
 anti_aliasing/quality/screen_space_aa=1

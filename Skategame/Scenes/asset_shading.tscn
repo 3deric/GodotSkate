@@ -1,0 +1,81 @@
+[gd_scene load_steps=14 format=3 uid="uid://4dexi0qui2ct"]
+
+[ext_resource type="PackedScene" uid="uid://ydofbmuhla2w" path="res://Scenes/main_menu.tscn" id="1_p8ut7"]
+[ext_resource type="Texture2D" uid="uid://bec75ysydn6i4" path="res://Assets/Environment/Textures/PT_buikslotermeerplein.exr" id="2_tmwgv"]
+[ext_resource type="PackedScene" uid="uid://d2nejhxrsjjgk" path="res://Scenes/player_character.tscn" id="3_3wad2"]
+[ext_resource type="PackedScene" uid="uid://dvi8ijm8ik3gr" path="res://Assets/Environment/SM_Cyclorama.glb" id="5_s73hg"]
+[ext_resource type="Script" path="res://Scripts/character_turntable.gd" id="6_2sac2"]
+[ext_resource type="Material" uid="uid://dshu268utf6sb" path="res://Assets/Materials/M_default_grey.tres" id="6_hadjq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vndfe"]
+albedo_color = Color(0.703808, 0.703808, 0.703808, 1)
+roughness = 0.88
+
+[sub_resource type="SphereMesh" id="SphereMesh_alvip"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7w680"]
+metallic = 1.0
+roughness = 0.07
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_glvfd"]
+panorama = ExtResource("2_tmwgv")
+
+[sub_resource type="Sky" id="Sky_3o7iy"]
+sky_material = SubResource("PanoramaSkyMaterial_glvfd")
+
+[sub_resource type="Environment" id="Environment_ufrkh"]
+background_mode = 2
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_3o7iy")
+tonemap_mode = 3
+glow_enabled = true
+glow_bloom = 0.15
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lui4q"]
+
+[node name="AssetShading" type="Node3D"]
+
+[node name="MainMenu" parent="." instance=ExtResource("1_p8ut7")]
+
+[node name="sphere_matte" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.682724, 1.20687, -0.256)
+visible = false
+material_override = SubResource("StandardMaterial3D_vndfe")
+mesh = SubResource("SphereMesh_alvip")
+
+[node name="sphere_metal" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.683, 0.491227, -0.256)
+visible = false
+material_override = SubResource("StandardMaterial3D_7w680")
+mesh = SubResource("SphereMesh_alvip")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ufrkh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.722135, 0.138408, 0.677764, 0.58475, 0.645598, 0.491193, -0.369577, 0.75103, -0.547143, -0.281779, 0.959275, -0.209071)
+light_energy = 0.5
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.07, 0.872, -0.084)
+fov = 20.0
+
+[node name="Character" parent="." instance=ExtResource("3_3wad2")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.155, 0, 0.62)
+
+[node name="SM_Cyclorama" parent="." instance=ExtResource("5_s73hg")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.647921, 0, 0)
+
+[node name="Plane" parent="SM_Cyclorama" index="0"]
+material_override = ExtResource("6_hadjq")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="SM_Cyclorama"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SM_Cyclorama/StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_lui4q")
+
+[node name="Character_Turntable" type="Node3D" parent="."]
+script = ExtResource("6_2sac2")
+
+[editable path="SM_Cyclorama"]

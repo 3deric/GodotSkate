@@ -1,22 +1,29 @@
-[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dor47y2g3jwc7"]
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://dor47y2g3jwc7"]
 
-[ext_resource type="Texture2D" uid="uid://bnajima1bb1ki" path="res://Assets/Characters/Textures/T_male_color.jpg" id="1_lv2qi"]
-[ext_resource type="Texture2D" uid="uid://y058eqmjjye7" path="res://Assets/Characters/Textures/T_male_normal.jpg" id="2_scmax"]
+[ext_resource type="Texture2D" uid="uid://dnrelsij38hpi" path="res://Assets/Characters/Textures/T_male_color.png" id="1_05o4k"]
+[ext_resource type="Texture2D" uid="uid://cq23ide83cepl" path="res://Assets/Characters/Textures/T_male_facial_hair_beard_color.png" id="2_4q8x5"]
+[ext_resource type="Texture2D" uid="uid://blmx70jr7sfnp" path="res://Assets/Characters/Textures/T_male_mask.png" id="3_j11dp"]
+[ext_resource type="Texture2D" uid="uid://bgqg84twhw8n0" path="res://Assets/Characters/Textures/T_male_normal.png" id="4_fgut7"]
 
 [resource]
 resource_name = "M_char_male_body"
 cull_mode = 2
-albedo_texture = ExtResource("1_lv2qi")
-roughness = 0.9
+albedo_color = Color(0.9, 0.9, 0.9, 1)
+albedo_texture = ExtResource("1_05o4k")
+roughness = 0.62
 normal_enabled = true
-normal_texture = ExtResource("2_scmax")
+normal_texture = ExtResource("4_fgut7")
 rim_enabled = true
-rim = 0.25
+rim = 0.5
+rim_tint = 0.31
 clearcoat_roughness = 1.0
-heightmap_scale = -4.379
+heightmap_scale = 0.0
 heightmap_deep_parallax = true
 heightmap_min_layers = 8
 heightmap_max_layers = 32
 backlight_enabled = true
-backlight = Color(0.114997, 0.0858625, 0.0653285, 1)
-texture_filter = 0
+backlight = Color(0.385647, 0.31296, 0.261828, 1)
+detail_enabled = true
+detail_mask = ExtResource("3_j11dp")
+detail_uv_layer = 1
+detail_albedo = ExtResource("2_4q8x5")

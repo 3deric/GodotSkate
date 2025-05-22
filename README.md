@@ -1,7 +1,9 @@
 # GodotSkate
 Skate game prototype in Godot
 ![GodotS Skate Preview](/img/preview.png)
+![GodotS Skate Preview](/img/character_preview.png)
 Textures by https://www.kenney.nl/
+Characters are based on low res metahuman characters by EPIC Games.
 
 # Function Documentation
 I tried to keep most function self explainatory

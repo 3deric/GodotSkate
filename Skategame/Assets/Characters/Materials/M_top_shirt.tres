@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://hocp73j2jjyb"]
+
+[ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_4ql6i"]
+[ext_resource type="Texture2D" uid="uid://fn6w3rcnk1qd" path="res://Assets/Characters/Textures/T_shirt_mask.png" id="3_ta6gq"]
+[ext_resource type="Texture2D" uid="uid://0k1mkjpqjv2w" path="res://Assets/Characters/Textures/T_shirt_normal.png" id="4_4squs"]
+[ext_resource type="Texture2D" uid="uid://h53l8dax051w" path="res://Assets/Characters/Textures/T_shirt_orm.png" id="5_r3drh"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_4ql6i")
+shader_parameter/base_color = Color(0.198988, 0.322279, 0.533544, 1)
+shader_parameter/accent_color = Color(0.2, 0.321569, 0.533333, 1)
+shader_parameter/detail_color = Color(0.806717, 0.774369, 0.782551, 1)
+shader_parameter/Roughness_Power = 1.0
+shader_parameter/Rim = 0.5
+shader_parameter/Rim_Tint = 0.25
+shader_parameter/mask = ExtResource("3_ta6gq")
+shader_parameter/orm = ExtResource("5_r3drh")
+shader_parameter/normal = ExtResource("4_4squs")
