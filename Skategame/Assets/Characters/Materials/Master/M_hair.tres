@@ -69,7 +69,7 @@ default_input_values = [0, Vector3(0, 0, 0)]
 port_type = 4
 
 [sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_mrnlg"]
-parameter_name = "hair_color"
+parameter_name = "base_color"
 default_value_enabled = true
 default_value = Color(0.106055, 0.0649224, 0.0621805, 1)
 
@@ -77,7 +77,7 @@ default_value = Color(0.106055, 0.0649224, 0.0621805, 1)
 code = "shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx;
 
-uniform vec4 hair_color : source_color = vec4(0.106055, 0.064922, 0.062181, 1.000000);
+uniform vec4 base_color : source_color = vec4(0.106055, 0.064922, 0.062181, 1.000000);
 uniform sampler2D orm;
 uniform float Roughness_Power = 1.0;
 uniform sampler2D normal2 : hint_normal;
@@ -89,7 +89,7 @@ uniform float Rim_Tint = 0.5;
 
 void fragment() {
 // ColorParameter:7
-	vec4 n_out7p0 = hair_color;
+	vec4 n_out7p0 = base_color;
 
 
 	vec4 n_out40p0;

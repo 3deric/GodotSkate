@@ -62,8 +62,6 @@ func _setup_buttons() -> void:
 
 
 func _setup_options() -> void:
-	var data = CustomizationManager.instance.character_data
-
 	_set_option_button(option_button_top_style, CustomizationPart.Part.TOP)
 	_set_option_button(option_button_bottom_style, CustomizationPart.Part.BOTTOM)
 	_set_option_button(option_button_shoes_style, CustomizationPart.Part.SHOES)
@@ -73,60 +71,35 @@ func _setup_options() -> void:
 	_set_option_button(option_button_top_decal, CustomizationPart.Part.DECAL_TOP)
 	_set_option_button(option_button_deck, CustomizationPart.Part.DECAL_BOARD)
 	
-	color_picker_button_top_base.color = data.top_base_color
-	color_picker_button_top_accent.color = data.top_accent_color
-	color_picker_button_top_detail.color = data.top_detail_color
-	color_picker_button_bottom_base.color = data.bottom_base_color
-	color_picker_button_bottom_accent.color = data.bottom_accent_color
-	color_picker_button_bottom_detail.color = data.bottom_detail_color
-	color_picker_button_shoes_base.color = data.shoes_base_color
-	color_picker_button_shoes_accent.color = data.shoes_accent_color
-	color_picker_button_shoes_detail.color = data.shoes_detail_color
-	color_picker_button_wheels.color = data.board_wheels_color
-	color_picker_button_details.color = data.board_accent_color
-	color_picker_button_metal.color = data.board_metal_color
-	option_button_deck.selected = data.board_decal
-	option_button_top_decal.selected = data.top_decal
-	color_picker_button_eye_color.color = data.eye_color
-	h_slider_skin_color.value = data.skin_color
-	color_picker_button_hair_color.color = data.hair_color
-	option_button_hair.selected = data.hair_mesh
-	option_button_top_style.selected = data.top_mesh
-	option_button_bottom_style.selected = data.bottom_mesh
-	option_button_shoes_style.selected = data.shoes_mesh
-	h_slider_size.value = data.size
-	check_button_gender.button_pressed = bool(data.gender)
-	option_button_helmet_style.selected = data.helmet_mesh
-	
+	_update_ui_from_data()
 	
 func _update_ui_from_data() -> void:
 	var data = CustomizationManager.instance.character_data
-	color_picker_button_top_base.color = data.top_base_color
-	color_picker_button_top_accent.color = data.top_accent_color
-	color_picker_button_top_detail.color = data.top_detail_color
-	color_picker_button_bottom_base.color = data.bottom_base_color
-	color_picker_button_bottom_accent.color = data.bottom_accent_color
-	color_picker_button_bottom_detail.color = data.bottom_detail_color
-	color_picker_button_shoes_base.color = data.shoes_base_color
-	color_picker_button_shoes_accent.color = data.shoes_accent_color
-	color_picker_button_shoes_detail.color = data.shoes_detail_color
-	color_picker_button_wheels.color = data.board_wheels_color
-	color_picker_button_details.color = data.board_accent_color
-	color_picker_button_metal.color = data.board_metal_color
-	option_button_deck.selected = data.board_decal
-	option_button_top_decal.selected = data.top_decal
-	color_picker_button_eye_color.color = data.eye_color
-	h_slider_skin_color.value = data.skin_color
-	color_picker_button_hair_color.color = data.hair_color
-	option_button_hair.selected = data.hair_mesh
-	option_button_top_style.selected = data.top_mesh
-	option_button_bottom_style.selected = data.bottom_mesh
-	option_button_shoes_style.selected = data.shoes_mesh
-	h_slider_size.value = data.size
-	check_button_gender.button_pressed = bool(data.gender)
-	option_button_helmet_style.selected = data.helmet_mesh
-	option_button_glasses_style.selected = data.glasses_mesh
-		
+	color_picker_button_top_base.color = data.customization_data[CustomizationPart.Part.TOP]["base"]
+	color_picker_button_top_accent.color = data.customization_data[CustomizationPart.Part.TOP]["accent"]
+	color_picker_button_top_detail.color = data.customization_data[CustomizationPart.Part.TOP]["detail"]
+	color_picker_button_bottom_base.color = data.customization_data[CustomizationPart.Part.BOTTOM]["base"]
+	color_picker_button_bottom_accent.color = data.customization_data[CustomizationPart.Part.BOTTOM]["accent"]
+	color_picker_button_bottom_detail.color = data.customization_data[CustomizationPart.Part.BOTTOM]["detail"]
+	color_picker_button_shoes_base.color = data.customization_data[CustomizationPart.Part.SHOES]["base"]
+	color_picker_button_shoes_accent.color = data.customization_data[CustomizationPart.Part.SHOES]["accent"]
+	color_picker_button_shoes_detail.color = data.customization_data[CustomizationPart.Part.SHOES]["detail"]
+	color_picker_button_wheels.color = data.customization_data[CustomizationPart.Part.BOARD]["base"]
+	color_picker_button_details.color = data.customization_data[CustomizationPart.Part.BOARD]["accent"]
+	color_picker_button_metal.color = data.customization_data[CustomizationPart.Part.BOARD]["detail"]
+	option_button_deck.selected = data.customization_data[CustomizationPart.Part.BOARD][CustomizationPart.Part.DECAL_BOARD]
+	option_button_top_decal.selected = data.customization_data[CustomizationPart.Part.TOP][CustomizationPart.Part.DECAL_TOP]
+	color_picker_button_eye_color.color = data.customization_data[CustomizationPart.Part.BODY]["eyes"]
+	h_slider_skin_color.value = data.customization_data[CustomizationPart.Part.BODY]["color"]
+	color_picker_button_hair_color.color = data.customization_data[CustomizationPart.Part.HAIR]["base"]
+	option_button_hair.selected = data.customization_data[CustomizationPart.Part.HAIR]["mesh"]
+	option_button_top_style.selected = data.customization_data[CustomizationPart.Part.TOP]["mesh"]
+	option_button_bottom_style.selected = data.customization_data[CustomizationPart.Part.BOTTOM]["mesh"]
+	option_button_shoes_style.selected = data.customization_data[CustomizationPart.Part.SHOES]["mesh"]
+	h_slider_size.value = data.customization_data[CustomizationPart.Part.BODY]["size"]
+	check_button_gender.button_pressed = bool(data.customization_data[CustomizationPart.Part.BODY]["gender"])
+	option_button_helmet_style.selected = data.customization_data[CustomizationPart.Part.HELMET]["mesh"]
+	option_button_glasses_style.selected = data.customization_data[CustomizationPart.Part.GLASSES]["mesh"]	
 
 func _on_color_picker_button_top_base_color_changed(color: Color) -> void:
 	CustomizationManager.instance.update_color(CustomizationPart.Part.TOP, 'base', color)
@@ -185,7 +158,7 @@ func _on_option_button_top_decal_item_selected(index: int) -> void:
 
 
 func _on_h_slider_skin_color_value_changed(value: float) -> void:
-	CustomizationManager.instance.update_float(CustomizationPart.Part.BODY, 'skin_color', value)
+	CustomizationManager.instance.update_float(CustomizationPart.Part.BODY, 'color', value)
 
 
 func _on_color_picker_button_eye_color_color_changed(color: Color) -> void:
@@ -193,7 +166,7 @@ func _on_color_picker_button_eye_color_color_changed(color: Color) -> void:
 
 
 func _on_color_picker_button_hair_color_color_changed(color: Color) -> void:
-	CustomizationManager.instance.update_color(CustomizationPart.Part.HAIR, 'color', color)
+	CustomizationManager.instance.update_color(CustomizationPart.Part.HAIR, 'base', color)
 
 
 func _on_option_button_hair_item_selected(index: int) -> void:

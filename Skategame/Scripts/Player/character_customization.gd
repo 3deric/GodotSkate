@@ -53,36 +53,41 @@ func _on_float_updated(part: CustomizationPart.Part, sub: String, value: float) 
 	match part:
 		CustomizationPart.Part.BODY:
 			match sub:
-				'skin_color':
+				'color':
 					_update_body_skin_color(value)
 				'size':
 					char_skeleton.scale = Vector3(value, value, value)
-				#'gender':
-				#	_update_gender(value)
-				#	_update_top_gender(value)
-				#	_update_bottom_gender(value)
+				'gender':
+					_update_gender(value)
+					_update_top_gender(value)
+					_update_bottom_gender(value)
 					
 func _on_customization_updated() ->void:
 	_update_from_data()
 
 func _update_from_data() -> void:
-	var data = CustomizationManager.instance.character_data
-	#for key in character_meshes:
-		#print(character_meshes[key])
-	# to do, reimplement loading from data
+	var data = CustomizationManager.instance.character_data.customization_data
+	for part in data:
+		for customization in data[part]:
+			if typeof(customization) == TYPE_STRING:
+				var _type = typeof(data[part][customization])
+				if customization == "mesh":
+					_on_mesh_updated(part,data[part][customization])
+				elif  _type == TYPE_COLOR:
+					_on_color_updated(part, customization, data[part][customization])
+				elif _type == TYPE_FLOAT:
+					_on_float_updated(part, customization, data[part][customization])
+			elif typeof(customization) == TYPE_INT:
+				_on_decal_updated(part, customization, data[part][customization])
 
 func _update_body_eyes_color(color: Color) -> void:
-	_update_color(character_meshes[CustomizationPart.Part.BODY], "eyes", color)
+	_update_color(character_meshes[CustomizationPart.Part.BODY], "eyes_color", color)
 
 func _update_body_skin_color(value: float) -> void:
 	_update_float(character_meshes[CustomizationPart.Part.BODY], "skin_color", value)
 
-func _update_hair_color(color: Color) -> void:
-	var _mesh = character_meshes[CustomizationPart.Part.BODY]
-	_update_color(_mesh, "hair_color", color)
-
 func _update_gender(value : float) -> void:
-	var _mesh = character_meshes[CustomizationPart.Part.BODY].mesh
+	var _mesh = character_meshes[CustomizationPart.Part.BODY]
 	_mesh.set_blend_shape_value(0, value)
 	if value > 0.5:
 		_mesh.set_surface_override_material(0, BODY_FEMALE)
@@ -90,12 +95,12 @@ func _update_gender(value : float) -> void:
 		_mesh.set_surface_override_material(0, BODY_MALE)
 
 func _update_top_gender(value : float) -> void:
-	pass
-	#top_mesh.set_blend_shape_value(0, value)
+	var _mesh = character_meshes[CustomizationPart.Part.TOP]
+	_mesh.set_blend_shape_value(0, value)
 
 func _update_bottom_gender(value : float) -> void:
-	pass
-	#bottom_mesh.set_blend_shape_value(0, value)
+	var _mesh = character_meshes[CustomizationPart.Part.BOTTOM]
+	_mesh.set_blend_shape_value(0, value)
 	
 func _update_color(_mesh : MeshInstance3D, _param : String, _color : Color) -> void:
 	if not _mesh:

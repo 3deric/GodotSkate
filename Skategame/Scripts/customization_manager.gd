@@ -26,91 +26,25 @@ func reset_character() -> void:
 
 
 func update_color(part: CustomizationPart.Part,sub: String, color: Color ) -> void:
-	match part:
-		CustomizationPart.Part.BODY:
-			match sub: 
-				'eyes':
-					character_data.eye_color = color
-		CustomizationPart.Part.HAIR:
-			match sub:
-				'color':
-					print("updating color")
-					character_data.hair_color = color
-		CustomizationPart.Part.TOP:
-			match sub:
-				'base':
-					character_data.top_base_color = color
-				'accent':
-					character_data.top_accent_color = color
-				'detail':
-					character_data.top_detail_color = color
-		CustomizationPart.Part.BOTTOM:
-			match sub:
-				'base':
-					character_data.bottom_base_color = color
-				'accent':
-					character_data.bottom_accent_color = color
-				'detail':
-					character_data.bottom_detail_color = color
-		CustomizationPart.Part.SHOES:
-			match sub:
-				'base':
-					character_data.shoes_base_color = color
-				'accent':
-					character_data.shoes_accent_color = color
-				'detail':
-					character_data.shoes_detail_color = color
-		CustomizationPart.Part.BOARD:
-			match sub:
-				'wheels':
-					character_data.board_wheels_color = color
-				'accent':
-					character_data.board_accent_color = color
-				'metal':
-					character_data.board_metal_color= color
-
+	character_data.customization_data[part][sub] = color
 	color_updated.emit(part, sub, color)
 	#customization_updated.emit()
 	
 
 func update_mesh(part: CustomizationPart.Part, index: int) -> void:
-	match part:
-		CustomizationPart.Part.HAIR:
-			character_data.hair_mesh = index
-		CustomizationPart.Part.TOP:
-			character_data.top_mesh = index
-		CustomizationPart.Part.BOTTOM:
-			character_data.bottom_mesh = index
-		CustomizationPart.Part.SHOES:
-			character_data.shoes_mesh = index
-		CustomizationPart.Part.HELMET:
-			character_data.helmet_mesh = index
-		CustomizationPart.Part.GLASSES:
-			character_data.glasses_mesh
+	character_data.customization_data[part]["mesh"] = index
 	mesh_updated.emit(part, index)
 	#customization_updated.emit()
 	
 
 func update_decal(part: CustomizationPart.Part, decal_part : CustomizationPart.Part, index: int) -> void:
-	match part:
-		CustomizationPart.Part.TOP:
-			character_data.top_decal = index
-		CustomizationPart.Part.BOARD:
-			character_data.board_decal = index
+	character_data.customization_data[part]["decal"] = index
 	decal_updated.emit(part, decal_part, index)
 	#customization_updated.emit()
 
 
 func update_float(part: CustomizationPart.Part, sub : String ,value: float) -> void:
-	match part:
-		CustomizationPart.Part.BODY:
-			match sub:
-				'size':
-					character_data.size = value
-				'skin_color':
-					character_data.skin_color = value
-				'gender':
-					character_data.gender = value
+	character_data.customization_data[part][sub] = value
 	float_updated.emit(part, sub, value)
 	#customization_updated.emit()
 		
